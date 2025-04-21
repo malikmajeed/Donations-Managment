@@ -1,0 +1,66 @@
+const mongoose = require('mongoose');
+
+const employeeSchema = new mongoose.Schema({
+  // Admin ID
+  id: {
+    type: Number,
+    required: true,
+    unique: true // lowercase 'unique'
+  },
+
+  // Admin First Name
+  fName: {
+    type: String,
+    trim: true
+  },
+
+  // Admin Last Name
+  lName: {
+    type: String,
+    trim: true
+  },
+
+  // Admin Email
+  email: {
+    type: String,
+    required: true,
+    unique: true, // lowercase 'unique'
+    lowercase: true
+  },
+  role:{
+    type:String,
+    enum:["admin", "donor"],
+    required:true
+  },
+  // Admin Phone
+  phone: {
+    type: Number
+  },
+
+  // Admin Country
+  country: {
+    type: String,
+    trim: true
+  },
+
+  // Profile URL
+  profileUrl: {
+    type: String
+  },
+
+  // Reference to Donations model
+  donations: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Donations' 
+  },
+
+  // Created At
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+
+});
+
+const Employee = mongoose.model('Employee', employeeSchema);
+module.exports = Employee;
