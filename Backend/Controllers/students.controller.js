@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
-import Students from "../Models/students.model";
+import Students from "../Models/students.model.js";
 
 
 // Adding a new Student
 const addStudent = async (req, res) => {
     try {
       const {
+        id,
         firstName,
         lastName,
         fatherName,
@@ -35,6 +36,7 @@ const addStudent = async (req, res) => {
   
       // Create and save new student
       const newStudent = new Students({
+        id,
         firstName,
         lastName,
         fatherName,
@@ -59,4 +61,4 @@ const addStudent = async (req, res) => {
 
 
 
-module.exports= addStudent;
+  export default addStudent;
