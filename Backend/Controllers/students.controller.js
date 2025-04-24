@@ -56,9 +56,67 @@ const addStudent = async (req, res) => {
     }
   };
   
+// delete student. 
+const deleteStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      console.log('Error while fetching student Id from params');
+      return res.status(400).send('Student ID is required');
+    }
+    
+    const isDeletedStudent = await Students.findByIdAndDelete(id);
+    if (isDeletedStudent) {
+      console.log('Student deleted successfully');
+      return res.status(200).send('Student Deleted Successfully');
+    } else {
+      console.log('Student not found');
+      return res.status(404).send("Student doesn't exist");
+    }
+  } catch (error) {
+    console.error('An Error occurred while deleting student: ', error.message);
+    return res.status(500).send('Server Error while deleting the student');
+  }
+};
+
+//updating student data
+const updateStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade } = req.body;
+
+    if (!id) {
+      console.log('Error while fetching student Id from params');
+      return res.status(400).send('Student ID is required');
+    }
+
+    const isUpdatedStudent = await Students.findByIdAndUpdate(id, {
+      firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade
+    }, {runValidators:true});
+
+    if(!isUpdatedStudent){
+      return res.status(404).send('Student not found');
+    }
+    return res.status(200).send('Student updated successfully');
+  } catch (error) {
+    console.error('An Error occurred while updating student: ', error.message);
+    return res.status(500).send('Server Error while updating the student');
+  }
+};
+    
+    
+    
+    
+    
 
 
 
 
 
-  export default addStudent;
+
+
+
+
+
+
+export {addStudent, deleteStudent, updateStudent};
