@@ -102,21 +102,76 @@ const updateStudent = async (req, res) => {
     console.error('An Error occurred while updating student: ', error.message);
     return res.status(500).send('Server Error while updating the student');
   }
-};
+}; 
+
+//get student by id
+const getStudentbyId = async (req, res) => {
+    try{  
+        const {id} = req.params;
+        if(!id){
+            console.log('Error while fetching student Id from params');
+            return res.status(400).send('Student ID is required');
+        }
+        const student = await Students.findById(id);
+        if(!student){
+            return res.status(404).send('Student not found');
+        }
+        return res.status(200).json(student);
+    } catch (error) {
+        console.error('An Error occurred while fetching student: ', error.message);
+        return res.status(500).send('Server Error while fetching the student');
+    }1
+}
+
+//get all students
+const getAllStudents = async (req, res) => {
+    try{
+
+        const students = await Students.find();
+        return res.status(200).json(students);
+    } catch (error) {
+        console.error('An Error occurred while fetching all students: ', error.message);
+        return res.status(500).send('Server Error while fetching all students');
+    }
+}
     
+ 
     
-    
-    
-    
+//Student by sponsorship
+const getStudentbySponsorship = async (req, res) => {
+    try{
+        const students = await Students.find({sponsorship:true});
+        return res.status(200).json(students);
+    } catch (error) {
+        console.error('An Error occurred while fetching students by sponsorship: ', error.message);
+        return res.status(500).send('Server Error while fetching students by sponsorship');
+    } 
+}
+
+
+
+const updateSponsorship = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const {sponsorship} = req.body;
+        if(!id){
+            console.log('Error while fetching student Id from params');
+            return res.status(400).send('Student ID is required');
+        }
+        const isUpdatedStudent = await Students.findByIdAndUpdate(id, {sponsorship}); 
+        if(!isUpdatedStudent){
+            return res.status(404).send('Student not found');
+        }
+        return res.status(200).send('Sponsorship updated successfully');
+    } catch (error) {
+        console.error('An Error occurred while updating sponsorship: ', error.message);
+        return res.status(500).send('Server Error while updating sponsorship');
+    }
+} 
 
 
 
 
 
 
-
-
-
-
-
-export {addStudent, deleteStudent, updateStudent};
+export {addStudent, deleteStudent, updateStudent, getStudentbyId, getAllStudents};

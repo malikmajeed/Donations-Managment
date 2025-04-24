@@ -48,7 +48,10 @@ const studentsSchema= new mongoose.Schema({
      profileUrl: {
        type: String
      },
-   
+     sponsorship:{
+        type:Boolean,
+        default:false
+     },
 
      // Reference to Donations model
      donations: {
@@ -61,12 +64,16 @@ const studentsSchema= new mongoose.Schema({
      school:{
         type:String
      },
-     studentGrade:String,
+     studentGrade:{
+      type:String
+      },
+     introduction:{
+        type:String
+     },
+
+    
      // Created At
-     createdAt: {
-       type: Date,
-       default: Date.now
-     }
+     timestamp:true
    
 })
 
