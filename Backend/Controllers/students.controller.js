@@ -174,4 +174,7 @@ const updateSponsorship = async (req, res) => {
 
 
 
-export {addStudent, deleteStudent, updateStudent, getStudentbyId, getAllStudents};
+export {addStudent, deleteStudent, 
+  updateStudent, getStudentbyId, 
+  getStudentbySponsorship, updateSponsorship, 
+  getAllStudents};

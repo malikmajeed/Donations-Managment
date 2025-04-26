@@ -69,13 +69,10 @@ const studentsSchema= new mongoose.Schema({
       },
      introduction:{
         type:String
-     },
+     }
 
-    
-     // Created At
-     timestamp:true
    
-})
+}, {timestamps: true})
 
 
 

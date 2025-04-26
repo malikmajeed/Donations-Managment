@@ -27,12 +27,8 @@ const donationsSchema = new mongoose.Schema({
     status:{
         type:String,
         enum:["pending", "completed"]
-    },
-    createdAt:{
-        type: Date,
-        
     }
-})
+}, {timestamps: true})
 
 
 
