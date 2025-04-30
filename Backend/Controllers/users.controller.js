@@ -112,3 +112,58 @@ const getUser = async (req, res) => {
         
     }
 }
+
+
+// getting all users with role donors
+
+const getAllDonors = async (req, res) => {
+    try {
+        const donors = await Users.find({role:"donor"});
+        res.status(200).json({
+            success:true,
+            message:"All donors fetched successfully",
+            donors
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:"Failed to fetch donors",
+            error:error.message
+        })
+    }
+}
+
+
+//updating a user
+const updateUser = async (req, res) => {
+    try{
+
+        const userId = req.body._id;
+        if(!userId){
+            return res.status(400).json({
+                success:false,
+                message:"User ID is required"
+            })
+        }
+
+        const user = await Users.findByIdAndUpdate(userId, req.body, {new:true});
+        if(!user){
+            return res.status(400).json({
+                
+            })
+        }
+    }
+    catch(error){
+        res.status(500).json({
+            success:false,
+            message:"Failed to update user",
+            error:error.message
+        })
+    }
+}
+
+
+
+
+export {signUp, login, getUser, getAllDonors, updateUser};

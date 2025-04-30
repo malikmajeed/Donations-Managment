@@ -11,13 +11,15 @@ const userSchema = new mongoose.Schema({
   // Admin First Name
   fName: {
     type: String,
-    trim: true
+    trim: true,
+    required:true
   },
 
   // Admin Last Name
   lName: {
     type: String,
-    trim: true
+    trim: true,
+    required:true
   },
 
   // Admin Email
