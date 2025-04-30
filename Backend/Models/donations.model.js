@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const donationsSchema = new mongoose.Schema({
-    _id:{
+    id:{
         type:mongoose.Schema.Types.ObjectId,
         required: true,
         unqiue: true
@@ -34,5 +34,4 @@ const donationsSchema = new mongoose.Schema({
 
 
 const Donations = mongoose.model('Donations', donationsSchema);
-
-module.exports = Donations;
+export default Donations;

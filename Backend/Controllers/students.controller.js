@@ -4,6 +4,7 @@ import Students from "../Models/students.model.js";
 
 // Adding a new Student
 const addStudent = async (req, res) => {
+  console.log('Adding a new student');
     try {
       const {
         id,
@@ -58,6 +59,7 @@ const addStudent = async (req, res) => {
   
 // delete student. 
 const deleteStudent = async (req, res) => {
+  console.log('Deleting a student');
   try {
     const { id } = req.params;
     if (!id) {

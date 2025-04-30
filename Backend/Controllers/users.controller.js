@@ -1,22 +1,21 @@
-import Users from "../Models/users.model";
+import Users from "../Models/users.model.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 //creating a user
 const signUp = async (req, res) => {
     try {
      
         const {fName, lName, email,role, phone, profileUrl} = req.body;
-        const {pasword, confirmPassword} = req.body;
 
-        if(password !== confirmPassword){
-            return res.status(400).json({
-                success:false,
-                message:"Passwords do not match"
-            })
-        }
-
+     //getting password and encrypting it   
     const password = await bcrypt.hash(req.body.password, 10);
-    
+    //checking the password so its not null
+    if(!password){
+        return res.status(400).json({
+            success:false,
+            message:"Password is required"
+        })
+    }   
+    //checking the required fields
         if(!fName || !lName || !email){
             return res.status(400).json({
                 success:false,

@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   // Admin ID
-  _id: {
+  id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     unique: true // lowercase 'unique'
@@ -58,4 +58,6 @@ const userSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 const Users = mongoose.model('Users', userSchema);
-module.exports = Users;
+
+
+export default Users;
