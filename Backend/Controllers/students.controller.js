@@ -94,7 +94,7 @@ const updateStudent = async (req, res) => {
 
     const isUpdatedStudent = await Students.findByIdAndUpdate(id, {
       firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade
-    }, {runValidators:true});
+    }, {runValidators:true}, {new:true});
 
     if(!isUpdatedStudent){
       return res.status(404).send('Student not found');

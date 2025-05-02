@@ -10,25 +10,25 @@ import {addStudent, deleteStudent, updateStudent,
 
 
 //Route for adding a student
-router.post('/addStudent', addStudent);
+router.post('/addStudent', addStudent); //✅ verified
 
 //Route for deleting a student
-router.delete('/deleteStudent/:id', deleteStudent);
+router.delete('/deleteStudent/:id', deleteStudent); //✅ verified
 
 //Route for updating a student
-router.put('/updateStudent/:id', updateStudent);
+router.put('/updateStudent/:id', updateStudent);//✅ verified
 
 //Route for getting a student by id
-router.get('/getStudentbyId/:id', getStudentbyId);
+router.get('/getStudentbyId/:id', getStudentbyId);//✅ verified
 
 //Route for getting all students
-router.get('/getAllStudents', getAllStudents);
+router.get('/getAllStudents', getAllStudents);//✅ verified
 
 //Route for getting a student by sponsorship
-router.get('/getStudentbySponsorship/:sponsorship', getStudentbySponsorship);
+router.get('/getStudentbySponsorship/', getStudentbySponsorship);//✅ verified
 
 //Route for updating a student's sponsorship
-router.put('/updateSponsorship/:id', updateSponsorship);
+router.patch('/updateSponsorship/:id', updateSponsorship);//✅ verified
 
 
 

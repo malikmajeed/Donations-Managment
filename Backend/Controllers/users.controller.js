@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 const signUp = async (req, res) => {
     try {
      
-        const {fName, lName, email,role, phone, profileUrl} = req.body;
-
+        const {id, fName, lName, email,role, phone, profileUrl} = req.body;
+console.log(req.body);
      //getting password and encrypting it   
     const password = await bcrypt.hash(req.body.password, 10);
     //checking the password so its not null
@@ -30,7 +30,7 @@ const signUp = async (req, res) => {
             })
         }
         const user = await Users.create({
-        fName, lName, email, password, role, phone, profileUrl
+        id,fName, lName, email, password, role, phone, profileUrl
     })
     res.status(201).json({
         success:true,
@@ -71,6 +71,14 @@ const login = async (req, res) => {
                 message:"Invalid password"
             })
         }       
+
+        if(user && isPasswordValid){
+            res.status(200).json({
+                success:true,
+                message:"User logged in successfully",
+                user
+            })
+        }   
 
      
 
@@ -146,7 +154,7 @@ const updateUser = async (req, res) => {
             })
         }
 
-        const user = await Users.findByIdAndUpdate(userId, req.body, {new:true});
+        const user = await Users.findByIdAndUpdate(userId, req.body, {new:true}, {runValidators: true});
         if(!user){
             return res.status(400).json({
                 

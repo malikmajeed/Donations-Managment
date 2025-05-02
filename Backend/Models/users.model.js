@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   // Admin ID
   id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     required: true,
     unique: true // lowercase 'unique'
   },
