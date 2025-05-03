@@ -5,13 +5,13 @@ const router = express.Router();
 
 
 //signup route
-router.post("/signup", signUp);
+router.post("/signup", signUp); //✅ verified
 
 //login route
-router.post("/login", login);
+router.post("/login", login); //✅ verified
 
 //get user route
-router.get("/user", getUser);
+router.get("/:id", getUser); //✅ verified
 
 //get all donors route
 router.get("/donors", getAllDonors);

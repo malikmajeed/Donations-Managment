@@ -4,24 +4,36 @@ import bcrypt from "bcrypt";
 const signUp = async (req, res) => {
     try {
      
-        const {id, fName, lName, email,role, phone, profileUrl} = req.body;
+        const {id, fName, lName, email,role, phone, profileUrl, password, confirmPassword} = req.body;
 console.log(req.body);
-     //getting password and encrypting it   
-    const password = await bcrypt.hash(req.body.password, 10);
-    //checking the password so its not null
-    if(!password){
-        return res.status(400).json({
-            success:false,
-            message:"Password is required"
-        })
-    }   
-    //checking the required fields
-        if(!fName || !lName || !email){
-            return res.status(400).json({
-                success:false,
-                message:"Required fields are missing"
-            })
-        }
+
+
+//checking the required fields
+if(!fName || !lName || !email){
+    return res.status(400).json({
+        success:false,
+        message:"Required fields are missing"
+    })
+}
+if(!password || !confirmPassword){
+    return res.status(400).json({
+        success:false,
+        message:"Password & confirm password are required"
+    })
+}   
+
+ //checking if the password and confirm password are the same
+ if(password !== confirmPassword){
+    return res.status(400).json({
+        success:false,
+        message:"Passwords do not match"
+    })
+}
+     
+        //getting password and encrypting it  
+        const passwordHash = await bcrypt.hash(req.body.password, 10);
+        //checking the password so its not null
+       
         const existingUser = await Users.findOne({email});
         if(existingUser){
             return res.status(400).json({
@@ -30,7 +42,7 @@ console.log(req.body);
             })
         }
         const user = await Users.create({
-        id,fName, lName, email, password, role, phone, profileUrl
+        id,fName, lName, email, password:passwordHash, role, phone, profileUrl
     })
     res.status(201).json({
         success:true,
@@ -68,7 +80,7 @@ const login = async (req, res) => {
         if(!isPasswordValid){
             return res.status(400).json({
                 success:false,
-                message:"Invalid password"
+                message:"Incorrect Password"
             })
         }       
 
@@ -95,7 +107,8 @@ const login = async (req, res) => {
 //reading user data
 const getUser = async (req, res) => {
     try {
-        const userId = req.body._id;
+        console.log(req.params.id);
+        const userId= req.params.id;
         if(!userId){
             return res.status(400).json({
                 success:false,
@@ -126,6 +139,13 @@ const getUser = async (req, res) => {
 const getAllDonors = async (req, res) => {
     try {
         const donors = await Users.find({role:"donor"});
+        if(!donors){
+            return res.status(400).json({
+                success:false,
+                message:"No donors found"
+            })
+        }
+        
         res.status(200).json({
             success:true,
             message:"All donors fetched successfully",
