@@ -4,8 +4,8 @@ import bcrypt from "bcrypt";
 const signUp = async (req, res) => {
     try {
      
-        const {id, fName, lName, email,role, phone, profileUrl, password, confirmPassword} = req.body;
-console.log(req.body);
+    const {id, fName, lName, email,role, phone, profileUrl, password, confirmPassword} = req.body;
+    console.log(req.body);
 
 
 //checking the required fields
@@ -193,4 +193,41 @@ const updateUser = async (req, res) => {
 
 
 
-export {signUp, login, getUser, getAllDonors, updateUser};
+///Deleting a user
+
+const deleteUser = async(req,res)=>{
+  try {
+     const {userID} = req.params?.id;
+    if(!userID){
+        res.status(400).json({
+            success:false,
+            message:"No user Id found",
+            error:error.message
+        })
+    }
+    const isUserDeleted =await Users.findByIdAndDelete(userID);
+
+    if (!isUserDeleted){
+        res.status(400).json({
+            success:false,
+            message:"User Doesn't exists",
+            error:error.meesage
+        })    }
+
+        res.status(200).json({
+            success:true,
+            message:"User deleted successfully",
+            error:error.message
+        })
+    
+
+}catch(error){
+    console.log("error has occured while deleting a user");
+    res.status(500).send('An Error has occured while deleting User')
+}
+
+}
+
+
+
+export {signUp, login, getUser, getAllDonors, updateUser, deleteUser};
