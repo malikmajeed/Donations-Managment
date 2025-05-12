@@ -197,12 +197,11 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async(req,res)=>{
   try {
-     const {userID} = req.params?.id;
+     const userID = req.params?.id;
     if(!userID){
         res.status(400).json({
             success:false,
-            message:"No user Id found",
-            error:error.message
+            message:"No user Id found"
         })
     }
     const isUserDeleted =await Users.findByIdAndDelete(userID);
@@ -210,19 +209,17 @@ const deleteUser = async(req,res)=>{
     if (!isUserDeleted){
         res.status(400).json({
             success:false,
-            message:"User Doesn't exists",
-            error:error.meesage
+            message:"User Doesn't exists"
         })    }
 
         res.status(200).json({
             success:true,
-            message:"User deleted successfully",
-            error:error.message
+            message:"User deleted successfully"
         })
     
 
 }catch(error){
-    console.log("error has occured while deleting a user");
+    console.log(`error has occured while deleting a user : ${error.message}`);
     res.status(500).send('An Error has occured while deleting User')
 }
 

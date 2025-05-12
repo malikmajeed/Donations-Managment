@@ -15,13 +15,13 @@ router.get("/:id", getUser); //✅ verified
 
 //get all donors route
 // when no donors exists it takes lot of time to complete the request
-router.get("/donors", getAllDonors);
+router.get("/donors", getAllDonors);//✅ verified
 
 //update user route
-router.patch("/update", updateUser);
+router.patch("/update", updateUser);//✅ verified
 
 //deleting user route
-router.delete("/delete/:id")
+router.delete("/delete/:id", deleteUser)//✅ verified
 
 
 export default router;
