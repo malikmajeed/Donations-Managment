@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const donationsSchema = new mongoose.Schema({
     id:{
-        type:mongoose.Schema.Types.ObjectId,
+        type:Number,
         required: true,
         unqiue: true
     },
