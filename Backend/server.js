@@ -5,6 +5,7 @@ import cors from 'cors'
 import mongoose from 'mongoose';
 import studentRouter from './Routes/students.router.js';
 import usersRouter from './Routes/users.router.js';
+import donationsRouter from './Routes/donations.routes.js'
 
 dotenv.config();
 
@@ -16,9 +17,10 @@ mongoose.connect(process.env.DATABASE_URL)
 .catch((err)=>console.log(`An Error occured While connecting to mongoDB: {err}`));
 
 
-
+console.log('reading controllers')
 app.use('/students/', studentRouter );
 app.use('/users/', usersRouter );
+app.use('/donations/', donationsRouter)
 
 
 app.listen(process.env.PORT,()=>{
