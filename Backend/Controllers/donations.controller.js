@@ -48,9 +48,8 @@ export const addDonation = async (req, res) => {
 // Get all donations
 export const getAllDonations = async (req, res) => {
     try {
-        const donations = await Donations.find()
-            .populate('donationFrom', 'name email')
-            .populate('donationTo', 'name');
+        console.log('get all donations controller')
+        const donations = await Donations.find();
 
         res.status(200).json({
             success: true,

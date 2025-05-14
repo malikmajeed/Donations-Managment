@@ -11,7 +11,7 @@ const router = express.Router();
 router.post('/add', addDonation);//✅ verified
 
 // Get all donations
-router.get('/', getAllDonations);
+router.get('/', getAllDonations);//✅ verified
 
 // Get donation by ID
 router.get('/:id', getDonationById);
