@@ -67,10 +67,10 @@ export const getAllDonations = async (req, res) => {
 // Get donation by ID
 export const getDonationById = async (req, res) => {
     try {
-        const donation = await Donations.findById(req.params.id)
-            .populate('donationFrom', 'name email')
-            .populate('donationTo', 'name');
-
+        console.log(req.params.id);
+        const id = req.params.id;
+        const donation = await Donations.findById(id);
+        console.log(donation);
         if (!donation) {
             return res.status(404).json({
                 success: false,
