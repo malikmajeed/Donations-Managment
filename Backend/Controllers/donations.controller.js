@@ -1,8 +1,11 @@
 import Donations from '../Models/donations.model.js';
+import Students from '../Models/students.model.js';
+import Users from '../Models/users.model.js';
 
 // Add new donation
 export const addDonation = async (req, res) => {
-        console.log('Adding donation');
+    console.log('Adding donation');
+    
     try {
         const { id, donationFrom, donationTo, Amount, paymentMethod, status } = req.body;
 
@@ -21,23 +24,23 @@ export const addDonation = async (req, res) => {
             donationTo,
             Amount,
             paymentMethod,
-            status: status || "pending" // Default status is pending if not provided
+            status: status || "pending", // Default to pending
         });
 
-        // Save the donation
+        // Save to DB
         const savedDonation = await newDonation.save();
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "Donation added successfully",
-            data: savedDonation
+            data: savedDonation,
         });
 
     } catch (error) {
-        res.status(500).json({
+        console.error("Error adding donation:", error.message);
+        return res.status(500).json({
             success: false,
-            message: "Error adding donation",
-            error: error.message
+            message: "Server error while adding donation",
         });
     }
 };

@@ -1,11 +1,14 @@
 import express from 'express';
-import { addDonation, getAllDonations, getDonationById, deleteDonation, updateDonationStatus } from '../Controllers/donations.controller.js';
+import { addDonation, getAllDonations, 
+    getDonationById, deleteDonation, 
+    updateDonationStatus } 
+    from '../Controllers/donations.controller.js';
 
 
 const router = express.Router();
-//✅ verified
+
 // Add new donation
-router.post('/add', addDonation);
+router.post('/add', addDonation);//✅ verified
 
 // Get all donations
 router.get('/', getAllDonations);
@@ -19,4 +22,4 @@ router.delete('/:id', deleteDonation);
 // Update donation status
 router.patch('/:id/status', updateDonationStatus);
 
-export default router; 
+export default router;  
