@@ -8,7 +8,7 @@ const donationsSchema = new mongoose.Schema({
     },
     donationFrom:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Donors',
+        ref:'Users',
         required:true
     },
     donationTo:{

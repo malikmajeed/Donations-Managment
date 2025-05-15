@@ -1,8 +1,10 @@
 import Donations from '../Models/donations.model.js';
 
+
 // Add new donation
 export const addDonation = async (req, res) => {
-        console.log('Adding donation');
+    console.log('Adding donation');
+    
     try {
         const { id, donationFrom, donationTo, Amount, paymentMethod, status } = req.body;
 
@@ -21,23 +23,23 @@ export const addDonation = async (req, res) => {
             donationTo,
             Amount,
             paymentMethod,
-            status: status || "pending" // Default status is pending if not provided
+            status: status || "pending", // Default to pending
         });
 
-        // Save the donation
+        // Save to DB
         const savedDonation = await newDonation.save();
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "Donation added successfully",
-            data: savedDonation
+            data: savedDonation,
         });
 
     } catch (error) {
-        res.status(500).json({
+        console.error("Error adding donation:", error.message);
+        return res.status(500).json({
             success: false,
-            message: "Error adding donation",
-            error: error.message
+            message: "Server error while adding donation",
         });
     }
 };
@@ -45,9 +47,8 @@ export const addDonation = async (req, res) => {
 // Get all donations
 export const getAllDonations = async (req, res) => {
     try {
-        const donations = await Donations.find()
-            .populate('donationFrom', 'name email')
-            .populate('donationTo', 'name');
+        console.log('get all donations controller')
+        const donations = await Donations.find();
 
         res.status(200).json({
             success: true,
@@ -65,10 +66,10 @@ export const getAllDonations = async (req, res) => {
 // Get donation by ID
 export const getDonationById = async (req, res) => {
     try {
-        const donation = await Donations.findById(req.params.id)
-            .populate('donationFrom', 'name email')
-            .populate('donationTo', 'name');
-
+        console.log(req.params.id);
+        const id = req.params.id;
+        const donation = await Donations.findById(id);
+        console.log(donation);
         if (!donation) {
             return res.status(404).json({
                 success: false,
@@ -133,8 +134,7 @@ export const updateDonationStatus = async (req, res) => {
             id,
             { status },
             { new: true, runValidators: true }
-        ).populate('donationFrom', 'name email')
-         .populate('donationTo', 'name');
+        );
 
         if (!updatedDonation) {
             return res.status(404).json({
