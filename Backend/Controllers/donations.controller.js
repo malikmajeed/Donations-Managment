@@ -134,8 +134,7 @@ export const updateDonationStatus = async (req, res) => {
             id,
             { status },
             { new: true, runValidators: true }
-        ).populate('donationFrom', 'name email')
-         .populate('donationTo', 'name');
+        );
 
         if (!updatedDonation) {
             return res.status(404).json({
