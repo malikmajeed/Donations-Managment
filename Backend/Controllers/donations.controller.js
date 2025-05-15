@@ -1,6 +1,5 @@
 import Donations from '../Models/donations.model.js';
-import Students from '../Models/students.model.js';
-import Users from '../Models/users.model.js';
+
 
 // Add new donation
 export const addDonation = async (req, res) => {

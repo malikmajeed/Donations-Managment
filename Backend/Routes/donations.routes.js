@@ -14,7 +14,7 @@ router.post('/add', addDonation);//✅ verified
 router.get('/', getAllDonations);//✅ verified
 
 // Get donation by ID
-router.get('/:id', getDonationById);
+router.get('/:id', getDonationById);//✅ verified
 
 // Delete donation by ID
 router.delete('/:id', deleteDonation);
