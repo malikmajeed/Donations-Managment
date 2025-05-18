@@ -8,18 +8,18 @@ import { addDonation, getAllDonations,
 const router = express.Router();
 
 // Add new donation
-router.post('/add', addDonation);//✅ verified
+router.post('/add', addDonation);//✅ verified 
 
 // Get all donations
-router.get('/', getAllDonations);//✅ verified
+router.get('/', getAllDonations);//✅ verifie \d
 
 // Get donation by ID
 router.get('/:id', getDonationById);//✅ verified
-
+ 
 // Delete donation by ID
-router.delete('/:id', deleteDonation);
+router.delete('/:id', deleteDonation);//✅ verified
 
 // Update donation status
-router.patch('/:id/status', updateDonationStatus);
+router.patch('/:id/status', updateDonationStatus);//✅ verified
 
 export default router;  
