@@ -1,5 +1,6 @@
 import Users from "../Models/users.model.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 //creating a user
 const signUp = async (req, res) => {
     try {
