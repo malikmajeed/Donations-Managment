@@ -4,7 +4,7 @@ import Donations from '../Models/donations.model.js';
 // Add new donation
 export const addDonation = async (req, res) => {
     console.log('Adding donation');
-    
+
     try {
         const { id, donationFrom, donationTo, Amount, paymentMethod, status } = req.body;
 
@@ -47,13 +47,26 @@ export const addDonation = async (req, res) => {
 // Get all donations
 export const getAllDonations = async (req, res) => {
     try {
-        console.log('get all donations controller')
-        const donations = await Donations.find();
+        const user = req.user;
+        if (user.role === 'admin') {
+            console.log('get all donations controller for role admin')
+            const donations = await Donations.find();
 
-        res.status(200).json({
-            success: true,
-            data: donations
-        });
+            res.status(200).json({
+                success: true,
+                data: donations
+            });
+
+        }
+        else if (user.role === 'donor') {
+            console.log('get all donations controller for role donor')
+            const donations = await Donations.find({ donationFrom: user.id });
+            res.status(200).json({
+                success: true,
+                data: donations
+            });
+        }
+
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -66,21 +79,39 @@ export const getAllDonations = async (req, res) => {
 // Get donation by ID
 export const getDonationById = async (req, res) => {
     try {
-        console.log(req.params.id);
-        const id = req.params.id;
-        const donation = await Donations.findById(id);
-        console.log(donation);
-        if (!donation) {
-            return res.status(404).json({
+        const user = req.user;
+        //checking if the user is admin
+        if (user.role === 'admin') {
+
+            const id = req.params.id;
+            const donation = await Donations.findById(id);
+            res.status(200).json({
+                success: true,
+                data: donation
+            });
+
+            if (!donation) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Donation not found"
+                });
+            }
+        }
+        else if (user.role === 'donor') {
+
+            const id = req.params.id;
+            const donation = await Donations.find({ donationFrom: user.id, id: id });
+            console.log(donation);
+        } else {
+            return res.status(403).json({
                 success: false,
-                message: "Donation not found"
+                message: "You are not authorized to access this resource"
             });
         }
 
-        res.status(200).json({
-            success: true,
-            data: donation
-        });
+
+
+
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -89,6 +120,8 @@ export const getDonationById = async (req, res) => {
         });
     }
 };
+
+
 
 // Delete donation by ID
 export const deleteDonation = async (req, res) => {
@@ -157,4 +190,3 @@ export const updateDonationStatus = async (req, res) => {
     }
 };
 
- 

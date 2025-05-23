@@ -1,6 +1,7 @@
 import Users from "../Models/users.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+const SECRET_KEY = process.env.SECRET_KEY;
 //creating a user
 const signUp = async (req, res) => {
     try {
@@ -85,11 +86,14 @@ const login = async (req, res) => {
             })
         }       
 
+        const token = jwt.sign({id:user._id}, SECRET_KEY, {expiresIn: '1h'});
+
         if(user && isPasswordValid){
             res.status(200).json({
                 success:true,
                 message:"User logged in successfully",
-                user
+                user,
+                token
             })
         }   
 
