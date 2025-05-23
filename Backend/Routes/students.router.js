@@ -7,16 +7,16 @@ import {addStudent, deleteStudent, updateStudent,
      getStudentbySponsorship, updateSponsorship
     } from '../Controllers/students.controller.js';
 
-
+import { authenticateToken as Auth } from '../Middlewares/authentication.js';
 
 //Route for adding a student
-router.post('/addStudent', addStudent); //✅ verified
+router.post('/addStudent',Auth, addStudent); //✅ verified
 
 //Route for deleting a student
-router.delete('/deleteStudent/:id', deleteStudent); //✅ verified
+router.delete('/deleteStudent/:id',Auth, deleteStudent); //✅ verified
 
 //Route for updating a student
-router.put('/updateStudent/:id', updateStudent);//✅ verified
+router.put('/updateStudent/:id',Auth, updateStudent);//✅ verified
 
 //Route for getting a student by id
 router.get('/getStudentbyId/:id', getStudentbyId);//✅ verified
@@ -28,7 +28,7 @@ router.get('/getAllStudents', getAllStudents);//✅ verified
 router.get('/getStudentbySponsorship/', getStudentbySponsorship);//✅ verified
 
 //Route for updating a student's sponsorship
-router.patch('/updateSponsorship/:id', updateSponsorship);//✅ verified
+router.patch('/updateSponsorship/:id', Auth, updateSponsorship);//✅ verified
 
 
 
