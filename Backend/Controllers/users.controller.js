@@ -1,7 +1,11 @@
 import Users from "../Models/users.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+
+dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
+
 //creating a user
 const signUp = async (req, res) => {
     try {
@@ -140,31 +144,36 @@ const getUser = async (req, res) => {
 
 
 // getting all users with role donors
-
 const getAllDonors = async (req, res) => {
+    console.log('getAllDonors controller executed');
+    console.log('User from auth:', req.user); // Log the authenticated user
+    
     try {
         const donors = await Users.find({role:"donor"});
-        if(!donors){
-            return res.status(400).json({
-                success:false,
-                message:"No donors found"
-            })
+        console.log('Number of donors found:', donors.length);
+        
+        if(donors.length === 0){
+            return res.status(404).json({
+                success: false,
+                message: "No donors found"
+            });
         }
         
         res.status(200).json({
-            success:true,
-            message:"All donors fetched successfully",
+            success: true,
+            message: "All donors fetched successfully",
             donors
-        })
+        });
 
     } catch (error) {
+        console.error('Error in getAllDonors:', error);
         res.status(500).json({
-            success:false,
-            message:"Failed to fetch donors",
-            error:error.message
-        })
+            success: false,
+            message: "Failed to fetch donors",
+            error: error.message
+        });
     }
-}
+};
 
 
 //updating a user
