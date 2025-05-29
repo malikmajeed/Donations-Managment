@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
-//creating a user
+//creating a user -- route for adding user
 const signUp = async (req, res) => {
     try {
         const { fName, lName, email, role, phone, password, confirmPassword } = req.body;
@@ -68,7 +68,7 @@ const signUp = async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Signup error:', error);
+        console.error('Signup error: ', error);
         res.status(500).json({
             success: false,
             message: "User creation failed",
