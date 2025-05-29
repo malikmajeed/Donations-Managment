@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from './SignIn.module.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignIn() {
     const [formData, setFormData] = useState({
@@ -9,12 +10,17 @@ export default function SignIn() {
     });
 
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     const handleSubmit = async (e) => {
@@ -60,7 +66,6 @@ export default function SignIn() {
                         type="email"
                         id="email"
                         name="email"
-                        placeholder='Enter your email address'
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -70,16 +75,25 @@ export default function SignIn() {
 
                 <div className={styles.formGroup}>
                     <label htmlFor="password">Password *</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder='Enter your password'
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                        disabled={isLoading}
-                    />
+                    <div className={styles.passwordInputContainer}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                            disabled={isLoading}
+                        />
+                        <button
+                            type="button"
+                            className={styles.eyeIcon}
+                            onClick={togglePasswordVisibility}
+                            disabled={isLoading}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
                 </div>
 
                 <button 

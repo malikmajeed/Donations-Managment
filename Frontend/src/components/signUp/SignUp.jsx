@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from './SignUp.module.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function SignUp() {
     const [formData, setFormData] = useState({
@@ -13,11 +14,22 @@ export default function SignUp() {
         role: 'donor'
     });
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
     };
 
     const handleSubmit = async (e) => {
@@ -63,7 +75,6 @@ export default function SignUp() {
                         type="text"
                         id="fName"
                         name="fName"
-                        placeholder='Enter First Name'
                         value={formData.fName}
                         onChange={handleChange}
                         required
@@ -76,7 +87,6 @@ export default function SignUp() {
                         type="text"
                         id="lName"
                         name="lName"
-                        placeholder='Enter Last Name'
                         value={formData.lName}
                         onChange={handleChange}
                         required
@@ -89,7 +99,6 @@ export default function SignUp() {
                         type="email"
                         id="email"
                         name="email"
-                        placeholder='Enter your email address'
                         value={formData.email}
                         onChange={handleChange}
                         required
@@ -102,7 +111,6 @@ export default function SignUp() {
                         type="tel"
                         id="phone"
                         name="phone"
-                        placeholder='Enter your phone number'
                         value={formData.phone}
                         onChange={handleChange}
                     />
@@ -110,28 +118,44 @@ export default function SignUp() {
 
                 <div className={styles.formGroup}>
                     <label htmlFor="password">Password *</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder='Create a strong password'
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
+                    <div className={styles.passwordInputContainer}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className={styles.eyeIcon}
+                            onClick={togglePasswordVisibility}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
                 </div>
 
                 <div className={styles.formGroup}>
                     <label htmlFor="confirmPassword">Confirm Password *</label>
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        placeholder='Confirm your password'
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                    />
+                    <div className={styles.passwordInputContainer}>
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className={styles.eyeIcon}
+                            onClick={toggleConfirmPasswordVisibility}
+                        >
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" className={styles.submitButton}>
