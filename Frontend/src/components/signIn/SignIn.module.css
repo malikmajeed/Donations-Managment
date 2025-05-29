@@ -1,0 +1,68 @@
+.signupContainer {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+  
+    
+    flex-direction: column;
+}
+h2{
+    align-self: center;
+    justify-self: center;
+    font-size: 30px;
+    color:  rgb(96, 96, 250);
+}
+.signupForm {
+    margin-top: 10px;
+    padding-top: 10px;
+  
+    border-top: 2px solid rgb(96, 96, 250);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.formGroup label {
+    font-weight: 500;
+    color: #333;
+}
+
+.formGroup input {
+    padding: 10px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: rgb(96, 96, 250);
+    box-shadow: 0 0 0 2px rgba(96, 96, 250, 0.2);
+}
+
+.submitButton {
+    margin-top:10px;
+    padding: 10px;
+    background-color: rgb(96, 96, 250);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+    background-color: rgb(76, 76, 230);
+} 

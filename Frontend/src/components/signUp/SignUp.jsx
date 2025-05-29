@@ -135,9 +135,9 @@ export default function SignUp() {
                 </div>
 
                 <button type="submit" className={styles.submitButton}>
-                    Sign Up
+                    Create
                 </button>
-                <p>Already have an account? <a href="">LogIn here</a></p>
+                <p>Already have an account? <a href="">LogIn here...</a></p>
             </form>
         </div>
     );
