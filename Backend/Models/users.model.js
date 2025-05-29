@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   // Admin ID
-  id: {
-    type: Number,
-    required: true,
-    unique: true // lowercase 'unique'
-  },
 
   // Admin First Name
   fName: {

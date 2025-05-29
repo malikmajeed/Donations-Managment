@@ -18,9 +18,9 @@ mongoose.connect(process.env.DATABASE_URL)
 
 
 console.log('reading controllers')
-app.use('/students/', studentRouter );
-app.use('/users/', usersRouter );
-app.use('/donations/', donationsRouter)
+app.use('/student/', studentRouter );
+app.use('/user/', usersRouter );
+app.use('/donation/', donationsRouter)
 
 
 app.listen(process.env.PORT,()=>{

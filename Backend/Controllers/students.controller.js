@@ -7,7 +7,7 @@ const addStudent = async (req, res) => {
   console.log('Adding a new student');
     try {
       const {
-        id,
+       
         firstName,
         lastName,
         fatherName,
@@ -37,7 +37,7 @@ const addStudent = async (req, res) => {
   
       // Create and save new student
       const newStudent = new Students({
-        id,
+       
         firstName,
         lastName,
         fatherName,

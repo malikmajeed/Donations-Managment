@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
 const donationsSchema = new mongoose.Schema({
-    id:{
-        type:Number,
-        required: true,
-        unqiue: true
-    },
+   
     donationFrom:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Users',
