@@ -1,0 +1,49 @@
+.button_color{
+    background-color: rgb(96, 96, 250);
+}
+
+
+.hero-section{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 20px 0px 20px 0px;
+    align-content: space-between;
+    background-color: #f0f0f0;
+  }
+  
+.button1 {
+    width: 200px;
+    height: 40px;
+    align-content: center;
+    align-self: center;
+    font-weight: 500;
+    font-size: 20px;
+    border: 1px solid lightblue;
+    color: lightblue;
+    cursor: pointer;
+}
+
+
+.hero-section-button{
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.Donate-button {
+    width: 200px;
+    height: 40px;
+    align-content: center;
+    align-self: center;
+    font-weight: 500;
+    font-size: 20px;
+   
+    color: white;
+    background-color: rgb(96, 96, 250);
+}

@@ -6,61 +6,74 @@ import dotenv from 'dotenv';
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
 
-//creating a user
+//creating a user -- route for adding user
 const signUp = async (req, res) => {
     try {
-     
-    const {id, fName, lName, email,role, phone, profileUrl, password, confirmPassword} = req.body;
-    console.log(req.body);
+        const { fName, lName, email, role, phone, password, confirmPassword } = req.body;
+        console.log('Signup request body:', req.body);
 
+        //checking the required fields
+        if(!fName || !lName || !email){
+            return res.status(400).json({
+                success: false,
+                message: "Required fields are missing"
+            });
+        }
+        if(!password || !confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Password & confirm password are required"
+            });
+        }   
 
-//checking the required fields
-if(!fName || !lName || !email){
-    return res.status(400).json({
-        success:false,
-        message:"Required fields are missing"
-    })
-}
-if(!password || !confirmPassword){
-    return res.status(400).json({
-        success:false,
-        message:"Password & confirm password are required"
-    })
-}   
-
- //checking if the password and confirm password are the same
- if(password !== confirmPassword){
-    return res.status(400).json({
-        success:false,
-        message:"Passwords do not match"
-    })
-}
-     
+        //checking if the password and confirm password are the same
+        if(password !== confirmPassword){
+            return res.status(400).json({
+                success: false,
+                message: "Passwords do not match"
+            });
+        }
+        
         //getting password and encrypting it  
-        const passwordHash = await bcrypt.hash(req.body.password, 10);
-        //checking the password so its not null
-       
-        const existingUser = await Users.findOne({email});
+        const passwordHash = await bcrypt.hash(password, 10);
+        
+        //checking if user already exists
+        const existingUser = await Users.findOne({ email });
         if(existingUser){
             return res.status(400).json({
-                success:false,
-                message:"User with this email already exists"
-            })
+                success: false,
+                message: "User with this email already exists"
+            });
         }
+
+        // Create new user
         const user = await Users.create({
-        id,fName, lName, email, password:passwordHash, role, phone, profileUrl
-    })
-    res.status(201).json({
-        success:true,
-        message:"User created successfully",
-        user
-    })
+            fName,
+            lName,
+            email,
+            password: passwordHash,
+            role: role || 'donor',
+            phone: phone || undefined
+        });
+
+        res.status(201).json({
+            success: true,
+            message: "User created successfully",
+            user: {
+                fName: user.fName,
+                lName: user.lName,
+                email: user.email,
+                role: user.role,
+                phone: user.phone
+            }
+        });
     } catch (error) {
+        console.error('Signup error: ', error);
         res.status(500).json({
-            success:false,
-            message:"User creation failed",
-            error:error.message
-        })
+            success: false,
+            message: "User creation failed",
+            error: error.message
+        });
     }
 }
 

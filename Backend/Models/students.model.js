@@ -3,11 +3,6 @@ import mongoose from "mongoose";
 
 const studentsSchema= new mongoose.Schema({
     
-   id: {
-       type: Number,
-       required: true,
-       unique: true // lowercase 'unique'
-     },
    
      // Admin First Name
      firstName: {

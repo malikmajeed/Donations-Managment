@@ -12,7 +12,6 @@ router.post("/login", login); //✅ verified
 
 //get user route
 router.get("/:id", Auth, getUser); //✅ verified
-users98765432
 //get all donors route
 // when no donors exists it takes lot of time to complete the request
 router.get("/donors/abc", Auth, getAllDonors);//✅ verified
