@@ -1,12 +1,10 @@
-.signupContainer {
+.signinContainer {
     max-width: 500px;
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
-  
-    
     flex-direction: column;
 }
 h2{
@@ -15,7 +13,7 @@ h2{
     font-size: 25px;
     color:  black
 }
-.signupForm {
+.signinForm {
     margin-top: 10px;
     padding-top: 10px;
   
@@ -33,7 +31,7 @@ h2{
 
 .formGroup label {
     font-size: 16px;
-    font-weight: 550;
+    font-weight: 500;
     color: #0d0202;
 }
 

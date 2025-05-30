@@ -11,6 +11,7 @@ function App() {
     <>
     <HeroSection />
     <SignIn />
+    <SignUp />
     </>
   )
 }

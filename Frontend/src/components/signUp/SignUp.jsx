@@ -67,7 +67,7 @@ export default function SignUp() {
 
     return (
         <div className={styles.signupContainer}>
-            <h2>Create an Account</h2>
+            <h2>Create your account</h2>
             <form onSubmit={handleSubmit} className={styles.signupForm}>
                 <div className={styles.formGroup}>
                     <label htmlFor="fName">First Name *</label>
