@@ -13,12 +13,14 @@ const addStudent = async (req, res) => {
         dateOfBirth,
         gender,
         phone,
-        profileUrl,
         address,
         school,
         studentGrade,
         introduction
       } = req.body;
+
+      // Get the uploaded file path if exists
+      const profileUrl = req.file ? `/uploads/students/${req.file.filename}` : '';
   
       // Check required fields
       if (!firstName || !fatherName || !gender || !dateOfBirth) {

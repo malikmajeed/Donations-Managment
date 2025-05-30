@@ -99,7 +99,26 @@ export default function AddStudent() {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/students/add', formData);
+            const formDataToSend = new FormData();
+            
+            // Append all text fields
+            Object.keys(formData).forEach(key => {
+                if (key !== 'profileUrl') {
+                    formDataToSend.append(key, formData[key]);
+                }
+            });
+
+            // Append the image file if it exists
+            if (fileInputRef.current?.files[0]) {
+                formDataToSend.append('profileImage', fileInputRef.current.files[0]);
+            }
+
+            const response = await axios.post('http://localhost:3000/students/addStudent', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
             if (response.status === 201) {
                 alert('Student added successfully!');
                 // Reset form
@@ -118,6 +137,9 @@ export default function AddStudent() {
                 });
                 setPreviewImage(null);
                 setError({});
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                }
             }
         } catch (error) {
             console.error('Error adding student:', error.response?.data || error.message);
