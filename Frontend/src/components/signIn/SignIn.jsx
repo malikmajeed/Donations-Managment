@@ -11,7 +11,24 @@ export default function SignIn() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = userState({})
+
+    const [error, setError] = useState({});
+
+    const validateForm = (e)=>{
+        let newError= {};
+
+        if(!formData.email){
+            newError.email = 'Email is required';
+
+        }
+        if(!formData.password){
+            newError.password='Password is required'
+        }
+
+        return newError;
+    }
+
+
 
     const handleChange = (e) => {
         setFormData({
@@ -26,6 +43,13 @@ export default function SignIn() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const validationErrors = validateForm();
+        setError(validationErrors);
+    
+        if (Object.keys(validationErrors).length > 0) {
+            return; // Prevent submission
+        }
+    
         setIsLoading(true);
 
         try {

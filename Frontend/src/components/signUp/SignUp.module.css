@@ -2,6 +2,7 @@
     max-width: 500px;
     margin: 2rem auto;
     padding: 2rem;
+    border: 1px solid rgb(96, 96, 250, 0.5);;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -33,7 +34,9 @@ h2{
 
 .formGroup label {
     font-size: 16px;
-    font-weight: 550;
+
+    font-weight: 500;
+
     color: #0d0202;
 }
 
@@ -99,4 +102,64 @@ h2{
 .eyeIcon:disabled {
     cursor: not-allowed;
     color: #999;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Phone Input Styles */
+.phoneInputContainer {
+    width: 100% !important;
+}
+
+.phoneInput {
+    width: 100% !important;
+    height: 42px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    font-size: 1rem !important;
+    padding-left: 48px !important;
+}
+
+.phoneInput:focus {
+    outline: none !important;
+    border-color: rgb(96, 96, 250) !important;
+    box-shadow: 0 0 0 2px rgba(96, 96, 250, 0.2) !important;
+}
+
+.phoneButton {
+    background-color: transparent !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px 0 0 4px !important;
+}
+
+.phoneButton:hover {
+    background-color: #f5f5f5 !important;
+}
+
+.phoneDropdown {
+    width: 300px !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.phoneSearch {
+    width: 100% !important;
+    padding: 8px !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    margin-bottom: 8px !important;
+}
+
+.phoneSearch:focus {
+    outline: none !important;
+    border-color: rgb(96, 96, 250) !important;
+    box-shadow: 0 0 0 2px rgba(96, 96, 250, 0.2) !important;
 } 

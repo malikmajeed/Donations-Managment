@@ -3,10 +3,9 @@
     margin: 2rem auto;
     padding: 2rem;
     border-radius: 8px;
+    border: 1px solid rgb(96, 96, 250, 0.5);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
-  
-    
     flex-direction: column;
 }
 h2{
@@ -33,7 +32,7 @@ h2{
 
 .formGroup label {
     font-size: 16px;
-    font-weight: 550;
+    font-weight: 500;
     color: #0d0202;
 }
 
