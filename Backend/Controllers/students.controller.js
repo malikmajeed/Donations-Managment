@@ -16,7 +16,8 @@ const addStudent = async (req, res) => {
         profileUrl,
         address,
         school,
-        studentGrade
+        studentGrade,
+        introduction
       } = req.body;
   
       // Check required fields
@@ -46,7 +47,8 @@ const addStudent = async (req, res) => {
         profileUrl,
         address,
         school,
-        studentGrade
+        studentGrade,
+        introduction
       });
   
       await newStudent.save();
@@ -85,7 +87,7 @@ const deleteStudent = async (req, res) => {
 const updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade } = req.body;
+    const { firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade, introduction } = req.body;
 
     if (!id) {
       console.log('Error while fetching student Id from params');
@@ -93,7 +95,7 @@ const updateStudent = async (req, res) => {
     }
 
     const isUpdatedStudent = await Students.findByIdAndUpdate(id, {
-      firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade
+      firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade, introduction
     }, {runValidators:true}, {new:true});
 
     if(!isUpdatedStudent){
