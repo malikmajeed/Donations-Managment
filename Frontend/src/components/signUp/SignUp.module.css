@@ -12,14 +12,14 @@
 h2{
     align-self: center;
     justify-self: center;
-    font-size: 30px;
-    color:  rgb(96, 96, 250);
+    font-size: 25px;
+    color:  black
 }
 .signupForm {
     margin-top: 10px;
     padding-top: 10px;
   
-    border-top: 2px solid rgb(96, 96, 250);
+
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -32,8 +32,9 @@ h2{
 }
 
 .formGroup label {
-    font-weight: 500;
-    color: #333;
+    font-size: 16px;
+    font-weight: 550;
+    color: #0d0202;
 }
 
 .formGroup input {

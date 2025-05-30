@@ -11,6 +11,7 @@ export default function SignIn() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = userState({})
 
     const handleChange = (e) => {
         setFormData({
@@ -57,9 +58,9 @@ export default function SignIn() {
     };
 
     return (
-        <div className={styles.signupContainer}>
+        <div className={styles.signinContainer}>
             <h2>Sign in to your account</h2>
-            <form onSubmit={handleSubmit} className={styles.signupForm}>
+            <form onSubmit={handleSubmit} className={styles.signinForm}>
                 <div className={styles.formGroup}>
                     <label htmlFor="email">Email *</label>
                     <input
