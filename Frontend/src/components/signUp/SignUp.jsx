@@ -29,9 +29,7 @@ export default function SignUp() {
         }
 
         // Last Name validation
-        if (!formData.lName.trim()) {
-            newError.lName = 'Last name is required';
-        }
+    
 
         // Email validation
         if (!formData.email.trim()) {
@@ -151,14 +149,14 @@ export default function SignUp() {
                 </div>
 
                 <div className={styles.formGroup}>
-                    <label htmlFor="lName">Last Name *</label>
+                    <label htmlFor="lName">Last Name</label>
                     <input
                         type="text"
                         id="lName"
                         name="lName"
                         value={formData.lName}
                         onChange={handleChange}
-                        required
+                     
                     />
                     {error.lName && <span className={styles.error}>{error.lName}</span>}
                 </div>

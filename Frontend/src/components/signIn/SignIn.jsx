@@ -11,30 +11,42 @@ export default function SignIn() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-
     const [error, setError] = useState({});
 
-    const validateForm = (e)=>{
-        let newError= {};
+    const validateForm = () => {
+        let newError = {};
 
-        if(!formData.email){
+        // Email validation
+        if (!formData.email.trim()) {
             newError.email = 'Email is required';
-
-        }
-        if(!formData.password){
-            newError.password='Password is required'
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newError.email = 'Please enter a valid email address';
         }
 
-        return newError;
-    }
+        // Password validation
+        if (!formData.password) {
+            newError.password = 'Password is required';
+        } else if (formData.password.length < 6) {
+            newError.password = 'Password must be at least 6 characters';
+        }
 
-
+        setError(newError);
+        return Object.keys(newError).length === 0;
+    };
 
     const handleChange = (e) => {
+        const { name, value } = e.target;
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [name]: value
         });
+        // Clear error when user starts typing
+        if (error[name]) {
+            setError({
+                ...error,
+                [name]: ''
+            });
+        }
     };
 
     const togglePasswordVisibility = () => {
@@ -43,13 +55,11 @@ export default function SignIn() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const validationErrors = validateForm();
-        setError(validationErrors);
-    
-        if (Object.keys(validationErrors).length > 0) {
-            return; // Prevent submission
+        
+        if (!validateForm()) {
+            return;
         }
-    
+        
         setIsLoading(true);
 
         try {
@@ -71,6 +81,7 @@ export default function SignIn() {
                     email: '',
                     password: ''
                 });
+                setError({});
                 // TODO: Redirect to dashboard or home page
             }
         } catch (error) {
@@ -96,6 +107,7 @@ export default function SignIn() {
                         required
                         disabled={isLoading}
                     />
+                    {error.email && <span className={styles.error}>{error.email}</span>}
                 </div>
 
                 <div className={styles.formGroup}>
@@ -119,6 +131,7 @@ export default function SignIn() {
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </button>
                     </div>
+                    {error.password && <span className={styles.error}>{error.password}</span>}
                 </div>
 
                 <button 

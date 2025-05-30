@@ -98,4 +98,11 @@ h2{
 .eyeIcon:disabled {
     cursor: not-allowed;
     color: #999;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
 } 
