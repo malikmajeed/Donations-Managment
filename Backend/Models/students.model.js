@@ -21,6 +21,11 @@ const studentsSchema= new mongoose.Schema({
         type: String,
         trim: true
       },
+     dateOfBirth: {
+        type: Date,
+        required: true
+     },
+   
      // Admin Email
     //  email: {
     //    type: String,

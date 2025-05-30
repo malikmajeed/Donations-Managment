@@ -10,6 +10,7 @@ export default function AddStudent() {
         firstName: '',
         lastName: '',
         fatherName: '',
+        dateOfBirth: '',
         gender: '',
         phone: '',
         profileUrl: '',
@@ -82,6 +83,9 @@ export default function AddStudent() {
         if (!formData.gender) {
             newError.gender = 'Gender is required';
         }
+        if (!formData.dateOfBirth) {
+            newError.dateOfBirth = 'Date of birth is required';
+        }
 
         setError(newError);
         return Object.keys(newError).length === 0;
@@ -103,6 +107,7 @@ export default function AddStudent() {
                     firstName: '',
                     lastName: '',
                     fatherName: '',
+                    dateOfBirth: '',
                     gender: '',
                     phone: '',
                     profileUrl: '',
@@ -195,6 +200,22 @@ export default function AddStudent() {
                             {error.fatherName && <span className={styles.error}>{error.fatherName}</span>}
                         </div>
 
+                        <div className={styles.formGroup}>
+                            <label htmlFor="dateOfBirth">Date of Birth *</label>
+                            <input
+                                type="date"
+                                id="dateOfBirth"
+                                name="dateOfBirth"
+                                value={formData.dateOfBirth}
+                                onChange={handleChange}
+                                required
+                                max={new Date().toISOString().split('T')[0]}
+                            />
+                            {error.dateOfBirth && <span className={styles.error}>{error.dateOfBirth}</span>}
+                        </div>
+                    </div>
+
+                    <div className={styles.formRow}>
                         <div className={styles.formGroup}>
                             <label>Gender *</label>
                             <div className={styles.radioGroup}>

@@ -7,10 +7,10 @@ const addStudent = async (req, res) => {
   console.log('Adding a new student');
     try {
       const {
-       
         firstName,
         lastName,
         fatherName,
+        dateOfBirth,
         gender,
         phone,
         profileUrl,
@@ -21,7 +21,7 @@ const addStudent = async (req, res) => {
       } = req.body;
   
       // Check required fields
-      if (!firstName || !fatherName || !gender) {
+      if (!firstName || !fatherName || !gender || !dateOfBirth) {
         return res.status(406).send("Required fields are missing");
       }
   
@@ -38,10 +38,10 @@ const addStudent = async (req, res) => {
   
       // Create and save new student
       const newStudent = new Students({
-       
         firstName,
         lastName,
         fatherName,
+        dateOfBirth,
         gender,
         phone,
         profileUrl,
@@ -87,7 +87,19 @@ const deleteStudent = async (req, res) => {
 const updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade, introduction } = req.body;
+    const { 
+      firstName, 
+      lastName, 
+      fatherName, 
+      dateOfBirth,
+      gender, 
+      phone, 
+      profileUrl, 
+      address, 
+      school, 
+      studentGrade, 
+      introduction 
+    } = req.body;
 
     if (!id) {
       console.log('Error while fetching student Id from params');
@@ -95,7 +107,17 @@ const updateStudent = async (req, res) => {
     }
 
     const isUpdatedStudent = await Students.findByIdAndUpdate(id, {
-      firstName, lastName, fatherName, gender, phone, profileUrl, address, school, studentGrade, introduction
+      firstName, 
+      lastName, 
+      fatherName, 
+      dateOfBirth,
+      gender, 
+      phone, 
+      profileUrl, 
+      address, 
+      school, 
+      studentGrade, 
+      introduction
     }, {runValidators:true}, {new:true});
 
     if(!isUpdatedStudent){
