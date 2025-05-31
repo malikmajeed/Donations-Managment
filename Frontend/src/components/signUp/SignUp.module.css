@@ -162,4 +162,88 @@ h2{
     outline: none !important;
     border-color: rgb(96, 96, 250) !important;
     box-shadow: 0 0 0 2px rgba(96, 96, 250, 0.2) !important;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .signupContainer {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .signupForm {
+        gap: 0.8rem;
+    }
+
+    .formGroup label {
+        font-size: 15px;
+    }
+
+    .formGroup input {
+        padding: 8px 10px;
+        font-size: 15px;
+    }
+
+    .submitButton {
+        padding: 8px;
+        font-size: 15px;
+    }
+
+    .phoneDropdown {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .signupContainer {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .formGroup label {
+        font-size: 14px;
+    }
+
+    .formGroup input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .submitButton {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .eyeIcon {
+        padding: 3px;
+    }
+
+    .phoneDropdown {
+        width: 100% !important;
+        max-width: 250px !important;
+    }
+}
+
+.linkButton {
+    background: none;
+    border: none;
+    color: rgb(96, 96, 250);
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.linkButton:hover {
+    color: rgb(76, 76, 230);
 } 

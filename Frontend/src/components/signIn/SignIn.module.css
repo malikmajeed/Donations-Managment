@@ -98,4 +98,64 @@ h2{
 .eyeIcon:disabled {
     cursor: not-allowed;
     color: #999;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .signinContainer {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    .signinForm {
+        gap: 0.8rem;
+    }
+
+    .formGroup label {
+        font-size: 15px;
+    }
+
+    .formGroup input {
+        padding: 8px 10px;
+        font-size: 15px;
+    }
+
+    .submitButton {
+        padding: 8px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .signinContainer {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .formGroup label {
+        font-size: 14px;
+    }
+
+    .formGroup input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .submitButton {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .eyeIcon {
+        padding: 3px;
+    }
 } 

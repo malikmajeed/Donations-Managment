@@ -260,3 +260,82 @@ h2 {
 .radioLabel span {
     user-select: none;
 }
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .addStudentContainer {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .addStudentForm {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .imageSection {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .imageUploadContainer {
+        width: 200px;
+        height: 200px;
+    }
+
+    .formRow {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .buttonGroup button {
+        width: 100%;
+    }
+
+    .radioGroup {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .phoneDropdown {
+        width: 100% !important;
+        max-width: 300px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .addStudentContainer {
+        margin: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .imageUploadContainer {
+        width: 150px;
+        height: 150px;
+    }
+
+    .uploadIcon {
+        font-size: 2rem;
+    }
+
+    .formGroup label {
+        font-size: 14px;
+    }
+
+    .formGroup input,
+    .formGroup select,
+    .formGroup textarea {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

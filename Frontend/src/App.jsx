@@ -9,12 +9,24 @@ import AddStudent from './components/addStudent/AddStudent.jsx'
 
 function App() {
   
+  const [form, setForm]=useState(false)
 
   return (
     <>
-    <HeroSection />
-    <SignIn />
-    <SignUp />
+
+    {form?( 
+     <SignUp setForm={setForm} />  //first setForm is the name of prop your passing
+    ):(         
+      <SignIn setForm={setForm}/>              //while the setForm is the actual value of it/>
+    )}
+     
+    
+      
+   
+
+  
+    
+    
     <AddStudent />
     </>
   )

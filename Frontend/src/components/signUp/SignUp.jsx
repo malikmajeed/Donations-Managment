@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-export default function SignUp() {
+export default function SignUp({setForm}) {
     const [formData, setFormData] = useState({
         fName: '',
         lName: '',
@@ -245,7 +245,13 @@ export default function SignUp() {
                 <button type="submit" className={styles.submitButton}>
                     Create
                 </button>
-                <p>Already have an account? <a href="/signin">LogIn here...</a></p>
+                <p>Already have an account? <a 
+                    href="#" 
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setForm(false);
+                    }}
+                >LogIn here...</a></p>
             </form>
         </div>
     );
