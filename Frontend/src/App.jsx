@@ -15,9 +15,9 @@ function App() {
     <>
 
     {form?( 
-     <SignUp setForm={setForm} />  //first setForm is the name of prop your passing
+     <SignUp selectForm={setForm} />  //first setForm is the name of prop your passing
     ):(         
-      <SignIn setForm={setForm}/>              //while the setForm is the actual value of it/>
+      <SignIn selectForm={setForm}/>              //while the setForm is the actual value of it/>
     )}
      
     

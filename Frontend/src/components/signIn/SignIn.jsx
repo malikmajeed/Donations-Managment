@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './SignIn.module.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export default function SignIn({setForm}) {
+export default function SignIn({selectForm}) {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -132,7 +132,7 @@ export default function SignIn({setForm}) {
                     href="#" 
                     onClick={(e) => {
                         e.preventDefault();
-                        setForm(true);
+                        selectForm(true);
                     }}
                 >Create here...</a></p>
             </form>
