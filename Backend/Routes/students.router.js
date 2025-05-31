@@ -6,12 +6,12 @@ import {addStudent, deleteStudent, updateStudent,
      getStudentbySponsorship, updateSponsorship
     } from '../Controllers/students.controller.js';
 
-import { authenticateToken as Auth } from '../Middlewares/authentication.js';
-import upload from '../middleware/upload.js';
-
-//Route for adding a student
-router.post('/addStudent', Auth, upload.single('profileImage'), addStudent); //✅ verified
-
+    import { authenticateToken as Auth } from '../Middlewares/authentication.js';
+    import { upload, handleUploadError } from '../Middlewares/upload.js';
+    
+    //Route for adding a student
+    router.post('/addStudent', Auth, upload.single('profileImage'), handleUploadError, addStudent); //✅ verified
+    
 //Route for deleting a student
 router.delete('/deleteStudent/:id',Auth, deleteStudent); //✅ verified
 

@@ -48,15 +48,12 @@ export default function AddStudent() {
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewImage(reader.result);
-                setFormData({
-                    ...formData,
-                    profileUrl: reader.result
-                });
-            };
-            reader.readAsDataURL(file);
+            // Don't convert to base64, just store the file reference
+            setPreviewImage(URL.createObjectURL(file));
+            setFormData({
+                ...formData,
+                profileUrl: file  // Store the actual file object
+            });
         }
     };
 
@@ -109,17 +106,27 @@ export default function AddStudent() {
             });
 
             // Append the image file if it exists
-            if (fileInputRef.current?.files[0]) {
-                formDataToSend.append('profileImage', fileInputRef.current.files[0]);
+            if (formData.profileUrl instanceof File) {
+                console.log('File to upload:', {
+                    name: formData.profileUrl.name,
+                    type: formData.profileUrl.type,
+                    size: formData.profileUrl.size
+                });
+                formDataToSend.append('profileImage', formData.profileUrl);
+            } else {
+                console.log('No image file selected');
             }
 
-            const response = await axios.post('http://localhost:3000/students/addStudent', formDataToSend, {
+            console.log('Sending form data:', Object.fromEntries(formDataToSend));
+            const token = localStorage.getItem('token');
+            const response = await axios.post('http://localhost:3000/student/addStudent', formDataToSend, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
-            if (response.status === 201) {
+            if (response.data.success) {
                 alert('Student added successfully!');
                 // Reset form
                 setFormData({
@@ -143,7 +150,24 @@ export default function AddStudent() {
             }
         } catch (error) {
             console.error('Error adding student:', error.response?.data || error.message);
-            alert(error.response?.data || 'Failed to add student. Please try again.');
+            
+            // Handle validation errors
+            if (error.response?.data?.missingFields) {
+                const missingFields = error.response.data.missingFields;
+                const newErrors = {};
+                Object.keys(missingFields).forEach(field => {
+                    if (missingFields[field]) {
+                        newErrors[field] = `${field} is required`;
+                    }
+                });
+                setError(newErrors);
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Handle other errors
+            const errorMessage = error.response?.data?.message || 'Failed to add student. Please try again.';
+            alert(errorMessage);
         }
     };
 

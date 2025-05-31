@@ -5,6 +5,11 @@ import Students from "../Models/students.model.js";
 // Adding a new Student
 const addStudent = async (req, res) => {
   console.log('Adding a new student');
+  console.log('Request body:', req.body);
+  console.log('Request file:', req.file);
+  console.log('Request files:', req.files);
+  console.log('Request headers:', req.headers);
+  
     try {
       const {
         firstName,
@@ -21,10 +26,26 @@ const addStudent = async (req, res) => {
 
       // Get the uploaded file path if exists
       const profileUrl = req.file ? `/uploads/students/${req.file.filename}` : '';
+      console.log('Profile URL:', profileUrl);
+      console.log('File details:', req.file ? {
+        filename: req.file.filename,
+        path: req.file.path,
+        mimetype: req.file.mimetype,
+        size: req.file.size
+      } : 'No file uploaded');
   
       // Check required fields
       if (!firstName || !fatherName || !gender || !dateOfBirth) {
-        return res.status(406).send("Required fields are missing");
+        return res.status(406).json({
+          success: false,
+          message: "Required fields are missing",
+          missingFields: {
+            firstName: !firstName,
+            fatherName: !fatherName,
+            gender: !gender,
+            dateOfBirth: !dateOfBirth
+          }
+        });
       }
   
       // Check if the student already exists
@@ -35,7 +56,10 @@ const addStudent = async (req, res) => {
       });
   
       if (isStudent) {
-        return res.status(403).send('Student already exists');
+        return res.status(403).json({
+          success: false,
+          message: 'Student already exists'
+        });
       }
   
       // Create and save new student
@@ -54,10 +78,20 @@ const addStudent = async (req, res) => {
       });
   
       await newStudent.save();
-      return res.status(201).send('New Student added successfully');
+      console.log('Student saved successfully:', newStudent);
+      return res.status(201).json({
+        success: true,
+        message: 'New Student added successfully',
+        student: newStudent
+      });
     } catch (error) {
-      console.error('Error occurred while creating student:', error.message);
-      return res.status(500).send('Server error while adding student');
+      console.error('Error occurred while creating student:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Server error while adding student',
+        error: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      });
     }
   };
   
