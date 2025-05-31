@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import styles from './AddStudent.module.css';
 import { FaUpload, FaTimes } from 'react-icons/fa';
@@ -127,6 +127,8 @@ export default function AddStudent() {
             });
 
             if (response.data.success) {
+                // Clear the draft from localStorage after successful submission
+                localStorage.removeItem('studentDraft');
                 alert('Student added successfully!');
                 // Reset form
                 setFormData({
@@ -172,9 +174,40 @@ export default function AddStudent() {
     };
 
     const handleSaveDraft = () => {
-        // TODO: Implement save draft functionality
-        alert('Draft saved!');
+        // Create a draft object with all form data
+        const draftData = {
+            ...formData,
+            previewImage: previewImage // Save the preview image URL
+        };
+        
+        // Save to localStorage
+        localStorage.setItem('studentDraft', JSON.stringify(draftData));
+        alert('Draft saved successfully!');
     };
+
+    // Load draft data when component mounts
+    useEffect(() => {
+        const savedDraft = localStorage.getItem('studentDraft');
+        if (savedDraft) {
+            const draftData = JSON.parse(savedDraft);
+            setFormData({
+                firstName: draftData.firstName || '',
+                lastName: draftData.lastName || '',
+                fatherName: draftData.fatherName || '',
+                dateOfBirth: draftData.dateOfBirth || '',
+                gender: draftData.gender || '',
+                phone: draftData.phone || '',
+                profileUrl: draftData.profileUrl || '',
+                address: draftData.address || '',
+                school: draftData.school || '',
+                studentGrade: draftData.studentGrade || '',
+                introduction: draftData.introduction || ''
+            });
+            if (draftData.previewImage) {
+                setPreviewImage(draftData.previewImage);
+            }
+        }
+    }, []);
 
     return (
         <div className={styles.addStudentContainer}>
