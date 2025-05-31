@@ -9,11 +9,11 @@ const SECRET_KEY = process.env.SECRET_KEY;
 //creating a user -- route for adding user
 const signUp = async (req, res) => {
     try {
-        const { fName, lName, email, role, phone, password, confirmPassword } = req.body;
+        const { fName, lName, email, role, phone, password, confirmPassword, gender } = req.body;
         console.log('Signup request body:', req.body);
 
         //checking the required fields
-        if(!fName || !lName || !email){
+        if(!fName || !lName || !email || !gender){
             return res.status(400).json({
                 success: false,
                 message: "Required fields are missing"
@@ -53,7 +53,8 @@ const signUp = async (req, res) => {
             email,
             password: passwordHash,
             role: role || 'donor',
-            phone: phone || undefined
+            phone: phone || undefined,
+            gender
         });
 
         res.status(201).json({
@@ -64,7 +65,8 @@ const signUp = async (req, res) => {
                 lName: user.lName,
                 email: user.email,
                 role: user.role,
-                phone: user.phone
+                phone: user.phone,
+                gender: user.gender
             }
         });
     } catch (error) {

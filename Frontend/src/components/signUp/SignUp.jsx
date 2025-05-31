@@ -13,7 +13,8 @@ export default function SignUp({setForm}) {
         phone: '',
         password: '',
         confirmPassword: '',
-        role: 'donor'
+        role: 'donor',
+        gender: ''
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +39,11 @@ export default function SignUp({setForm}) {
             newError.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
             newError.email = 'Email is invalid';
+        }
+
+        // Gender validation
+        if (!formData.gender) {
+            newError.gender = 'Gender is required';
         }
 
         // Phone validation (optional but if provided, validate format)
@@ -123,7 +129,8 @@ export default function SignUp({setForm}) {
                     phone: '',
                     password: '',
                     confirmPassword: '',
-                    role: 'donor'
+                    role: 'donor',
+                    gender: ''
                 });
                 setError({});
             }
@@ -164,6 +171,46 @@ export default function SignUp({setForm}) {
                 </div>
 
                 <div className={styles.formGroup}>
+                    <label>Gender *</label>
+                    <div className={styles.radioGroup}>
+                        <label className={styles.radioLabel}>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="male"
+                                checked={formData.gender === 'male'}
+                                onChange={handleChange}
+                                required
+                            />
+                            <span>Male</span>
+                        </label>
+                        <label className={styles.radioLabel}>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="female"
+                                checked={formData.gender === 'female'}
+                                onChange={handleChange}
+                                required
+                            />
+                            <span>Female</span>
+                        </label>
+                        <label className={styles.radioLabel}>
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="other"
+                                checked={formData.gender === 'other'}
+                                onChange={handleChange}
+                                required
+                            />
+                            <span>Other</span>
+                        </label>
+                    </div>
+                    {error.gender && <span className={styles.error}>{error.gender}</span>}
+                </div>
+
+                <div className={styles.formGroup}>
                     <label htmlFor="email">Email *</label>
                     <input
                         type="email"
@@ -197,6 +244,8 @@ export default function SignUp({setForm}) {
                     />
                     {error.phone && <span className={styles.error}>{error.phone}</span>}
                 </div>
+
+                
 
                 <div className={styles.formGroup}>
                     <label htmlFor="password">Password *</label>

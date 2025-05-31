@@ -29,6 +29,11 @@ const userSchema = new mongoose.Schema({
     enum:["admin", "donor"],
     default:"donor"
   },
+  gender: {
+    type: String,
+    enum: ["male", "female", "other"],
+    required: true
+  },
   // Admin Phone
   phone: {
     type: Number
