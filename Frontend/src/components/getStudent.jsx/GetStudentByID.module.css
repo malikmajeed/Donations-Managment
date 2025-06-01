@@ -2,7 +2,7 @@
     padding: 1.5rem;
     max-width: 900px;
     margin: 0 auto;
-    background-color: #f8f9fa;
+   
     min-height: 100vh;
 }
 
@@ -10,6 +10,7 @@
     background: white;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgb(96, 96, 250, 0.5);
     overflow: hidden;
    
 }
@@ -83,7 +84,7 @@
 .statusBadge {
     padding: 0.5rem 1.5rem;
     border-radius: 20px;
-    font-weight: 500;
+    font-weight: bold;
     font-size: 0.9rem;
     background: rgba(251, 40, 40, 0.971);
     backdrop-filter: blur(4px);
@@ -91,12 +92,12 @@
 }
 
 .sponsored {
-    background-color: rgba(39, 233, 84, 0.9);
+    background-color: rgba(2, 182, 44, 0.9);
     color: white;
 }
 
 .notSponsored {
-    background-color: rgba(251, 40, 40, 0.971);
+    background-color: rgba(251, 33, 33, 0.971);
     color: white;
 }
 
@@ -136,7 +137,7 @@
 .infoColumn span {
     color: black;
     font-size: 1rem;
-    font-weight:bold;
+    font-weight:550;
 }
 
 .profileContent {
@@ -147,7 +148,7 @@
     margin-bottom: 1.5rem;
     background: #fff;
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 10px 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -175,6 +176,14 @@
     color: #666;
     font-size: 0.85rem;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.icon {
+    color: #0080ff;
+    font-size: 1.1rem;
 }
 
 .infoItem p {

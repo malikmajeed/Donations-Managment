@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './GetStudentByID.module.css';
+import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap } from 'react-icons/fa';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
@@ -33,6 +34,25 @@ export default function GetStudentByID({ studentId }) {
         });
     };
 
+    const formatPhoneNumber = (phone) => {
+        if (!phone) return 'N/A';
+        const phoneStr = phone.toString();
+        // Remove any non-digit characters
+        const cleaned = phoneStr.replace(/\D/g, '');
+        
+        // Format: +countryCode (xxx) xxx-xxxx
+        if (cleaned.length >= 10) {
+            const countryCode = cleaned.slice(0, -10); // Get country code from the start
+            const last10Digits = cleaned.slice(-10); // Get last 10 digits
+            const areaCode = last10Digits.slice(0, 3);
+            const middlePart = last10Digits.slice(3, 6);
+            const lastPart = last10Digits.slice(6);
+            
+            return `+${countryCode} (${areaCode}) ${middlePart}-${lastPart}`;
+        }
+        return phoneStr;
+    };
+
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
     if (!student) return <div className={styles.error}>Student not found</div>;
@@ -44,7 +64,7 @@ export default function GetStudentByID({ studentId }) {
                     <div className={styles.headerColumn}>
                         <div className={styles.profileImage}>
                             {student.profileUrl ? (
-                                <img src={student.profileUrl} alt={`${student.firstName}'s profile`} />
+                                <img src={`http://localhost:3000${student.profileUrl}`} alt={`${student.firstName}'s profile`} />
                             ) : (
                                 <div className={styles.placeholderImage}>
                                     {student.firstName[0]}{student.lastName[0]}
@@ -56,8 +76,8 @@ export default function GetStudentByID({ studentId }) {
                     <div className={`${styles.headerColumn} ${styles.nameAndSponsorshipStatus}`}>
                         <h1>{student.firstName} {student.lastName}</h1>
                         <div className={styles.sponsorshipStatus}>
-                            <span className={`${styles.statusBadge} ${student.isSponsored ? styles.sponsored : styles.notSponsored}`}>
-                                {student.isSponsored ? 'Sponsored' : 'Not Sponsored'}
+                            <span className={`${styles.statusBadge} ${student.sponsorship ? styles.sponsored : styles.notSponsored}`}>
+                                {student.sponsorship ? 'Sponsored' : 'Not Sponsored'}
                             </span>
                         </div>
                     </div>
@@ -82,11 +102,11 @@ export default function GetStudentByID({ studentId }) {
                     <div className={styles.section}>
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
-                                <label>Phone Number</label>
-                                <p>{student.phone || 'N/A'}</p>
+                                <label><FaPhone className={styles.icon} /> Phone Number</label>
+                                <p>{formatPhoneNumber(student.phone)}</p>
                             </div>
                             <div className={styles.infoItem}>
-                                <label>Address</label>
+                                <label><FaMapMarkerAlt className={styles.icon} /> Address</label>
                                 <p>{student.address || 'N/A'}</p>
                             </div>
                         </div>
@@ -96,11 +116,11 @@ export default function GetStudentByID({ studentId }) {
                         <h2>Educational Information</h2>
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
-                                <label>School</label>
+                                <label><FaSchool className={styles.icon} /> School</label>
                                 <p>{student.school || 'N/A'}</p>
                             </div>
                             <div className={styles.infoItem}>
-                                <label>Grade</label>
+                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
                                 <p>{student.studentGrade || 'N/A'}</p>
                             </div>
                         </div>

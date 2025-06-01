@@ -162,7 +162,7 @@ h2{
     outline: none !important;
     border-color: rgb(96, 96, 250) !important;
     box-shadow: 0 0 0 2px rgba(96, 96, 250, 0.2) !important;
-}
+} 
 
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
