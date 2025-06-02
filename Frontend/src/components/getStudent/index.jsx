@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from './GetStudentByID.module.css';
+import styles from './index.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
 

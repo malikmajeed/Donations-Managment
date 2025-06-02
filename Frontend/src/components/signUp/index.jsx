@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import styles from './SignUp.module.css';
+import styles from './index.module.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
