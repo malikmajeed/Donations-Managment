@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './GetStudentByID.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap } from 'react-icons/fa';
+import { User, Crown, Heart } from 'lucide-react';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
@@ -61,7 +62,7 @@ export default function GetStudentByID({ studentId }) {
         <div className={styles.container}>
             <div className={styles.studentProfile}>
                 <div className={styles.profileHeader}>
-                    <div className={styles.headerColumn}>
+                    <div className={styles.profileHeaderContent}>
                         <div className={styles.profileImage}>
                             {student.profileUrl ? (
                                 <img src={`http://localhost:3000${student.profileUrl}`} alt={`${student.firstName}'s profile`} />
@@ -70,15 +71,22 @@ export default function GetStudentByID({ studentId }) {
                                     {student.firstName[0]}{student.lastName[0]}
                                 </div>
                             )}
+                            <div className={styles.profileImageBadge}>
+                                <User className={styles.icon} />
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div className={`${styles.headerColumn} ${styles.nameAndSponsorshipStatus}`}>
-                        <h1>{student.firstName} {student.lastName}</h1>
-                        <div className={styles.sponsorshipStatus}>
-                            <span className={`${styles.statusBadge} ${student.sponsorship ? styles.sponsored : styles.notSponsored}`}>
-                                {student.sponsorship ? 'Sponsored' : 'Not Sponsored'}
-                            </span>
+                        
+                        <div className={styles.nameAndSponsorshipStatus}>
+                            <h1>{student.firstName} {student.lastName}</h1>
+                            <div className={styles.sponsorshipStatus}>
+                                <span className={`${styles.statusBadge} ${student.sponsorship ? styles.sponsored : styles.notSponsored}`}>
+                                    {student.sponsorship ? (
+                                        <><Crown className={styles.iconSponsored} />Sponsored</>
+                                    ) : (
+                                        <><Heart className={styles.iconNotSponsored} />Seeking Sponsor</>
+                                    )}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +118,7 @@ export default function GetStudentByID({ studentId }) {
                                 <p>{student.address || 'N/A'}</p>
                             </div>
                         </div>
-                    </div>
+                                    </div>
 
                     <div className={styles.section}>
                         <h2>Educational Information</h2>
@@ -156,8 +164,14 @@ export default function GetStudentByID({ studentId }) {
                     {!student.isSponsored && (
                         <div className={styles.sponsorButtonContainer}>
                             <button className={styles.sponsorButton}>
-                                Sponsor Now
+                                <Heart className={styles.sponsorButtonIcon} />
+                                <span className={styles.sponsorButtonText}>
+                                    Sponsor {student.lastName} Today
+                                </span>
                             </button>
+                            <p className={styles.sponsorButtonDescription}>
+                                Help {student.firstName} achieve the dreams through education
+                            </p>
                         </div>
                     )}
                 </div>
