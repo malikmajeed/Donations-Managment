@@ -17,7 +17,7 @@
 
 .profileHeader {
     position: relative;
-    background: linear-gradient(to right, #2563eb, #3b82f6, #4f46e5);
+    background: linear-gradient(to right, #3b82f6, #2760fd);
     padding: 2rem;
     color: white;
     overflow: hidden;
@@ -44,7 +44,7 @@
     border-radius: 50%;
     overflow: hidden;
     border: 4px solid white;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     background: linear-gradient(to bottom right, #bfdbfe, #a5b4fc);
     position: relative;
 }
@@ -119,12 +119,12 @@
 }
 
 .sponsored {
-    background: linear-gradient(to right, #22c55e, #059669);
+    background-color: #22c55e;
     color: white;
 }
 
 .notSponsored {
-    background: linear-gradient(to right, #ff1919, #a30e01);
+    background-color: #fa4444;
     color: white;
 }
 
@@ -143,7 +143,7 @@
 
 .personalInfoRow {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 2.5fr 2fr 1fr;
     gap: 1rem;
     padding: 0 2rem;
     margin-top: -30px;
@@ -169,6 +169,7 @@
 }
 
 .infoColumn span {
+    text-transform: capitalize;
     color: black;
     font-size: 1rem;
     font-weight:550;
@@ -183,7 +184,7 @@
     background: #fff;
     border-radius: 12px;
     padding: 10px 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .section h2 {
