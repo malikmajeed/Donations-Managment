@@ -16,43 +16,40 @@
 }
 
 .profileHeader {
-    background: #0080ff;
+    position: relative;
+    background: linear-gradient(to right, #2563eb, #3b82f6, #4f46e5);
     padding: 2rem;
     color: white;
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    gap: 1rem;
-    align-items: center;
+    overflow: hidden;
 }
 
+.profileHeader::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+}
 
-/* .headerColumn {
-    display: flex;
-  
-    flex-direction: column;
-   background-color: green;
-} */
-.nameAndSponsorshipStatus {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: start;
-    justify-content: start;
-    /* background-color: yellow; */
+.profileHeaderContent {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 1.5rem;
+    align-items: center;
 }
 
 .profileImage {
-    width: 150px;
-    height: 150px;
+    width: 9rem;
+    height: 9rem;
     border-radius: 50%;
     overflow: hidden;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid rgba(255, 255, 255, 0.3);
+    border: 4px solid white;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background: linear-gradient(to bottom right, #bfdbfe, #a5b4fc);
+    position: relative;
 }
 
 .profileImage img {
-    align-items: center;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -61,44 +58,81 @@
 .placeholderImage {
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
+    color: white;
+    background: linear-gradient(to bottom right, #60a5fa, #6366f1);
 }
 
-.headerColumn h1 {
-    margin: 0;
+.profileImageBadge {
+    position: absolute;
+    bottom: -0.5rem;
+    right: -0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.profileImageBadge svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #3b82f6;
+}
+
+.nameAndSponsorshipStatus {
+    text-align: left;
+}
+
+.nameAndSponsorshipStatus h1 {
     font-size: 2.5rem;
-    font-weight: 600;
-    line-height: 1.2;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
 }
 
 .sponsorshipStatus {
-    margin-top: 0.5rem;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .statusBadge {
-    padding: 0.5rem 1.5rem;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    background: rgba(251, 40, 40, 0.971);
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: capitalize;
+    letter-spacing: 0.05em;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(4px);
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .sponsored {
-    background-color: rgba(2, 182, 44, 0.9);
+    background: linear-gradient(to right, #22c55e, #059669);
     color: white;
 }
 
 .notSponsored {
-    background-color: rgba(251, 33, 33, 0.971);
+    background: linear-gradient(to right, #ff1919, #a30e01);
     color: white;
+}
+
+.statusBadge svg {
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    margin-right: 0.5rem;
 }
 
 .personalInfo {
@@ -186,6 +220,13 @@
     font-size: 1.1rem;
 }
 
+.iconSponsored , .iconNotSponsored{
+    color: white;
+    font-size: 1.1rem;
+}
+
+
+
 .infoItem p {
     margin: 0;
     color: #333;
@@ -206,25 +247,88 @@
 }
 
 .sponsorButtonContainer {
+    text-align: center;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+   
     margin-top: 2rem;
 }
 
 .sponsorButton {
-    background-color: #28a745;
+    position: relative;
+    background: linear-gradient(to right, #22c55e, #059669);
     color: white;
+    font-weight: 700;
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    gap: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: translateY(0);
+    transition: all 0.3s ease;
     border: none;
-    padding: 0.8rem 2rem;
-    font-size: 1.1rem;
-    font-weight: 500;
-    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .sponsorButton:hover {
-    background-color: #218838;
+    background: linear-gradient(to left,#22c55e, #059669);
+    transform: scale(1.05);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+}
+
+.sponsorButton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    border-radius: 1rem;
+    transition: opacity 0.3s ease;
+}
+
+/* .sponsorButton:hover::before {
+    opacity: 0.2;
+} */
+
+.sponsorButtonIcon {
+    display: inline-block;
+    margin-right: 0.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    animation: none;
+}
+
+.sponsorButton:hover .sponsorButtonIcon {
+    animation: pulse 1.5s infinite;
+}
+
+.sponsorButtonText {
+    position: relative;
+    z-index: 1;
+}
+
+.sponsorButtonDescription {
+    color: #4b5563;
+    margin-top: 1rem;
+    font-size: 1.125rem;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .loading {
