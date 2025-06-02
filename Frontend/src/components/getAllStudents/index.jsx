@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './index.module.css';
 import { Search, ArrowUpDown, User, Filter } from 'lucide-react';
 
-export default function GetAllStudents() {
+export default function GetAllStudents({ onViewStudent }) {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -81,10 +81,71 @@ export default function GetAllStudents() {
                 <h1>All Students</h1>
             </div>
 
+            <div className={styles.filtersContainer}>
+                <div className={styles.filterGroup}>
+                    <label>Name</label>
+                    <div className={styles.filterInputWrapper}>
+                        <Filter className={styles.filterIcon} />
+                        <input
+                            type="text"
+                            placeholder="Filter by name..."
+                            value={filters.name}
+                            onChange={(e) => handleFilterChange('name', e.target.value)}
+                            className={styles.filterInput}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <label>School</label>
+                    <div className={styles.filterInputWrapper}>
+                        <Filter className={styles.filterIcon} />
+                        <input
+                            type="text"
+                            placeholder="Filter by school..."
+                            value={filters.school}
+                            onChange={(e) => handleFilterChange('school', e.target.value)}
+                            className={styles.filterInput}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <label>Grade</label>
+                    <div className={styles.filterInputWrapper}>
+                        <Filter className={styles.filterIcon} />
+                        <input
+                            type="text"
+                            placeholder="Filter by grade..."
+                            value={filters.grade}
+                            onChange={(e) => handleFilterChange('grade', e.target.value)}
+                            className={styles.filterInput}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <label>Status</label>
+                    <div className={styles.filterInputWrapper}>
+                        <Filter className={styles.filterIcon} />
+                        <select
+                            value={filters.status}
+                            onChange={(e) => handleFilterChange('status', e.target.value)}
+                            className={styles.filterSelect}
+                        >
+                            <option value="">All</option>
+                            <option value="sponsored">Sponsored</option>
+                            <option value="not-sponsored">Not Sponsored</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
             <div className={styles.tableContainer}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            <th className={styles.srNoColumn}>No.</th>
                             <th>
                                 <div className={styles.columnHeader}>
                                     <div className={styles.headerContent}>
@@ -92,16 +153,6 @@ export default function GetAllStudents() {
                                         <ArrowUpDown 
                                             className={styles.sortIcon} 
                                             onClick={() => handleSort('firstName')}
-                                        />
-                                    </div>
-                                    <div className={styles.filterContainer}>
-                                        <Filter className={styles.filterIcon} />
-                                        <input
-                                            type="text"
-                                            placeholder="Filter name..."
-                                            value={filters.name}
-                                            onChange={(e) => handleFilterChange('name', e.target.value)}
-                                            className={styles.filterInput}
                                         />
                                     </div>
                                 </div>
@@ -115,16 +166,6 @@ export default function GetAllStudents() {
                                             onClick={() => handleSort('school')}
                                         />
                                     </div>
-                                    <div className={styles.filterContainer}>
-                                        <Filter className={styles.filterIcon} />
-                                        <input
-                                            type="text"
-                                            placeholder="Filter school..."
-                                            value={filters.school}
-                                            onChange={(e) => handleFilterChange('school', e.target.value)}
-                                            className={styles.filterInput}
-                                        />
-                                    </div>
                                 </div>
                             </th>
                             <th className={styles.gradeColumn}>
@@ -134,16 +175,6 @@ export default function GetAllStudents() {
                                         <ArrowUpDown 
                                             className={styles.sortIcon} 
                                             onClick={() => handleSort('studentGrade')}
-                                        />
-                                    </div>
-                                    <div className={styles.filterContainer}>
-                                        <Filter className={styles.filterIcon} />
-                                        <input
-                                            type="text"
-                                            placeholder="Filter grade..."
-                                            value={filters.grade}
-                                            onChange={(e) => handleFilterChange('grade', e.target.value)}
-                                            className={styles.filterInput}
                                         />
                                     </div>
                                 </div>
@@ -157,54 +188,31 @@ export default function GetAllStudents() {
                                             onClick={() => handleSort('sponsorship')}
                                         />
                                     </div>
-                                    <div className={styles.filterContainer}>
-                                        <Filter className={styles.filterIcon} />
-                                        <select
-                                            value={filters.status}
-                                            onChange={(e) => handleFilterChange('status', e.target.value)}
-                                            className={styles.filterSelect}
-                                        >
-                                            <option value="">All</option>
-                                            <option value="sponsored">Sponsored</option>
-                                            <option value="not-sponsored">Not Sponsored</option>
-                                        </select>
-                                    </div>
                                 </div>
                             </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredAndSortedStudents.map((student) => (
+                        {filteredAndSortedStudents.map((student, index) => (
                             <tr key={student._id} className={styles.tableRow}>
+                                <td className={styles.srNoColumn}>{index + 1}</td>
                                 <td>
-                                    <div className={styles.studentName}>
-                                        <div className={styles.profileImage}>
-                                            {student.profileUrl ? (
-                                                <img 
-                                                    src={`http://localhost:3000${student.profileUrl}`} 
-                                                    alt={`${student.firstName}'s profile`}
-                                                />
-                                            ) : (
-                                                <div className={styles.placeholderImage}>
-                                                    <User className={styles.userIcon} />
-                                                </div>
-                                            )}
-                                        </div>
-                                        <span>{student.firstName} {student.lastName}</span>
-                                    </div>
+                                    <span className={styles.studentName}>
+                                        {student.firstName} {student.lastName}
+                                    </span>
                                 </td>
                                 <td>{student.school || 'N/A'}</td>
                                 <td>{student.studentGrade || 'N/A'}</td>
                                 <td>
                                     <span className={`${styles.statusBadge} ${student.sponsorship ? styles.sponsored : styles.notSponsored}`}>
-                                        {student.sponsorship ? 'Sponsored' : 'Not Sponsored'}
+                                        {student.sponsorship ? 'Active' : 'Inactive'}
                                     </span>
                                 </td>
                                 <td>
                                     <button 
                                         className={styles.viewButton}
-                                        onClick={() => window.location.href = `/student/${student._id}`}
+                                        onClick={() => onViewStudent(student._id)}
                                     >
                                         View
                                     </button>

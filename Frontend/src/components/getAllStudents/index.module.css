@@ -17,194 +17,30 @@
     color: #1e293b;
 }
 
-.searchContainer {
-    position: relative;
-    width: 300px;
-}
-
-.searchIcon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #64748b;
-    width: 1.25rem;
-    height: 1.25rem;
-}
-
-.searchInput {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.searchInput:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.tableContainer {
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th {
-    background: #f8fafc;
-    padding: 1rem;
-    text-align: left;
-    font-weight: 600;
-    color: #475569;
-    border-bottom: 2px solid #e2e8f0;
-}
-
-.sortableHeader {
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.sortableHeader:hover {
-    background: #f1f5f9;
-}
-
-.sortIcon {
-    width: 1rem;
-    height: 1rem;
-    color: #64748b;
-}
-
-.tableRow {
-    transition: background-color 0.2s ease;
-}
-
-.tableRow:hover {
-    background-color: #f8fafc;
-}
-
-.tableRow td {
-    padding: 1rem;
-    border-bottom: 1px solid #e2e8f0;
-    color: #1e293b;
-}
-
-.studentName {
-    display: flex;
-    align-items: center;
+.filtersContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-}
-
-.profileImage {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    overflow: hidden;
-    background: linear-gradient(to bottom right, #bfdbfe, #a5b4fc);
-}
-
-.profileImage img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.placeholderImage {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to bottom right, #60a5fa, #6366f1);
-}
-
-.userIcon {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: white;
-}
-
-.statusBadge {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-transform: capitalize;
-    /* letter-spacing: 0.05em; */
-}
-
-.sponsored {
-    background-color: #10b981;
-    color: white;
-}
-
-.notSponsored {
-    background-color: #ef4444;
-    color: white;
-}
-
-.viewButton {
-    background: linear-gradient(to right, #3b82f6, #2563eb);
-    color: white;
-    padding: 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: white;
     border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.viewButton:hover {
-    background: linear-gradient(to right, #2563eb, #1d4ed8);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    font-size: 1.25rem;
-    color: #64748b;
-}
-
-.error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-    font-size: 1.25rem;
-    color: #ef4444;
-}
-
-.columnHeader {
+.filterGroup {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.headerContent {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
+.filterGroup label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569;
 }
 
-.filterContainer {
+.filterInputWrapper {
     position: relative;
     display: flex;
     align-items: center;
@@ -254,6 +90,80 @@
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
+.tableContainer {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.table th {
+    background: #f8fafc;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.columnHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.headerContent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.sortIcon {
+    width: 1rem;
+    height: 1rem;
+    color: #64748b;
+}
+
+.tableRow {
+    transition: background-color 0.2s ease;
+}
+
+.tableRow:hover {
+    background-color: #f8fafc;
+}
+
+.tableRow td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.srNoColumn {
+    width: 60px;
+    text-align: center;
+    font-weight: 500;
+    color: #475569;
+}
+
+.studentName {
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.userIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: white;
+}
+
 .schoolColumn {
     width: 35%;
     min-width: 250px;
@@ -262,4 +172,161 @@
 .gradeColumn {
     width: 15%;
     min-width: 100px;
+}
+
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.sponsored {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.sponsored::before {
+    content: "";
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.notSponsored {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.notSponsored::before {
+    content: "";
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background-color: #ef4444;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.viewButton {
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    font: 1rem;
+    padding: 5px 15px;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.viewButton:hover {
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    font-size: 1.25rem;
+    color: #64748b;
+}
+
+.error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    font-size: 1.25rem;
+    color: #ef4444;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .filtersContainer {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .filterGroup label {
+        font-size: 0.8rem;
+    }
+
+    .filterInput,
+    .filterSelect {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.4rem 0.4rem 1.75rem;
+    }
+
+    .tableRow td {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+    }
+
+    .statusBadge {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .viewButton {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .srNoColumn {
+        width: 40px;
+    }
+
+    .schoolColumn {
+        min-width: 200px;
+    }
+
+    .gradeColumn {
+        min-width: 80px;
+    }
+}
+
+/* Small Mobile Devices */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0.5rem;
+    }
+
+    .header h1 {
+        font-size: 1.5rem;
+    }
+
+    .filtersContainer {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .tableRow td {
+        padding: 0.4rem 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .statusBadge {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.7rem;
+    }
+
+    .viewButton {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+    }
 } 
