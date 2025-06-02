@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import HeroSection from './pages/Home/HeroSection.jsx'
-import SignUp from './components/signUp/SignUp.jsx'
+import SignUp from './components/signUp'
 import './App.css'
-import SignIn from './components/signIn/SignIn.jsx'
-import AddStudent from './components/addStudent/AddStudent.jsx'
-import GetStudentByID from './components/getStudent.jsx/GetStudentByID.jsx'
+import SignIn from './components/signIn'
+import AddStudent from './components/addStudent'
+import GetStudentByID from './components/getStudent'
+import GetAllStudents from './components/getAllStudents'
+
 function App() {
   
   const [form, setForm]=useState(false)
@@ -19,6 +21,7 @@ function App() {
     )}
      
     
+      <GetAllStudents />
       <GetStudentByID studentId="683c26a756e78e9b670b87e5" />
    
 
