@@ -170,7 +170,7 @@ export default function GetStudentByID({ studentId }) {
                                 </span>
                             </button>
                             <p className={styles.sponsorButtonDescription}>
-                                Help {student.firstName} achieve the dreams through education
+                                Help {student.firstName} {student.lastName} achieve {(student.gender=='male')?'his':'her'} dreams through education
                             </p>
                         </div>
                     )}
