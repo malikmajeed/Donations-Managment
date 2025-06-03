@@ -3,7 +3,7 @@ import { addDonation, getAllDonations,
     getDonationById, deleteDonation, 
     updateDonationStatus } 
     from '../Controllers/donations.controller.js';
-import { authenticateToken as Auth } from "../Middlewares/authentication.js";
+import { authenticateToken as Auth, isAdmin } from "../Middlewares/authentication.js";
 
 
 const router = express.Router();

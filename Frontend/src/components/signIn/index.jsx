@@ -47,7 +47,7 @@ export default function SignIn({selectForm}) {
         setError(validationErrors);
     
         if (Object.keys(validationErrors).length > 0) {
-            return; // Prevent submission
+            return;
         }
     
         setIsLoading(true);
@@ -59,22 +59,42 @@ export default function SignIn({selectForm}) {
                 }
             });
             
+            console.log('Full response:', response);
+            console.log('Response data:', response.data);
+            
             if (response.data.success) {
-                // Store the token in localStorage
+                // Store the token
                 localStorage.setItem('token', response.data.token);
-                // Store user data if needed
-                localStorage.setItem('user', JSON.stringify(response.data.user));
+                
+                // Store user data - using the correct structure from response
+                const userData = {
+                    id: response.data.user._id,
+                    role: response.data.user.role,
+                };
+                
+                console.log('User data before storage:', userData);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Verify storage
+                const storedData = localStorage.getItem('userData');
+                console.log('Stored user data:', JSON.parse(storedData));
                 
                 alert('Login successful!');
+                
                 // Clear form
                 setFormData({
                     email: '',
                     password: ''
                 });
                 // TODO: Redirect to dashboard or home page
+            } else {
+                console.error('Login response missing success flag:', response.data);
+                alert('Login failed: Invalid response from server');
             }
         } catch (error) {
-            console.error('SignIn failed:', error.response?.data || error.message);
+            console.error('SignIn failed:', error);
+            console.error('Error response:', error.response?.data);
+            console.error('Error status:', error.response?.status);
             alert(error.response?.data?.message || 'Login failed. Please try again.');
         } finally {
             setIsLoading(false);

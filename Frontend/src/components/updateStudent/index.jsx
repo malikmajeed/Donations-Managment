@@ -158,7 +158,7 @@ export default function GetStudentByID({ studentId }) {
                         </div>
                     </div>
 
-                    {student.sponsorship && (
+                    {student.isSponsored && (
                         <div className={styles.section}>
                             <h2>Sponsorship History</h2>
                             <div className={styles.infoGrid}>
@@ -178,7 +178,7 @@ export default function GetStudentByID({ studentId }) {
                         </div>
                     )}
 
-                    {!student.sponsorship && (
+                    {!student.isSponsored && (
                         <div className={styles.sponsorButtonContainer}>
                             <button className={styles.sponsorButton}>
                                 <Heart className={styles.sponsorButtonIcon} />

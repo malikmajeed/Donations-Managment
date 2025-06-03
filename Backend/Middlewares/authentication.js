@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import User from '../Models/users.model.js'
 dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -26,4 +27,25 @@ console.log(authHeader, "header")
   });
 };
 
-export { authenticateToken };
+
+const isAdmin = async (req,res, next)=>{
+  try{
+    req.user?.role;
+    if(req.user?.role=="admin"){ return next()}
+    return res.status(403).json({
+      success:false,
+      message:"Access denied! Only admin can access this"
+    })
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      error: error.message
+  });
+  }
+};
+
+
+
+export { authenticateToken, isAdmin };
