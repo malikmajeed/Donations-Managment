@@ -5,47 +5,81 @@ dotenv.config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-console.log(authHeader, "header")
-  // ✅ Check if header exists and starts with 'Bearer '
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: 'Unauthorized: Token missing or malformed' });
-  }
+const authenticateToken = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        console.log('Auth header:', authHeader);
 
-  const token = authHeader.split(" ")[1];
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ 
+                success: false,
+                message: 'Unauthorized: Token missing or malformed' 
+            });
+        }
 
-  jwt.verify(token, SECRET_KEY, (err, decodedUser) => {
-    if (err) {
-      return res.status(403).json({ message: 'Forbidden: Invalid or expired token' });
+        const token = authHeader.split(" ")[1];
+        
+        const decoded = jwt.verify(token, SECRET_KEY);
+        console.log('Decoded token:', decoded);
+
+        // Get user from database to ensure they still exist
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized: User not found'
+            });
+        }
+
+        // Attach user info to request
+        req.user = {
+            id: user._id,
+            role: user.role,
+            email: user.email
+        };
+
+        console.log('Authenticated user:', req.user);
+        next();
+    } catch (error) {
+        console.error('Authentication error:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized: Token expired'
+            });
+        }
+        return res.status(403).json({
+            success: false,
+            message: 'Forbidden: Invalid token'
+        });
     }
-    console.log(decodedUser, "decodedUser")
-
-    req.user = decodedUser; // Attach decoded user to request
-    console.log('✅ Middleware executed');
-    next();
-  });
 };
 
+const isAdmin = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized: No user found'
+            });
+        }
 
-const isAdmin = async (req,res, next)=>{
-  try{
-    req.user?.role;
-    if(req.user?.role=="admin"){ return next()}
-    return res.status(403).json({
-      success:false,
-      message:"Access denied! Only admin can access this"
-    })
-    
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-      error: error.message
-  });
-  }
+        if (req.user.role !== "admin") {
+            return res.status(403).json({
+                success: false,
+                message: "Access denied! Only admin can access this"
+            });
+        }
+
+        next();
+    } catch (error) {
+        console.error('Admin check error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message
+        });
+    }
 };
-
-
 
 export { authenticateToken, isAdmin };

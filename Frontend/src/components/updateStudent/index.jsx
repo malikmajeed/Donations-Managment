@@ -3,6 +3,8 @@ import axios from 'axios';
 import styles from './index.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash,FaCamera } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
@@ -10,6 +12,8 @@ export default function GetStudentByID({ studentId }) {
     const [error, setError] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
 
     useEffect(() => {
         if (studentId) {
@@ -71,15 +75,10 @@ export default function GetStudentByID({ studentId }) {
     };
 
     const handleNameChange = (e) => {
-        const fullName = e.target.value;
-        const nameParts = fullName.split(' ');
-        const firstName = nameParts[0] || '';
-        const lastName = nameParts.slice(1).join(' ') || '';
-        
+        const { name, value } = e.target;
         setStudent(prevStudent => ({
             ...prevStudent,
-            firstName,
-            lastName
+            [name]: value
         }));
     };
 
@@ -106,7 +105,7 @@ export default function GetStudentByID({ studentId }) {
             const token = localStorage.getItem('token');
             await axios.put(`http://localhost:3000/student/updateProfile/${studentId}`, formData, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2FmMGRlOWM4MjZkMzhkY2E4ZmIzNCIsImlhdCI6MTc0ODk1Mzc2MywiZXhwIjoxNzQ4OTU3MzYzfQ.pJ02itwUo2Fbcesf3FyRWqvBfajyo6axVVOW_uIdjqw`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
@@ -128,13 +127,63 @@ export default function GetStudentByID({ studentId }) {
         return `http://localhost:3000${url}`;
     };
 
+    const handlePhoneChange = (value) => {
+        setStudent(prev => ({
+            ...prev,
+            phone: value.toString()
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setSubmitError(null);
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.patch(
+                `http://localhost:3000/student/updateStudent/${studentId}`,
+                {
+                    firstName: student.firstName,
+                    lastName: student.lastName,
+                    fatherName: student.fatherName,
+                    dateOfBirth: student.dateOfBirth,
+                    gender: student.gender,
+                    phone: student.phone,
+                    address: student.address,
+                    school: student.school,
+                    studentGrade: student.studentGrade,
+                    introduction: student.introduction,
+                    sponsorship: student.sponsorship
+                },
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+
+            if (response.status === 200) {
+                // Refresh student data
+                await fetchStudentDetails();
+                alert('Student updated successfully');
+            }
+        } catch (err) {
+            console.error('Error updating student:', err);
+            setSubmitError(err.response?.data?.message || 'Failed to update student');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
     if (!student) return <div className={styles.error}>Student not found</div>;
 
     return (
         <div className={styles.container}>
-            <form className={styles.studentProfile}>
+            <form className={styles.studentProfile} onSubmit={handleSubmit}>
                 <div className={styles.profileHeader}>
                     <div className={styles.profileHeaderContent}>
                         <div className={styles.profileImageContainer}>
@@ -195,13 +244,24 @@ export default function GetStudentByID({ studentId }) {
                         </div>
                         
                         <div className={styles.nameAndSponsorshipStatus}>
-                            <input 
-                                type="text" 
-                                value={`${student.firstName} ${student.lastName}`.trim()}
-                                onChange={handleNameChange}
-                                className={styles.nameInput}
-                                placeholder="Enter full name"
-                            />
+                            <div className={styles.nameInputs}>
+                                <input 
+                                    type="text" 
+                                    name="firstName"
+                                    value={student.firstName}
+                                    onChange={handleNameChange}
+                                    className={styles.nameInput}
+                                    placeholder="First Name"
+                                />
+                                <input 
+                                    type="text" 
+                                    name="lastName"
+                                    value={student.lastName}
+                                    onChange={handleNameChange}
+                                    className={styles.nameInput}
+                                    placeholder="Last Name"
+                                />
+                            </div>
                             <div className={styles.sponsorshipStatus}>
                                 <select
                                     name="sponsorship"
@@ -258,12 +318,17 @@ export default function GetStudentByID({ studentId }) {
                         <div className={`${styles.infoGrid} ${styles.phoneAndAddress}`}>
                             <div className={styles.infoItem}>
                                 <label><FaPhone className={styles.icon} /> Phone Number</label>
-                                <input 
-                                    type="tel"
-                                    name="phone"
-                                    value={student.phone}
-                                    onChange={handleInputChange}
-                                    className={styles.infoInput}
+                                <PhoneInput
+                                    country={'pk'}
+                                    value={student.phone ? student.phone.toString() : ''}
+                                    onChange={handlePhoneChange}
+                                    inputClass={styles.phoneInput}
+                                    containerClass={styles.phoneInputContainer}
+                                    buttonClass={styles.phoneButton}
+                                    dropdownClass={styles.phoneDropdown}
+                                    searchClass={styles.phoneSearch}
+                                    enableSearch={true}
+                                    searchPlaceholder="Search country..."
                                 />
                             </div>
                             <div className={styles.infoItem}>
@@ -320,15 +385,30 @@ export default function GetStudentByID({ studentId }) {
                     </div>
                             {/* Buttons */}
                     <div className={styles.buttonGroup}>
-                        <button type="button" className={styles.cancelButton} onClick={() => window.history.back()}>
+                        <button 
+                            type="button" 
+                            className={styles.cancelButton} 
+                            onClick={() => window.history.back()}
+                            disabled={isSubmitting}
+                        >
                             Cancel
                         </button>
                        
-                        <button type="submit" className={styles.submitButton}>
-                            Save Changes
+                        <button 
+                            type="submit" 
+                            className={styles.submitButton}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Saving...' : 'Save Changes'}
                         </button>
                     </div>
                 </div>
+
+                {submitError && (
+                    <div className={styles.error}>
+                        {submitError}
+                    </div>
+                )}
             </form>
         </div>
     );

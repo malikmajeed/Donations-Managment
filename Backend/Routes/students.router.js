@@ -6,17 +6,17 @@ import {addStudent, deleteStudent, updateStudent,
      getStudentbySponsorship, updateSponsorship
     } from '../Controllers/students.controller.js';
 
-    import { authenticateToken as Auth } from '../Middlewares/authentication.js';
+    import { authenticateToken as Auth, isAdmin } from '../Middlewares/authentication.js';
     import { upload, handleUploadError } from '../Middlewares/upload.js';
     
     //Route for adding a student
-    router.post('/addStudent', Auth, upload.single('profileImage'), handleUploadError, addStudent); //✅ verified
+router.post('/addStudent', Auth,isAdmin, upload.single('profileImage'), handleUploadError, addStudent); //✅ verified
     
 //Route for deleting a student
-router.delete('/deleteStudent/:id',Auth, deleteStudent); //✅ verified
+router.delete('/deleteStudent/:id',Auth, isAdmin,deleteStudent); //✅ verified
 
 //Route for updating a student
-router.put('/updateStudent/:id',Auth, updateStudent);//✅ verified
+router.patch('/updateStudent/:id',Auth,isAdmin,upload.single('profileImage'), handleUploadError, updateStudent);//✅ verified
 
 //Route for getting a student by id
 router.get('/getStudentbyId/:id', getStudentbyId);//✅ verified
@@ -28,6 +28,6 @@ router.get('/getAllStudents', getAllStudents);//✅ verified
 router.get('/getStudentbySponsorship/', getStudentbySponsorship);//✅ verified
 
 //Route for updating a student's sponsorship
-router.patch('/updateSponsorship/:id', Auth, updateSponsorship);//✅ verified
+router.patch('/updateSponsorship/:id', updateSponsorship);//✅ verified
 
 export default router;

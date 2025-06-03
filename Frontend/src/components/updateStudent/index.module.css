@@ -489,22 +489,32 @@
     }
 }
 
+.nameInputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
 .nameInput {
     width: 100%;
     padding: 0.5rem;
-    font-size: 2rem;
+    font-size: 25px;
     font-weight: 700;
     color: white;
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
 }
 
 .nameInput:focus {
     outline: none;
     border-color: rgba(255, 255, 255, 0.5);
     background: rgba(255, 255, 255, 0.1);
+}
+
+.nameInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .sponsorshipSelect {
@@ -599,4 +609,55 @@
 
 .submitButton:hover {
     background-color: rgb(76, 76, 230);
+}
+
+.phoneInput {
+    width: 100% !important;
+    height: 40px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    color: #333 !important;
+    background: white !important;
+    padding-left: 48px !important;
+}
+
+.phoneInput:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+.phoneInputContainer {
+    width: 100% !important;
+}
+
+.phoneButton {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem 0 0 0.5rem !important;
+}
+
+.phoneDropdown {
+    width: 300px !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.phoneSearch {
+    width: 100% !important;
+    padding: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    margin-bottom: 8px !important;
+}
+
+.phoneSearch:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
 }
