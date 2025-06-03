@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
-import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash } from 'react-icons/fa';
+import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash,FaCamera } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     useEffect(() => {
         if (studentId) {
@@ -33,6 +35,12 @@ export default function GetStudentByID({ studentId }) {
             month: 'long',
             day: 'numeric'
         });
+    };
+
+    const formatDateForInput = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0];
     };
 
     const formatPhoneNumber = (phone) => {
@@ -75,6 +83,51 @@ export default function GetStudentByID({ studentId }) {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedImage(URL.createObjectURL(file));
+            // You can also store the file in state if needed for upload
+            setStudent(prev => ({
+                ...prev,
+                profileFile: file
+            }));
+        }
+    };
+
+    const handleImageUpload = async () => {
+        if (!student.profileFile) return;
+        
+        setIsUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append('profile', student.profileFile);
+            
+            const token = localStorage.getItem('token');
+            await axios.put(`http://localhost:3000/student/updateProfile/${studentId}`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            
+            // Refresh student data to get new profile URL
+            fetchStudentDetails();
+            setSelectedImage(null);
+        } catch (err) {
+            console.error('Error uploading image:', err);
+            alert('Failed to upload image');
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const getImageUrl = (url) => {
+        if (!url) return null;
+        if (url.startsWith('http')) return url;
+        return `http://localhost:3000${url}`;
+    };
+
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
     if (!student) return <div className={styles.error}>Student not found</div>;
@@ -84,13 +137,59 @@ export default function GetStudentByID({ studentId }) {
             <form className={styles.studentProfile}>
                 <div className={styles.profileHeader}>
                     <div className={styles.profileHeaderContent}>
-                        <div className={styles.profileImage}>
-                            <input type="file" />
-                            {student.profileUrl ? (
-                                <img src={`http://localhost:3000${student.profileUrl}`} alt={`${student.firstName}'s profile`} />
-                            ) : (
-                                <div className={styles.placeholderImage}>
-                                    {student.firstName[0]}{student.lastName[0]}
+                        <div className={styles.profileImageContainer}>
+                            <div className={styles.profileImage}>
+                                {selectedImage ? (
+                                    <img src={selectedImage} alt="Selected profile" />
+                                ) : student.profileUrl ? (
+                                    <img 
+                                        src={getImageUrl(student.profileUrl)} 
+                                        alt={`${student.firstName}'s profile`}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = '';
+                                            setStudent(prev => ({ ...prev, profileUrl: null }));
+                                        }}
+                                    />
+                                ) : (
+                                    <div className={styles.placeholderImage}>
+                                        {student.firstName[0]}{student.lastName[0]}
+                                    </div>
+                                )}
+                                <div className={styles.imageOverlay}>
+                                    <label htmlFor="profileUpload" className={styles.uploadButton}>
+                                        <FaCamera size={20} />
+                                        <span>Change Photo</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="profileUpload"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        className={styles.hiddenInput}
+                                    />
+                                </div>
+                            </div>
+                            {selectedImage && (
+                                <div className={styles.uploadActions}>
+                                    <button 
+                                        type="button" 
+                                        onClick={handleImageUpload}
+                                        disabled={isUploading}
+                                        className={styles.saveImageButton}
+                                    >
+                                        {isUploading ? 'Uploading...' : 'Save Photo'}
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            setSelectedImage(null);
+                                            setStudent(prev => ({ ...prev, profileFile: null }));
+                                        }}
+                                        className={styles.cancelImageButton}
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
                             )}
                         </div>
@@ -115,17 +214,7 @@ export default function GetStudentByID({ studentId }) {
                                 </select>
                             </div>
                         </div>
-                       
-                        <div className={styles.adminActions}>
-                            <button className={styles.editButton}>
-                                <FaPen size={15} />
-                                Edit
-                            </button>
-                            <button className={styles.deleteButton}>
-                                <FaTrash size={15} />
-                                Delete
-                            </button>
-                        </div>    
+                        
                     </div>
                 </div>
 
@@ -145,7 +234,7 @@ export default function GetStudentByID({ studentId }) {
                         <input 
                             type="date"
                             name="dateOfBirth"
-                            value={student.dateOfBirth}
+                            value={formatDateForInput(student.dateOfBirth)}
                             onChange={handleInputChange}
                             className={styles.infoInput}
                         />
@@ -166,7 +255,7 @@ export default function GetStudentByID({ studentId }) {
 
                 <div className={styles.profileContent}>
                     <div className={styles.section}>
-                        <div className={styles.infoGrid}>
+                        <div className={`${styles.infoGrid} ${styles.phoneAndAddress}`}>
                             <div className={styles.infoItem}>
                                 <label><FaPhone className={styles.icon} /> Phone Number</label>
                                 <input 
@@ -193,6 +282,17 @@ export default function GetStudentByID({ studentId }) {
                     <div className={styles.section}>
                         <h2>Educational Information</h2>
                         <div className={styles.infoGrid}>
+                        <div className={styles.infoItem}>
+                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
+                                <input 
+                                    type="text"
+                                    name="studentGrade"
+                                    value={student.studentGrade}
+                                    onChange={handleInputChange}
+                                    className={styles.infoInput}
+                                />
+                            </div>
+                            
                             <div className={styles.infoItem}>
                                 <label><FaSchool className={styles.icon} /> School</label>
                                 <input 
@@ -203,16 +303,7 @@ export default function GetStudentByID({ studentId }) {
                                     className={styles.infoInput}
                                 />
                             </div>
-                            <div className={styles.infoItem}>
-                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
-                                <input 
-                                    type="text"
-                                    name="studentGrade"
-                                    value={student.studentGrade}
-                                    onChange={handleInputChange}
-                                    className={styles.infoInput}
-                                />
-                            </div>
+                            
                         </div>
                     </div>
 
@@ -227,40 +318,16 @@ export default function GetStudentByID({ studentId }) {
                             />
                         </div>
                     </div>
-
-                    {student.sponsorship && (
-                        <div className={styles.section}>
-                            <h2>Sponsorship History</h2>
-                            <div className={styles.infoGrid}>
-                                <div className={styles.infoItem}>
-                                    <label>Sponsor Name</label>
-                                    <p>{student.sponsorName || 'N/A'}</p>
-                                </div>
-                                <div className={styles.infoItem}>
-                                    <label>Start Date</label>
-                                    <p>{student.sponsorshipStartDate ? formatDate(student.sponsorshipStartDate) : 'N/A'}</p>
-                                </div>
-                                <div className={styles.infoItem}>
-                                    <label>End Date</label>
-                                    <p>{student.sponsorshipEndDate ? formatDate(student.sponsorshipEndDate) : 'N/A'}</p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {!student.sponsorship && (
-                        <div className={styles.sponsorButtonContainer}>
-                            <button className={styles.sponsorButton}>
-                                <Heart className={styles.sponsorButtonIcon} />
-                                <span className={styles.sponsorButtonText}>
-                                    Sponsor {student.lastName} Today
-                                </span>
-                            </button>
-                            <p className={styles.sponsorButtonDescription}>
-                                Help {student.firstName} {student.lastName} achieve {(student.gender=='male')?'his':'her'} dreams through education
-                            </p>
-                        </div>
-                    )}
+                            {/* Buttons */}
+                    <div className={styles.buttonGroup}>
+                        <button type="button" className={styles.cancelButton} onClick={() => window.history.back()}>
+                            Cancel
+                        </button>
+                       
+                        <button type="submit" className={styles.submitButton}>
+                            Save Changes
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

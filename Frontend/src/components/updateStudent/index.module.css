@@ -33,12 +33,21 @@
 .profileHeaderContent {
     position: relative;
     display: grid;
-    grid-template-columns: 1fr 3fr 0.5fr;
+    grid-template-columns: 1fr 3fr;
     gap: 1.5rem;
     align-items: center;
 }
 
+.profileImageContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
 .profileImage {
+    position: relative;
     width: 9rem;
     height: 9rem;
     border-radius: 50%;
@@ -46,13 +55,92 @@
     border: 4px solid white;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     background: linear-gradient(to bottom right, #bfdbfe, #a5b4fc);
-    position: relative;
 }
 
 .profileImage img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+}
+
+.imageOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.profileImage:hover .imageOverlay {
+    opacity: 1;
+}
+
+.uploadButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.uploadButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.uploadButton span {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.uploadActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.saveImageButton, .cancelImageButton {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saveImageButton {
+    background: #3b82f6;
+    color: white;
+    border: none;
+}
+
+.saveImageButton:hover {
+    background: #2563eb;
+}
+
+.saveImageButton:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+}
+
+.cancelImageButton {
+    background: white;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+.cancelImageButton:hover {
+    background: #f8fafc;
 }
 
 .placeholderImage {
@@ -132,30 +220,7 @@
     z-index: 1;
 }
 
-.adminActions{
-    display: flex;
-    flex-direction: column;
 
-    justify-content: space-around;
-    align-items: center;
-    gap: 1rem;
-}
-.editButton, .deleteButton {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 10px;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(4px);
-    width: 100%;
-    justify-content: center;
-}
 
 .infoColumn {
     background: white;
@@ -181,6 +246,7 @@
     font-weight:550;
 }
 
+
 .profileContent {
     padding: 1.5rem;
 }
@@ -197,14 +263,14 @@
 .section h2 {
     color: #333;
     font-size: 1.3rem;
-    margin: 0 0 1rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #f0f0f0;
+    margin: 0 0 10px 0;
+    /* padding-bottom: 0.5rem; */
+    /* border-bottom: 2px solid #f0f0f0; */
 }
 
 .infoGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 1fr 2fr;
     gap: 1rem;
 }
 
@@ -243,7 +309,7 @@
 
 .introduction {
     background: #f8f9fa;
-    padding: 1.25rem;
+    /* padding: 5px; */
     border-radius: 8px;
     line-height: 1.5;
 }
@@ -289,6 +355,7 @@
     transform: scale(1.05);
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
 }
+
 
 .sponsorButton::before {
     content: '';
@@ -476,7 +543,7 @@
 
 .introductionInput {
     width: 100%;
-    min-height: 100px;
+    min-height: 200px;
     padding: 1rem;
     font-size: 0.95rem;
     color: #444;
@@ -491,4 +558,45 @@
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Buttons Group */
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+.cancelButton,
+
+.submitButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cancelButton {
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #dee2e6;
+}
+
+.cancelButton:hover {
+    background-color: #e9ecef;
+}
+
+
+.submitButton {
+    background-color: rgb(96, 96, 250);
+    color: white;
+}
+
+.submitButton:hover {
+    background-color: rgb(76, 76, 230);
 }
