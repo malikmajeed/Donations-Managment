@@ -54,19 +54,38 @@ export default function GetStudentByID({ studentId }) {
         return phoneStr;
     };
 
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setStudent(prevStudent => ({
+            ...prevStudent,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleNameChange = (e) => {
+        const fullName = e.target.value;
+        const nameParts = fullName.split(' ');
+        const firstName = nameParts[0] || '';
+        const lastName = nameParts.slice(1).join(' ') || '';
+        
+        setStudent(prevStudent => ({
+            ...prevStudent,
+            firstName,
+            lastName
+        }));
+    };
+
     if (loading) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
     if (!student) return <div className={styles.error}>Student not found</div>;
 
     return (
         <div className={styles.container}>
-            <div className={styles.studentProfile}>
-                {/* Header */}
+            <form className={styles.studentProfile}>
                 <div className={styles.profileHeader}>
-                    {/* Inner container */}
                     <div className={styles.profileHeaderContent}>
-                        {/* profile image */}
                         <div className={styles.profileImage}>
+                            <input type="file" />
                             {student.profileUrl ? (
                                 <img src={`http://localhost:3000${student.profileUrl}`} alt={`${student.firstName}'s profile`} />
                             ) : (
@@ -74,52 +93,74 @@ export default function GetStudentByID({ studentId }) {
                                     {student.firstName[0]}{student.lastName[0]}
                                 </div>
                             )}
-                            
                         </div>
-                        {/* student name and sponsorship */}
+                        
                         <div className={styles.nameAndSponsorshipStatus}>
-                            <h1>{student.firstName} {student.lastName}</h1>
+                            <input 
+                                type="text" 
+                                value={`${student.firstName} ${student.lastName}`.trim()}
+                                onChange={handleNameChange}
+                                className={styles.nameInput}
+                                placeholder="Enter full name"
+                            />
                             <div className={styles.sponsorshipStatus}>
-                                <span className={`${styles.statusBadge} ${student.sponsorship ? styles.sponsored : styles.notSponsored}`}>
-                                    {student.sponsorship ? (
-                                        <><Crown className={styles.iconSponsored} />Sponsored</>
-                                    ) : (
-                                        <><Heart className={styles.iconNotSponsored} />Seeking Sponsor</>
-                                    )}
-                                </span>
+                                <select
+                                    name="sponsorship"
+                                    value={student.sponsorship ? 'true' : 'false'}
+                                    onChange={handleInputChange}
+                                    className={styles.sponsorshipSelect}
+                                >
+                                    <option value="true">Sponsored</option>
+                                    <option value="false">Seeking Sponsor</option>
+                                </select>
                             </div>
                         </div>
-                        {/* buttons for update and delete user */}
                        
                         <div className={styles.adminActions}>
-                                <button className={styles.editButton}>
-                                    <FaPen size={15} />
-                                    Edit
-                                </button>
-                                <button className={styles.deleteButton}>
-                                    <FaTrash size={15} />
-                                    Delete
-                                </button>
+                            <button className={styles.editButton}>
+                                <FaPen size={15} />
+                                Edit
+                            </button>
+                            <button className={styles.deleteButton}>
+                                <FaTrash size={15} />
+                                Delete
+                            </button>
                         </div>    
-                       
                     </div>
                 </div>
-
-
-                {/* Body of student form */}
 
                 <div className={styles.personalInfoRow}>
                     <div className={styles.infoColumn}>
                         <label>Father's Name</label>
-                        <span>{student.fatherName}</span>
+                        <input 
+                            type="text"
+                            name="fatherName"
+                            value={student.fatherName}
+                            onChange={handleInputChange}
+                            className={styles.infoInput}
+                        />
                     </div>
                     <div className={styles.infoColumn}>
                         <label>Date of Birth</label>
-                        <span>{formatDate(student.dateOfBirth)}</span>
+                        <input 
+                            type="date"
+                            name="dateOfBirth"
+                            value={student.dateOfBirth}
+                            onChange={handleInputChange}
+                            className={styles.infoInput}
+                        />
                     </div>
                     <div className={styles.infoColumn}>
                         <label>Gender</label>
-                        <span>{student.gender}</span>
+                        <select
+                            name="gender"
+                            value={student.gender}
+                            onChange={handleInputChange}
+                            className={styles.infoInput}
+                        >
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
                     </div>
                 </div>
 
@@ -128,25 +169,49 @@ export default function GetStudentByID({ studentId }) {
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
                                 <label><FaPhone className={styles.icon} /> Phone Number</label>
-                                <p>{formatPhoneNumber(student.phone)}</p>
+                                <input 
+                                    type="tel"
+                                    name="phone"
+                                    value={student.phone}
+                                    onChange={handleInputChange}
+                                    className={styles.infoInput}
+                                />
                             </div>
                             <div className={styles.infoItem}>
                                 <label><FaMapMarkerAlt className={styles.icon} /> Address</label>
-                                <p>{student.address || 'N/A'}</p>
+                                <input 
+                                    type="text"
+                                    name="address"
+                                    value={student.address}
+                                    onChange={handleInputChange}
+                                    className={styles.infoInput}
+                                />
                             </div>
                         </div>
-                                    </div>
+                    </div>
 
                     <div className={styles.section}>
                         <h2>Educational Information</h2>
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
                                 <label><FaSchool className={styles.icon} /> School</label>
-                                <p>{student.school || 'N/A'}</p>
+                                <input 
+                                    type="text"
+                                    name="school"
+                                    value={student.school}
+                                    onChange={handleInputChange}
+                                    className={styles.infoInput}
+                                />
                             </div>
                             <div className={styles.infoItem}>
                                 <label><FaGraduationCap className={styles.icon} /> Grade</label>
-                                <p>{student.studentGrade || 'N/A'}</p>
+                                <input 
+                                    type="text"
+                                    name="studentGrade"
+                                    value={student.studentGrade}
+                                    onChange={handleInputChange}
+                                    className={styles.infoInput}
+                                />
                             </div>
                         </div>
                     </div>
@@ -154,11 +219,16 @@ export default function GetStudentByID({ studentId }) {
                     <div className={styles.section}>
                         <h2>Description</h2>
                         <div className={styles.introduction}>
-                            <p>{student.introduction || 'No description provided'}</p>
+                            <textarea
+                                name="introduction"
+                                value={student.introduction}
+                                onChange={handleInputChange}
+                                className={styles.introductionInput}
+                            />
                         </div>
                     </div>
 
-                    {student.isSponsored && (
+                    {student.sponsorship && (
                         <div className={styles.section}>
                             <h2>Sponsorship History</h2>
                             <div className={styles.infoGrid}>
@@ -178,7 +248,7 @@ export default function GetStudentByID({ studentId }) {
                         </div>
                     )}
 
-                    {!student.isSponsored && (
+                    {!student.sponsorship && (
                         <div className={styles.sponsorButtonContainer}>
                             <button className={styles.sponsorButton}>
                                 <Heart className={styles.sponsorButtonIcon} />
@@ -192,7 +262,7 @@ export default function GetStudentByID({ studentId }) {
                         </div>
                     )}
                 </div>
-            </div>
+            </form>
         </div>
     );
 }

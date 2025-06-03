@@ -421,3 +421,74 @@
         padding: 0.8rem 1rem;
     }
 }
+
+.nameInput {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.nameInput:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sponsorshipSelect {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.sponsorshipSelect:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.infoInput {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.infoInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.introductionInput {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #444;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.introductionInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
