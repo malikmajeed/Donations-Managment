@@ -6,7 +6,7 @@ import SignIn from './components/signIn'
 import AddStudent from './components/addStudent'
 import GetStudentByID from './components/getStudent'
 import GetAllStudents from './components/getAllStudents'
-
+import UpdateAndDeleteStudent from './components/updateStudent'
 function App() {
   
   const [form, setForm]=useState(false)
@@ -23,7 +23,7 @@ function App() {
     
       <GetAllStudents />
       <GetStudentByID studentId="683c26a756e78e9b670b87e5" />
-   
+    <UpdateAndDeleteStudent studentId="683c26a756e78e9b670b87e5"  />
 
   
     
