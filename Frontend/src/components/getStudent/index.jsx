@@ -3,11 +3,13 @@ import axios from 'axios';
 import styles from './index.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
+import DeleteStudent from '../deleteStudent';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isClicked, setIsClicked]=useState(false)
 
     useEffect(() => {
         if (studentId) {
@@ -35,6 +37,20 @@ export default function GetStudentByID({ studentId }) {
         });
     };
 
+
+
+    const handleDeleteAction = ()=>{
+       
+        console.log('delete function');
+        console.log(isClicked);
+       
+       setIsClicked(!isClicked);
+       console.log(isClicked);
+       return <DeleteStudent studentID={studentId} isClicked={isClicked} />
+       
+    }
+
+    
     const formatPhoneNumber = (phone) => {
         if (!phone) return 'N/A';
         const phoneStr = phone.toString();
@@ -96,7 +112,8 @@ export default function GetStudentByID({ studentId }) {
                                     <FaPen size={15} />
                                     Edit
                                 </button>
-                                <button className={styles.deleteButton}>
+                                <button className={styles.deleteButton}
+                                onClick={handleDeleteAction}>
                                     <FaTrash size={15} />
                                     Delete
                                 </button>
