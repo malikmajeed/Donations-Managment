@@ -223,14 +223,7 @@ export default function GetStudentByID({ studentId }) {
                             </div>
                             {selectedImage && (
                                 <div className={styles.uploadActions}>
-                                    <button 
-                                        type="button" 
-                                        onClick={handleImageUpload}
-                                        disabled={isUploading}
-                                        className={styles.saveImageButton}
-                                    >
-                                        {isUploading ? 'Uploading...' : 'Save Photo'}
-                                    </button>
+                                    
                                     <button 
                                         type="button" 
                                         onClick={() => {
@@ -240,6 +233,14 @@ export default function GetStudentByID({ studentId }) {
                                         className={styles.cancelImageButton}
                                     >
                                         Cancel
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        onClick={handleImageUpload}
+                                        disabled={isUploading}
+                                        className={styles.saveImageButton}
+                                    >
+                                        {isUploading ? 'Uploading...' : 'Save'}
                                     </button>
                                 </div>
                             )}

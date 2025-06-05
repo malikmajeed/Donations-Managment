@@ -119,13 +119,15 @@
 }
 
 .saveImageButton {
-    background: #3b82f6;
+    padding: 5px 10px;
+    background: #23a403;
     color: white;
-    border: none;
+    border: 1px solid #e2e8f0;
 }
 
 .saveImageButton:hover {
-    background: #2563eb;
+    background: #166b01;
+    border: 1px solid #e2e8f0;
 }
 
 .saveImageButton:disabled {
@@ -134,13 +136,16 @@
 }
 
 .cancelImageButton {
-    background: white;
-    color: #64748b;
+    padding: 5px 10px;
+    background: rgb(255, 34, 34);
+    color: #ffffff;
+    font-weight: 500;
     border: 1px solid #e2e8f0;
 }
 
 .cancelImageButton:hover {
-    background: #f8fafc;
+    background:rgb(167, 3, 3);
+    border: 1px solid #e2e8f0;
 }
 
 .placeholderImage {
