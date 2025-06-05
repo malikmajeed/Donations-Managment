@@ -83,6 +83,7 @@ export default function GetStudentByID({ studentId }) {
     };
 
     const handleImageChange = (e) => {
+        
         const file = e.target.files[0];
         if (file) {
             setSelectedImage(URL.createObjectURL(file));
@@ -105,7 +106,7 @@ export default function GetStudentByID({ studentId }) {
             const token = localStorage.getItem('token');
             await axios.put(`http://localhost:3000/student/updateProfile/${studentId}`, formData, {
                 headers: {
-                    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4M2FmMGRlOWM4MjZkMzhkY2E4ZmIzNCIsImlhdCI6MTc0ODk1Mzc2MywiZXhwIjoxNzQ4OTU3MzYzfQ.pJ02itwUo2Fbcesf3FyRWqvBfajyo6axVVOW_uIdjqw`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
                 }
             });
@@ -214,6 +215,7 @@ export default function GetStudentByID({ studentId }) {
                                         type="file"
                                         id="profileUpload"
                                         accept="image/*"
+                                       
                                         onChange={handleImageChange}
                                         className={styles.hiddenInput}
                                     />

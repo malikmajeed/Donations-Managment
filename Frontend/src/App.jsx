@@ -7,13 +7,14 @@ import AddStudent from './components/addStudent'
 import GetStudentByID from './components/getStudent'
 import GetAllStudents from './components/getAllStudents'
 import UpdateAndDeleteStudent from './components/updateStudent'
+import ProfileImageFunction from './components/addStudent/profile.jsx'
 function App() {
   
   const [form, setForm]=useState(false)
 
   return (
     <>
-
+  <ProfileImageFunction />
     {form?( 
      <SignUp selectForm={setForm} />  //first setForm is the name of prop your passing
     ):(         

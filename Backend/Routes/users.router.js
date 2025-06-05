@@ -1,6 +1,6 @@
 import express from "express";
 import { signUp, login, getUser, getAllDonors, deleteUser, updateUser } from "../Controllers/users.controller.js";
-import { authenticateToken as Auth } from "../Middlewares/authentication.js";
+import { authenticateToken as Auth, isAdmin } from "../Middlewares/authentication.js";
 const router = express.Router();
 
 
@@ -14,7 +14,7 @@ router.post("/login", login); //✅ verified
 router.get("/:id", Auth, getUser); //✅ verified
 //get all donors route
 // when no donors exists it takes lot of time to complete the request
-router.get("/donors/abc", Auth, getAllDonors);//✅ verified
+router.get("/donors/abc", Auth,isAdmin, getAllDonors);//✅ verified
 
 //update user route
 router.patch("/update", Auth, updateUser);//✅ verified
