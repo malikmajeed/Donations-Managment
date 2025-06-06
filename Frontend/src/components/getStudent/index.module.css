@@ -204,9 +204,10 @@
 
 .infoGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 1fr 2fr;
     gap: 1rem;
 }
+
 
 .infoItem {
     display: flex;
@@ -290,7 +291,7 @@
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
 }
 
-.sponsorButton::before {
+/* .sponsorButton::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -298,7 +299,7 @@
     opacity: 0;
     border-radius: 1rem;
     transition: opacity 0.3s ease;
-}
+} */
 
 /* .sponsorButton:hover::before {
     opacity: 0.2;

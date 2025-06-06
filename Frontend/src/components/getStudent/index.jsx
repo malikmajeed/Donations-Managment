@@ -183,14 +183,15 @@ export default function GetStudentByID({ studentId }) {
                     <div className={styles.section}>
                         <h2>Educational Information</h2>
                         <div className={styles.infoGrid}>
+                        <div className={styles.infoItem}>
+                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
+                                <p>{student.studentGrade || 'N/A'}</p>
+                            </div>
                             <div className={styles.infoItem}>
                                 <label><FaSchool className={styles.icon} /> School</label>
                                 <p>{student.school || 'N/A'}</p>
                             </div>
-                            <div className={styles.infoItem}>
-                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
-                                <p>{student.studentGrade || 'N/A'}</p>
-                            </div>
+                            
                         </div>
                     </div>
 
