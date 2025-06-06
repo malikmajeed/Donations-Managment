@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
 import { Search, ArrowUpDown, User, Filter } from 'lucide-react';
+import ProfileCard from '../Models/StdProfile_Card';
 
-export default function GetAllStudents({ onViewStudent }) {
+
+
+export default function GetAllStudents() {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isCardOpen, setIsCardOpen]=useState(false)
     const [filters, setFilters] = useState({
         name: '',
         school: '',
@@ -33,6 +37,17 @@ export default function GetAllStudents({ onViewStudent }) {
         }
     };
 
+
+
+    // const onMouseOver=()=>{
+       
+    //     setIsCardOpen(true)
+    // }
+
+
+    // const onMouseOut = ()=>{
+    //     setIsCardOpen(false);
+    // }
     const handleFilterChange = (column, value) => {
         setFilters(prev => ({
             ...prev,
@@ -212,10 +227,14 @@ export default function GetAllStudents({ onViewStudent }) {
                                 <td>
                                     <button 
                                         className={styles.viewButton}
-                                        onClick={() => onViewStudent(student._id)}
+                                        
+                                        // onMouseOver={onMouseOver}
+                                        
+                                        // onMouseOut={onMouseOut}
                                     >
-                                        View
+                                        View/Edit
                                     </button>
+                                    {/* <ProfileCard student={student}/> */}
                                 </td>
                             </tr>
                         ))}

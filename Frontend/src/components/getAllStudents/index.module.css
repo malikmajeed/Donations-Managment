@@ -220,6 +220,7 @@
     font: 1rem;
     padding: 5px 15px;
     border-radius: 0.5rem;
+    position: relative;
     font-weight: 500;
     transition: all 0.3s ease;
     border: none;

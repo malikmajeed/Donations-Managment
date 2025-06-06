@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './index.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
-import DeleteConfirmationModel from '../delete_Model';
+import DeleteConfirmationModel from '../Models/delete_Model';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
@@ -48,7 +48,7 @@ export default function GetStudentByID({ studentId }) {
 
 
     const confirmDelete=()=>{
-        console.log('Deletion logic start here')
+        
      
         const token = localStorage.getItem('token');
         console.log(`Token fetched: ${token}`);
@@ -66,7 +66,7 @@ export default function GetStudentByID({ studentId }) {
         
         setIsModelOpen(flase);
         return alert(response.message);
-        console.log('Logic end')
+       
         
     }
 

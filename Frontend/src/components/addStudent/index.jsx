@@ -47,9 +47,7 @@ export default function AddStudent() {
     };
 
 
-    const handleClick=()=>{
-        fileInputRef.current.click();
-    }
+    
 
     const handleImageUpload = (e) => {
 
@@ -218,7 +216,7 @@ export default function AddStudent() {
             <form onSubmit={handleSubmit} className={styles.addStudentForm}>
                 <div className={styles.imageSection}>
                     <div className={styles.imageUploadContainer}
-                    onClick={handleClick}
+                   
                     >
                         {previewImage ? (
                             <div className={styles.previewContainer}>
