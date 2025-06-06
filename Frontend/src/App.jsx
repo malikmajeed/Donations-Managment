@@ -23,8 +23,8 @@ function App() {
      
     
       <GetAllStudents />
-      <GetStudentByID studentId="683c26a756e78e9b670b87e5" />
-    <UpdateAndDeleteStudent studentId="683c26a756e78e9b670b87e5"  />
+      <GetStudentByID studentId="6842a14592e96ba897dd6a65" />
+    <UpdateAndDeleteStudent studentId="6842a14592e96ba897dd6a65"  />
 
   
     

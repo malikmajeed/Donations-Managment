@@ -3,13 +3,15 @@ import axios from 'axios';
 import styles from './index.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
-import DeleteStudent from '../deleteStudent';
+import DeleteConfirmationModel from '../delete_Model';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isClicked, setIsClicked]=useState(false)
+    const [isModelOpen, setIsModelOpen]=useState(false);
+
+   
 
     useEffect(() => {
         if (studentId) {
@@ -39,15 +41,33 @@ export default function GetStudentByID({ studentId }) {
 
 
 
-    const handleDeleteAction = ()=>{
-       
-        console.log('delete function');
-        console.log(isClicked);
-       
-       setIsClicked(!isClicked);
-       console.log(isClicked);
-       return <DeleteStudent studentID={studentId} isClicked={isClicked} />
-       
+    const handleDelete = ()=>{
+        setIsModelOpen(true);
+    }
+
+
+
+    const confirmDelete=()=>{
+        console.log('Deletion logic start here')
+     
+        const token = localStorage.getItem('token');
+        console.log(`Token fetched: ${token}`);
+        const response = axios.delete(`http://localhost:3000/student/deleteStudent/${studentId}`,
+            
+           { headers:{
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }}
+        );
+
+        if(!response.ok){
+            return alert(`Error occured while deleting student : ${response.error.message}`);
+        }
+        
+        setIsModelOpen(flase);
+        return alert(response.message);
+        console.log('Logic end')
+        
     }
 
     
@@ -113,10 +133,16 @@ export default function GetStudentByID({ studentId }) {
                                     Edit
                                 </button>
                                 <button className={styles.deleteButton}
-                                onClick={handleDeleteAction}>
+                                onClick={handleDelete}>
                                     <FaTrash size={15} />
                                     Delete
                                 </button>
+                                {isModelOpen && (
+                                    <DeleteConfirmationModel 
+                                    onClose={()=>setIsModelOpen(false)}
+                                    onConfirm={confirmDelete}
+                                    />
+                                )}
                         </div>    
                        
                     </div>
