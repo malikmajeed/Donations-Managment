@@ -1,0 +1,60 @@
+
+/* 
+.phoneNumber{
+    color: black;
+    font-weight: 600;
+}
+
+.contentSection{
+    background-color: grey;
+}
+
+.donationsTable{
+    background-color: white;
+} */
+
+
+.table {
+   
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.table th {
+    background: #f8fafc;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 500;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.columnHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+.tableRow {
+    z-index: 999;
+    transition: background-color 0.2s ease;
+}
+
+.tableRow:hover {
+    background-color: #f8fafc;
+}
+
+.tableRow td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.srNoColumn {
+    width: 60px;
+    text-align: center;
+    font-weight: 500;
+    color: #475569;
+}

@@ -113,7 +113,7 @@ const login = async (req, res) => {
                 role: user.role
             }, 
             SECRET_KEY, 
-            {expiresIn: '1h'}
+            {expiresIn: '24h'}
         );
 
         res.status(200).json({

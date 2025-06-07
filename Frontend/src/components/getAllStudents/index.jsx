@@ -29,6 +29,7 @@ export default function GetAllStudents() {
     const fetchStudents = async () => {
         try {
             const response = await axios.get('http://localhost:3000/student/getAllStudents');
+            console.log(`getAll students ${response.data}`)
             setStudents(response.data);
             setLoading(false);
         } catch (err) {
@@ -228,7 +229,7 @@ export default function GetAllStudents() {
                                     <button 
                                         className={styles.viewButton}
                                         
-                                        // onMouseOver={onMouseOver}
+                                        // onMouseOver={onMouseOver}                    a
                                         
                                         // onMouseOut={onMouseOut}
                                     >

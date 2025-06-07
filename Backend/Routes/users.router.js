@@ -11,16 +11,18 @@ router.post("/signup", signUp); //✅ verified
 router.post("/login", login); //✅ verified
 
 //get user route
-router.get("/:id", Auth, getUser); //✅ verified
+
 //get all donors route
 // when no donors exists it takes lot of time to complete the request
-router.get("/donors/abc", Auth,isAdmin, getAllDonors);//✅ verified
+router.get("/donors/", Auth,isAdmin, getAllDonors);//✅ verified
 
 //update user route
 router.patch("/update", Auth, updateUser);//✅ verified
 
 //deleting user route
 router.delete("/delete/:id", Auth, deleteUser)//✅ verified
+
+router.get("/:id", Auth, getUser); //✅ verified
 
 
 export default router;

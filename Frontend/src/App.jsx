@@ -7,6 +7,7 @@ import AddStudent from './components/addStudent'
 import GetStudentByID from './components/getStudent'
 import GetAllStudents from './components/getAllStudents'
 import UpdateAndDeleteStudent from './components/updateStudent'
+import UserDashboard from './components/userDashboard/index.jsx'
 
 function App() {
   
@@ -30,6 +31,7 @@ function App() {
     
     
     <AddStudent />
+    <UserDashboard />
     </>
   )
 }

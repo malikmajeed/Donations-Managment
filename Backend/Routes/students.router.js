@@ -3,7 +3,7 @@ const router = express.Router();
 
 import {addStudent, deleteStudent, updateStudent, 
     getStudentbyId, getAllStudents,
-     getStudentbySponsorship, updateSponsorship
+      updateSponsorship
     } from '../Controllers/students.controller.js';
 
     import { authenticateToken as Auth, isAdmin } from '../Middlewares/authentication.js';
@@ -23,9 +23,6 @@ router.get('/getStudentbyId/:id', getStudentbyId);//✅ verified
 
 //Route for getting all students
 router.get('/getAllStudents', getAllStudents);//✅ verified
-
-//Route for getting a student by sponsorship
-router.get('/getStudentbySponsorship/', getStudentbySponsorship);//✅ verified
 
 //Route for updating a student's sponsorship
 router.patch('/updateSponsorship/:id', updateSponsorship);//✅ verified
