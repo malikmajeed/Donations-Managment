@@ -8,7 +8,7 @@ import axios from 'axios';
 
 export default function UserDashboard(){
 
-    const[donationsList, setDonationsList]=useState();
+    const[donationsList, setDonationsList]=useState([]);
     const[user, setUser]=useState({});
 
     const token= localStorage.getItem('token');
@@ -52,6 +52,7 @@ export default function UserDashboard(){
     //     return `${firstName} ${lastName}`;
     
     // }
+    console.log()
     
 const fetchDonations= async()=>{
     try{
@@ -67,6 +68,8 @@ const fetchDonations= async()=>{
         
        
         setDonationsList(response.data);
+        
+        console.log(`lenght is : ${response.data.length}`)
         console.log(donationsList);
        
     
@@ -139,11 +142,11 @@ console.log(`Donation Array: ${donationsList}`)
                 </div>
                 <div className={styles.numberOfDonations}>
                 <p>Number Of Donations</p>
-                <p>{numberOfStudents}</p>
+                <p>{}</p>
                 </div>
                 <div className={styles.amountOfDonations}>
                 <p>Amount Donated</p>
-                <p>{amountDonated}</p>
+                <p>{}</p>
                 </div>
 
             </div>
