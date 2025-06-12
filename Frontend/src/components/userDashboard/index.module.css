@@ -1,8 +1,122 @@
+.mainContainer {
+    padding: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
+.dashboardContainer {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 2rem;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
 
+/* Profile Section Styles */
+.profileSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: #f8fafc;
+    border-radius: 0.5rem;
+}
+
+.profileImageContainer {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.userName {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.title {
+    font-size: 1.25rem;
+    color: #64748b;
+}
+
+.name {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.privateInfo {
+    width: 100%;
+    text-align: center;
+}
+
+.infoBox {
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.infoItem {
+    color: #475569;
+    margin: 0.5rem 0;
+}
+
+.privacyNote {
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+
+.updateProfileButton {
+    width: 100%;
+    padding: 0.75rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.updateProfileButton:hover {
+    background: #2563eb;
+}
+
+/* Content Section Styles */
+.contentSection {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.donationsTable {
+    background: #fff;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.donationsTable h3 {
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
 
 .table {
-   
     width: 100%;
     border-collapse: collapse;
     min-width: 600px;
@@ -17,15 +131,7 @@
     border-bottom: 1px solid #e2e8f0;
 }
 
-.columnHeader {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-
 .tableRow {
-    z-index: 999;
     transition: background-color 0.2s ease;
 }
 
@@ -44,4 +150,28 @@
     text-align: center;
     font-weight: 500;
     color: #475569;
+}
+
+.statsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.statBox {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.statBox p:first-child {
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1e293b;
 }
