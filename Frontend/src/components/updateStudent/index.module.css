@@ -33,12 +33,21 @@
 .profileHeaderContent {
     position: relative;
     display: grid;
-    grid-template-columns: 1fr 3fr 0.5fr;
+    grid-template-columns: 1fr 3fr;
     gap: 1.5rem;
     align-items: center;
 }
 
+.profileImageContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
 .profileImage {
+    position: relative;
     width: 9rem;
     height: 9rem;
     border-radius: 50%;
@@ -46,13 +55,97 @@
     border: 4px solid white;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     background: linear-gradient(to bottom right, #bfdbfe, #a5b4fc);
-    position: relative;
 }
 
 .profileImage img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+}
+
+.imageOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.profileImage:hover .imageOverlay {
+    opacity: 1;
+}
+
+.uploadButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.uploadButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.uploadButton span {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.uploadActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.saveImageButton, .cancelImageButton {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.saveImageButton {
+    padding: 5px 10px;
+    background: #23a403;
+    color: white;
+    border: 1px solid #e2e8f0;
+}
+
+.saveImageButton:hover {
+    background: #166b01;
+    border: 1px solid #e2e8f0;
+}
+
+.saveImageButton:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+}
+
+.cancelImageButton {
+    padding: 5px 10px;
+    background: rgb(255, 34, 34);
+    color: #ffffff;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+}
+
+.cancelImageButton:hover {
+    background:rgb(167, 3, 3);
+    border: 1px solid #e2e8f0;
 }
 
 .placeholderImage {
@@ -132,30 +225,7 @@
     z-index: 1;
 }
 
-.adminActions{
-    display: flex;
-    flex-direction: column;
 
-    justify-content: space-around;
-    align-items: center;
-    gap: 1rem;
-}
-.editButton, .deleteButton {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 10px;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(4px);
-    width: 100%;
-    justify-content: center;
-}
 
 .infoColumn {
     background: white;
@@ -181,6 +251,7 @@
     font-weight:550;
 }
 
+
 .profileContent {
     padding: 1.5rem;
 }
@@ -197,14 +268,14 @@
 .section h2 {
     color: #333;
     font-size: 1.3rem;
-    margin: 0 0 1rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #f0f0f0;
+    margin: 0 0 10px 0;
+    /* padding-bottom: 0.5rem; */
+    /* border-bottom: 2px solid #f0f0f0; */
 }
 
 .infoGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 1fr 2fr;
     gap: 1rem;
 }
 
@@ -242,8 +313,8 @@
 }
 
 .introduction {
-    background: #f8f9fa;
-    padding: 1.25rem;
+    /* background: #f8f9fa; */
+    /* padding: 5px; */
     border-radius: 8px;
     line-height: 1.5;
 }
@@ -289,6 +360,7 @@
     transform: scale(1.05);
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
 }
+
 
 .sponsorButton::before {
     content: '';
@@ -420,4 +492,177 @@
         width: 100%;
         padding: 0.8rem 1rem;
     }
+}
+
+.nameInputs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.nameInput {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 25px;
+    font-weight: 700;
+    color: white;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.nameInput:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nameInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sponsorshipSelect {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.sponsorshipSelect:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.infoInput {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.infoInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.introductionInput {
+    width: 100%;
+    min-height: 200px;
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #444;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    resize: vertical;
+    transition: all 0.2s ease;
+}
+
+.introductionInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Buttons Group */
+
+.buttonGroup {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+.cancelButton,
+
+.submitButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cancelButton {
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #dee2e6;
+}
+
+.cancelButton:hover {
+    background-color: #e9ecef;
+}
+
+
+.submitButton {
+    background-color: rgb(96, 96, 250);
+    color: white;
+}
+
+.submitButton:hover {
+    background-color: rgb(76, 76, 230);
+}
+
+.phoneInput {
+    width: 100% !important;
+    height: 40px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    font-size: 1rem !important;
+    color: #333 !important;
+    background: white !important;
+    padding-left: 48px !important;
+}
+
+.phoneInput:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
+}
+
+.phoneInputContainer {
+    width: 100% !important;
+}
+
+.phoneButton {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem 0 0 0.5rem !important;
+}
+
+.phoneDropdown {
+    width: 300px !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.phoneSearch {
+    width: 100% !important;
+    padding: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    margin-bottom: 8px !important;
+}
+
+.phoneSearch:focus {
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1) !important;
 }

@@ -21,7 +21,9 @@ h2 {
 
 .imageSection {
     flex: 0 0 300px;
+    position: relative;
 }
+
 
 .imageUploadContainer {
     width: 300px;
@@ -37,11 +39,57 @@ h2 {
 
 .uploadPlaceholder {
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     cursor: pointer;
 }
+.imageOverlay {
+    position: absolute;
+    inset: 0;
+    
+    /* inset: 0; */
+    background: rgba(0, 0, 0, 0.3);
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.imageUploadContainer:hover .imageOverlay{
+    opacity: 1;
+}
+
+.uploadButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid white;
+    gap: 0.5rem;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.uploadButton:hover {
+    
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.uploadButton span {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.hiddenInput {
+    display: none;
+}
+
 
 .fileInput {
     position: absolute;
@@ -63,26 +111,36 @@ h2 {
 }
 
 .previewImage {
+    z-index: 1px;
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
 }
 
+
+.previewImage:hover{
+    content: ' <FaCamera size={20} />';
+}
 .removeImage {
-    position: absolute;
+    background-color: yellow;
+    z-index: 999px;
+    /* position: absolute; */
+    top: 50%;
+    left: 50%;
+    bottom: 0%;
     top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.8);
+    /* right: 10px; */
+    background: rgba(255, 0, 0, 0.8);
     border: none;
-    border-radius: 50%;
-    width: 30px;
+    border-radius: 15px;
+    width: 50px;
     height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: #dc3545;
+    color: #ffffff;
 }
 
 .formFields {
@@ -339,3 +397,23 @@ h2 {
         padding: 8px;
     }
 }
+
+
+
+/* .removeImage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    width: 100%;
+    justify-content: center;
+} */
+

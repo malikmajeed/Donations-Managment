@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
-import { FaUpload, FaTimes } from 'react-icons/fa';
+import { FaUpload, FaTimes,FaCamera } from 'react-icons/fa';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
@@ -21,6 +21,7 @@ export default function AddStudent() {
     });
 
     const [previewImage, setPreviewImage] = useState(null);
+    const [image, setImage] = useState(null)
     const [error, setError] = useState({});
     const fileInputRef = useRef(null);
 
@@ -45,8 +46,15 @@ export default function AddStudent() {
         });
     };
 
+
+    
+
     const handleImageUpload = (e) => {
+
         const file = e.target.files[0];
+       
+
+            
         if (file) {
             // Don't convert to base64, just store the file reference
             setPreviewImage(URL.createObjectURL(file));
@@ -55,18 +63,11 @@ export default function AddStudent() {
                 profileUrl: file  // Store the actual file object
             });
         }
+    
+        
     };
 
-    const removeImage = () => {
-        setPreviewImage(null);
-        setFormData({
-            ...formData,
-            profileUrl: ''
-        });
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-    };
+   
 
     const validateForm = () => {
         let newError = {};
@@ -214,13 +215,28 @@ export default function AddStudent() {
             <h2>Add New Student</h2>
             <form onSubmit={handleSubmit} className={styles.addStudentForm}>
                 <div className={styles.imageSection}>
-                    <div className={styles.imageUploadContainer}>
+                    <div className={styles.imageUploadContainer}
+                   
+                    >
                         {previewImage ? (
                             <div className={styles.previewContainer}>
                                 <img src={previewImage} alt="Preview" className={styles.previewImage} />
-                                <button type="button" className={styles.removeImage} onClick={removeImage}>
-                                    <FaTimes />
-                                </button>
+                                {/* overlay for image on hover overimage */}
+                                <div className={styles.imageOverlay}>
+                                    <label htmlFor="profileUpload" className={styles.uploadButton}>
+                                        <FaCamera size={20} />
+                                        <span>Change Photo</span>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="profileUpload"
+                                        accept="image/*"
+                                       
+                                        onChange={handleImageUpload}
+                                        ref={fileInputRef}
+                                        className={styles.hiddenInput}
+                                    />
+                                </div>
                             </div>
                         ) : (
                             <div className={styles.uploadPlaceholder}>
@@ -235,7 +251,11 @@ export default function AddStudent() {
                                 <span>Upload Photo</span>
                             </div>
                         )}
+                        
+                       
                     </div>
+                   
+                    
                 </div>
 
                 <div className={styles.formFields}>

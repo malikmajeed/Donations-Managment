@@ -48,27 +48,32 @@ export const addDonation = async (req, res) => {
 export const getAllDonations = async (req, res) => {
     try {
         const user = req.user;
-        if (user.role === 'admin') {
-            console.log('get all donations controller for role admin')
-            const donations = await Donations.find();
+        // if (user.role === 'admin') {
+        //     console.log('get all donations controller for role admin')
+        //     const donations = await Donations.find();
+            
+        //     console.log(donations);
+        //     return res.status(200).json({
+        //         success: true,
+        //         data: donations,
+               
+        //     });
 
-            res.status(200).json({
-                success: true,
-                data: donations
-            });
 
-        }
-        else if (user.role === 'donor') {
+        // }
+
+        
             console.log('get all donations controller for role donor')
-            const donations = await Donations.find({ donationFrom: user.id });
-            res.status(200).json({
-                success: true,
-                data: donations
-            });
-        }
+            console.log(`user id is : ${user.id}`)
+            const donations = await Donations.find({ donationFrom: user.id })
+            .populate('donationFrom', 'fName lName')
+            .populate('donationTo','firstName lastName');
+            console.log(`Donation length ${donations.length} and donations are ${donations}`);
+            return res.status(200).json(donations);
+      
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Error fetching donations",
             error: error.message
@@ -102,6 +107,10 @@ export const getDonationById = async (req, res) => {
             const id = req.params.id;
             const donation = await Donations.find({ donationFrom: user.id, id: id });
             console.log(donation);
+            res.status(200).json({
+                success: true,
+                data: donation
+            });
         } else {
             return res.status(403).json({
                 success: false,

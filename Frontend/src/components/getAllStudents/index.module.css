@@ -212,7 +212,10 @@
     border-radius: 50%;
     background-color: #ef4444;
     box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+
 }
+
+
 
 .viewButton {
     background: linear-gradient(to right, #3b82f6, #2563eb);
@@ -220,6 +223,7 @@
     font: 1rem;
     padding: 5px 15px;
     border-radius: 0.5rem;
+    position: relative;
     font-weight: 500;
     transition: all 0.3s ease;
     border: none;

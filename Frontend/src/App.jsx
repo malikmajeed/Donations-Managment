@@ -7,13 +7,15 @@ import AddStudent from './components/addStudent'
 import GetStudentByID from './components/getStudent'
 import GetAllStudents from './components/getAllStudents'
 import UpdateAndDeleteStudent from './components/updateStudent'
+import UserDashboard from './components/userDashboard/index.jsx'
+
 function App() {
   
   const [form, setForm]=useState(false)
 
   return (
     <>
-
+ 
     {form?( 
      <SignUp selectForm={setForm} />  //first setForm is the name of prop your passing
     ):(         
@@ -22,13 +24,14 @@ function App() {
      
     
       <GetAllStudents />
-      <GetStudentByID studentId="683c26a756e78e9b670b87e5" />
-    <UpdateAndDeleteStudent studentId="683c26a756e78e9b670b87e5"  />
+      <GetStudentByID studentId="6842cacb05709a76c110f023" />
+    <UpdateAndDeleteStudent studentId="6842cacb05709a76c110f023"  />
 
   
     
     
     <AddStudent />
+    <UserDashboard />
     </>
   )
 }

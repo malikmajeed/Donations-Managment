@@ -3,11 +3,15 @@ import axios from 'axios';
 import styles from './index.module.css';
 import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash } from 'react-icons/fa';
 import { User, Crown, Heart } from 'lucide-react';
+import DeleteConfirmationModel from '../Models/delete_Model';
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isModelOpen, setIsModelOpen]=useState(false);
+
+   
 
     useEffect(() => {
         if (studentId) {
@@ -35,6 +39,38 @@ export default function GetStudentByID({ studentId }) {
         });
     };
 
+
+
+    const handleDelete = ()=>{
+        setIsModelOpen(true);
+    }
+
+
+
+    const confirmDelete=()=>{
+        
+     
+        const token = localStorage.getItem('token');
+        console.log(`Token fetched: ${token}`);
+        const response = axios.delete(`http://localhost:3000/student/deleteStudent/${studentId}`,
+            
+           { headers:{
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }}
+        );
+
+        if(!response.ok){
+            return alert(`Error occured while deleting student : ${response.error.message}`);
+        }
+        
+        setIsModelOpen(flase);
+        return alert(response.message);
+       
+        
+    }
+
+    
     const formatPhoneNumber = (phone) => {
         if (!phone) return 'N/A';
         const phoneStr = phone.toString();
@@ -96,10 +132,17 @@ export default function GetStudentByID({ studentId }) {
                                     <FaPen size={15} />
                                     Edit
                                 </button>
-                                <button className={styles.deleteButton}>
+                                <button className={styles.deleteButton}
+                                onClick={handleDelete}>
                                     <FaTrash size={15} />
                                     Delete
                                 </button>
+                                {isModelOpen && (
+                                    <DeleteConfirmationModel 
+                                    onClose={()=>setIsModelOpen(false)}
+                                    onConfirm={confirmDelete}
+                                    />
+                                )}
                         </div>    
                        
                     </div>
@@ -140,14 +183,15 @@ export default function GetStudentByID({ studentId }) {
                     <div className={styles.section}>
                         <h2>Educational Information</h2>
                         <div className={styles.infoGrid}>
+                        <div className={styles.infoItem}>
+                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
+                                <p>{student.studentGrade || 'N/A'}</p>
+                            </div>
                             <div className={styles.infoItem}>
                                 <label><FaSchool className={styles.icon} /> School</label>
                                 <p>{student.school || 'N/A'}</p>
                             </div>
-                            <div className={styles.infoItem}>
-                                <label><FaGraduationCap className={styles.icon} /> Grade</label>
-                                <p>{student.studentGrade || 'N/A'}</p>
-                            </div>
+                            
                         </div>
                     </div>
 

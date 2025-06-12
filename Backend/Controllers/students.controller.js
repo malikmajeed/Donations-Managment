@@ -197,18 +197,6 @@ const getAllStudents = async (req, res) => {
     }
 }
     
- 
-    
-//Student by sponsorship
-const getStudentbySponsorship = async (req, res) => {
-    try{
-        const students = await Students.find({sponsorship:true});
-        return res.status(200).json(students);
-    } catch (error) {
-        console.error('An Error occurred while fetching students by sponsorship: ', error.message);
-        return res.status(500).send('Server Error while fetching students by sponsorship');
-    } 
-}
 
 
 
@@ -238,5 +226,5 @@ const updateSponsorship = async (req, res) => {
 
 export {addStudent, deleteStudent, 
   updateStudent, getStudentbyId, 
-  getStudentbySponsorship, updateSponsorship, 
+  updateSponsorship, 
   getAllStudents};

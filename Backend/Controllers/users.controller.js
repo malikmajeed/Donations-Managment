@@ -86,45 +86,56 @@ const login = async (req, res) => {
         const {email, password} = req.body;
         if(!email || !password){
             return res.status(400).json({
-                success:false,
-                message:"All fields are required"
-            })
+                success: false,
+                message: "All fields are required"
+            });
         }
+
         const user = await Users.findOne({email});
         if(!user){
             return res.status(400).json({
-                success:false,
-                message:"User with this email does not exist"
-            })
+                success: false,
+                message: "User with this email does not exist"
+            });
         }
+
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if(!isPasswordValid){
             return res.status(400).json({
-                success:false,
-                message:"Incorrect Password"
-            })
+                success: false,
+                message: "Incorrect Password"
+            });
         }       
 
-        const token = jwt.sign({id:user._id}, SECRET_KEY, {expiresIn: '1h'});
+        const token = jwt.sign(
+            {
+                id: user._id,
+                role: user.role
+            }, 
+            SECRET_KEY, 
+            {expiresIn: '24h'}
+        );
 
-        if(user && isPasswordValid){
-            res.status(200).json({
-                success:true,
-                message:"User logged in successfully",
-                userId:user._id,
-                userRole:user.role,
-                token
-            })
-        }   
-
-     
+        res.status(200).json({
+            success: true,
+            message: "User logged in successfully",
+            user: {
+                id: user._id,
+                role: user.role,
+                fName: user.fName,
+                lName: user.lName,
+                email: user.email
+            },
+            token
+        });
 
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({
-            success:false,
-            message:"User login failed",
-            error:error.message
-        })
+            success: false,
+            message: "User login failed",
+            error: error.message
+        });
     }
 }   
 
