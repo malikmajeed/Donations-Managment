@@ -8,6 +8,7 @@ import GetStudentByID from './components/getStudent'
 import GetAllStudents from './components/getAllStudents'
 import UpdateAndDeleteStudent from './components/updateStudent'
 import UserDashboard from './components/userDashboard/index.jsx'
+import UpdateProfile from './components/updateProfile'
 
 function App() {
   
@@ -32,6 +33,7 @@ function App() {
     
     <AddStudent />
     <UserDashboard />
+    <UpdateProfile userId="683af0de9c826d38dca8fb34"/>
     </>
   )
 }
