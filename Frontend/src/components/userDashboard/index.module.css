@@ -66,8 +66,9 @@
 }
 
 .infoBox {
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgb(96, 96, 250, 0.4);
     border-radius: 0.5rem;
+    /* background-color: #c9c9c9; */
     padding: 1rem;
     margin-bottom: 0.5rem;
 }
