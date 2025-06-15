@@ -131,18 +131,14 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                         <div className={styles.profileImageSection}>
                             <div className={styles.profileImageContainer}>
                                 <img
-                                    src={selectedImage ? selectedImage : existingProfileUrl ? existingProfileUrl : defaultAvatar}
+                                    src={selectedImage || formData.profileImage || '/default-avatar.png'}
                                     alt="Profile"
                                     className={styles.profileImage}
-                                    onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = defaultAvatar;
-                                    }}
                                 />
                                 <div className={styles.imageOverlay}>
                                     <label className={styles.uploadButton}>
                                         <FaCamera />
-                                        <span>Change Photo</span>
+                                        {/* <span>Change Photo</span> */}
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -175,7 +171,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                         </div>
                     </div>
 
-                    <div className={styles.genderPhoneRow}>
+                    <div className={styles.genderPhoneEmailRow}>
                         <div className={`${styles.formGroup} ${styles.genderGroup}`}>
                             <label htmlFor="gender">Gender</label>
                             <select
@@ -206,9 +202,6 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                                 }}
                             />
                         </div>
-                    </div>
-
-                    <div className={styles.emailAddressRow}>
                         <div className={styles.formGroup}>
                             <label htmlFor="email">Email</label>
                             <input
@@ -217,16 +210,6 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                                 value={formData.email}
                                 onChange={(e) => handleChange('email', e.target.value)}
                                 placeholder="Enter email"
-                            />
-                        </div>
-                        <div className={styles.formGroup}>
-                            <label htmlFor="address">Address</label>
-                            <input
-                                type="text"
-                                id="address"
-                                value={formData.address}
-                                onChange={(e) => handleChange('address', e.target.value)}
-                                placeholder="Enter address"
                             />
                         </div>
                     </div>
