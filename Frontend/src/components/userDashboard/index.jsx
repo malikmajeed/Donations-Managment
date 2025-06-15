@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import axios from 'axios';
 import defaultAvatar from '../../../public/default-avatar.avif'
+import UpdateProfile from '../updateProfile';
 
 export default function UserDashboard(){
     const[donationsList, setDonationsList]=useState([]);
     const[user, setUser]=useState(null);
     const[isLoading, setIsLoading] = useState(true);
+    const [isUpdateProfileOpen, setIsUpdateProfileOpen] = useState(false);
     const token = localStorage.getItem('token');
 
     useEffect(()=>{
@@ -60,6 +62,10 @@ export default function UserDashboard(){
         return user.profileUrl;
     };
 
+    const handleProfileUpdate = (updatedUser) => {
+        setUser(updatedUser);
+    };
+
     return(
         <div className={styles.mainContainer}>
             <div className={styles.dashboardContainer}>
@@ -101,7 +107,10 @@ export default function UserDashboard(){
                         <p className={styles.privacyNote}>This information is private and is only visible to you</p>
                     </div>
 
-                    <button className={styles.updateProfileButton}>
+                    <button 
+                        className={styles.updateProfileButton}
+                        onClick={() => setIsUpdateProfileOpen(true)}
+                    >
                         Update Profile
                     </button>
                 </div>
@@ -164,6 +173,14 @@ export default function UserDashboard(){
                     </div>
                 </div>
             </div>
+
+            {/* Update Profile Popup */}
+            <UpdateProfile 
+                isOpen={isUpdateProfileOpen}
+                onClose={() => setIsUpdateProfileOpen(false)}
+                onUpdate={handleProfileUpdate}
+                userId={user?._id}
+            />
         </div>
     );
 }
