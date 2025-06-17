@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 import axios from 'axios';
-import defaultAvatar from '../../../public/default-avatar.avif'
+import defaultAvatar from '/default-avatar.avif'
 import UpdateProfile from '../updateProfile';
+import API_CONFIG from '../../config/api.config';
 
 export default function UserDashboard(){
     const[donationsList, setDonationsList]=useState([]);
@@ -14,12 +15,13 @@ export default function UserDashboard(){
     useEffect(()=>{
         fetchUserData();
         fetchDonations();
+        token;
     },[])
 
     const fetchUserData = async () => {
         try {
             setIsLoading(true);
-            const response = await axios.get('http://localhost:3000/user/dashboard', {
+            const response = await axios.get(`${API_CONFIG.ENDPOINTS.USER.PROFILE}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

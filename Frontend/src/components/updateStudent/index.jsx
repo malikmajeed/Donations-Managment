@@ -5,6 +5,7 @@ import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash,FaCame
 import { User, Crown, Heart } from 'lucide-react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import defaultAvatar from '/default-avatar.avif'
 
 export default function GetStudentByID({ studentId }) {
     const [student, setStudent] = useState(null);
