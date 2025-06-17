@@ -144,7 +144,7 @@ const login = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         console.log(req.params.id);
-        const userId= req.params.id;
+        const userId= req.user.id;
         if(!userId){
             return res.status(400).json({
                 success:false,
@@ -158,6 +158,7 @@ const getUser = async (req, res) => {
                 message:"User not found"
             })
         }   
+        console.log(`retruning users data: ${user}`)
         res.status(200).json({
             success:true,
             message:"User data fetched successfully",
