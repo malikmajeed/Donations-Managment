@@ -4,6 +4,7 @@ import styles from './index.module.css';
 import { updateUserProfile } from '../../services/api';
 import defaultAvatar from '/default-avatar.avif';
 import { FaCamera } from 'react-icons/fa';
+import { FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -24,6 +25,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [existingProfileUrl, setExistingProfileUrl] = useState(null);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     useEffect(() => {
         if (isOpen && userId) {
@@ -109,7 +111,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
 
             const updatedUser = await updateUserProfile(userId, formDataToSend);
             onUpdate(updatedUser);
-            onClose();
+            setIsSuccess(true);
         } catch (err) {
             console.error('Update error:', err);
             setError(err.message || 'Failed to update profile');
@@ -118,7 +120,31 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
         }
     };
 
+    const handleClose = () => {
+        setIsSuccess(false);
+        onClose();
+    };
+
     if (!isOpen) return null;
+
+    if (isSuccess) {
+        return (
+            <div className={styles.modalOverlay}>
+                <div className={styles.modalContent}>
+                    <div className={styles.successContainer}>
+                        <FaCheckCircle className={styles.successIcon} />
+                        <h3 className={styles.successMessage}>Profile Updated Successfully</h3>
+                        <button 
+                            className={styles.okayButton}
+                            onClick={handleClose}
+                        >
+                            Okay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.modalOverlay}>
