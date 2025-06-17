@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styles from './index.module.css';
 // import { useAuth } from '../../contexts/AuthContext';
 import { updateUserProfile } from '../../services/api';
-// import defaultAvatar from '/default-avatar.avif';
+import defaultAvatar from '/default-avatar.avif';
 import { FaCamera } from 'react-icons/fa';
 import axios from 'axios';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { API_CONFIG } from '../../config/api.config';
 
 const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
     const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
 
     const fetchUserData = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/user/dashboard`, {
+            const response = await axios.get(API_CONFIG.ENDPOINTS.USER.PROFILE, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -50,7 +51,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                 });
                 if (userData.profileUrl) {
                     setExistingProfileUrl(userData.profileUrl.startsWith('/') 
-                        ? `http://localhost:3000${userData.profileUrl}`
+                        ? `${API_CONFIG.BASE_URL}${userData.profileUrl}`
                         : userData.profileUrl
                     );
                 }
@@ -110,6 +111,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
             onUpdate(updatedUser);
             onClose();
         } catch (err) {
+            console.error('Update error:', err);
             setError(err.message || 'Failed to update profile');
         } finally {
             setLoading(false);
@@ -131,14 +133,17 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                         <div className={styles.profileImageSection}>
                             <div className={styles.profileImageContainer}>
                                 <img
-                                    src={selectedImage || formData.profileImage || '/default-avatar.png'}
+                                    src={selectedImage || existingProfileUrl || defaultAvatar}
                                     alt="Profile"
                                     className={styles.profileImage}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = defaultAvatar;
+                                    }}
                                 />
                                 <div className={styles.imageOverlay}>
                                     <label className={styles.uploadButton}>
                                         <FaCamera />
-                                        {/* <span>Change Photo</span> */}
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -154,8 +159,9 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                             <input
                                 type="text"
                                 id="firstName"
+                                name="firstName"
                                 value={formData.firstName}
-                                onChange={(e) => handleChange('firstName', e.target.value)}
+                                onChange={handleChange}
                                 placeholder="Enter first name"
                             />
                         </div>
@@ -164,8 +170,9 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                             <input
                                 type="text"
                                 id="lastName"
+                                name="lastName"
                                 value={formData.lastName}
-                                onChange={(e) => handleChange('lastName', e.target.value)}
+                                onChange={handleChange}
                                 placeholder="Enter last name"
                             />
                         </div>
@@ -176,8 +183,9 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                             <label htmlFor="gender">Gender</label>
                             <select
                                 id="gender"
+                                name="gender"
                                 value={formData.gender}
-                                onChange={(e) => handleChange('gender', e.target.value)}
+                                onChange={handleChange}
                             >
                                 <option value="">Select gender</option>
                                 <option value="male">Male</option>
@@ -190,7 +198,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                             <PhoneInput
                                 country={'pk'}
                                 value={formData.phone}
-                                onChange={(value) => handleChange('phone', value)}
+                                onChange={handlePhoneChange}
                                 inputClass={styles.phoneInput}
                                 buttonClass={styles.phoneButton}
                                 dropdownClass={styles.phoneDropdown}
@@ -198,6 +206,7 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                                 containerClass={styles.phoneInputContainer}
                                 inputProps={{
                                     id: 'phone',
+                                    name: 'phone',
                                     placeholder: 'Enter phone number'
                                 }}
                             />
@@ -207,8 +216,9 @@ const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
                             <input
                                 type="email"
                                 id="email"
+                                name="email"
                                 value={formData.email}
-                                onChange={(e) => handleChange('email', e.target.value)}
+                                onChange={handleChange}
                                 placeholder="Enter email"
                             />
                         </div>

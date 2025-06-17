@@ -206,31 +206,67 @@ const getAllDonors = async (req, res) => {
 
 //updating a user
 const updateUser = async (req, res) => {
-    try{
-
-        const userId = req.body._id;
-        if(!userId){
+    try {
+        const userId = req.user.id; // Get userId from authenticated user
+        if (!userId) {
             return res.status(400).json({
-                success:false,
-                message:"User ID is required"
-            })
+                success: false,
+                message: "User ID is required"
+            });
         }
 
-        const user = await Users.findByIdAndUpdate(userId, req.body, {new:true}, {runValidators: true});
-        if(!user){
-            return res.status(400).json({
-                
-            })
+        // Get the update data from request body
+        const updateData = {
+            fName: req.body.firstName,
+            lName: req.body.lastName,
+            email: req.body.email,
+            phone: req.body.phone,
+            gender: req.body.gender,
+            address: req.body.address
+        };
+
+        // If there's a profile file, update the profileUrl
+        if (req.file) {
+            // The filename already contains the user ID, so we can use it directly
+            updateData.profileUrl = `/uploads/${req.file.filename}`;
         }
-    }
-    catch(error){
+
+        // Update the user
+        const user = await Users.findByIdAndUpdate(
+            userId,
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            user: {
+                fName: user.fName,
+                lName: user.lName,
+                email: user.email,
+                phone: user.phone,
+                gender: user.gender,
+                address: user.address,
+                profileUrl: user.profileUrl
+            }
+        });
+    } catch (error) {
+        console.error('Update user error:', error);
         res.status(500).json({
-            success:false,
-            message:"Failed to update user",
-            error:error.message
-        })
+            success: false,
+            message: "Failed to update user",
+            error: error.message
+        });
     }
-}
+};
 
 
 

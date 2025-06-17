@@ -1,8 +1,9 @@
 import express from "express";
 import { signUp, login, getUser, getAllDonors, deleteUser, updateUser } from "../Controllers/users.controller.js";
 import { authenticateToken as Auth, isAdmin } from "../Middlewares/authentication.js";
-const router = express.Router();
+import {upload} from "../Middlewares/upload.js";
 
+const router = express.Router();
 
 //signup route
 router.post("/signup", signUp); //✅ verified
@@ -18,7 +19,7 @@ router.get("/:id", Auth, getUser);
 router.get("/donors/", Auth, isAdmin, getAllDonors);//✅ verified
 
 //update user route
-router.patch("/update", Auth, updateUser);//✅ verified
+router.patch("/update", Auth, upload.single('profile'), updateUser);//✅ verified
 
 //deleting user route
 router.delete("/delete/:id", Auth, deleteUser)//✅ verified
