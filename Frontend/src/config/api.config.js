@@ -13,8 +13,8 @@ export const API_CONFIG = {
             UPDATE: `${API_BASE_URL}/user/update`,
         },
         DONATIONS: {
-            LIST: `${API_BASE_URL}/donations`,
-            CREATE: `${API_BASE_URL}/donations/create`,
+            LIST: `${API_BASE_URL}/donation`,
+            CREATE: `${API_BASE_URL}/donation/create`,
         }
     }
 };
