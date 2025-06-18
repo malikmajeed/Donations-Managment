@@ -2,6 +2,12 @@ import Users from "../Models/users.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -143,32 +149,43 @@ const login = async (req, res) => {
 //reading user data
 const getUser = async (req, res) => {
     try {
-        console.log(req.params.id);
-        const userId= req.user.id;
-        if(!userId){
+        const userId = req.user.id;
+        if (!userId) {
             return res.status(400).json({
-                success:false,
-                message:"User ID is required"
-            })
-        }   
+                success: false,
+                message: "User ID is required"
+            });
+        }
+
         const user = await Users.findById(userId);
-        if(!user){
-            return res.status(400).json({
-                success:false,
-                message:"User not found"
-            })
-        }   
-        console.log(`retruning users data: ${user}`)
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        // Format the user data with proper profile URL
+        const userData = {
+            ...user.toObject(),
+            profileUrl: user.profileUrl ? `${process.env.BASE_URL || 'http://localhost:3000'}${user.profileUrl}` : null
+        };
+
         res.status(200).json({
-            success:true,
-            message:"User data fetched successfully",
-            user
-        })
+            success: true,
+            message: "User data fetched successfully",
+            user: userData
+        });
 
     } catch (error) {
-        
+        console.error('Get user error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch user data",
+            error: error.message
+        });
     }
-}
+};
 
 
 // getting all users with role donors
@@ -206,31 +223,93 @@ const getAllDonors = async (req, res) => {
 
 //updating a user
 const updateUser = async (req, res) => {
-    try{
-
-        const userId = req.body._id;
-        if(!userId){
+    try {
+        const userId = req.user.id; // Get userId from authenticated user
+        if (!userId) {
             return res.status(400).json({
-                success:false,
-                message:"User ID is required"
-            })
+                success: false,
+                message: "User ID is required"
+            });
         }
 
-        const user = await Users.findByIdAndUpdate(userId, req.body, {new:true}, {runValidators: true});
-        if(!user){
-            return res.status(400).json({
+        // Get the update data from request body
+        const updateData = {
+            fName: req.body.firstName,
+            lName: req.body.lastName,
+            email: req.body.email,
+            phone: req.body.phone,
+            gender: req.body.gender,
+            address: req.body.address
+        };
+
+        // If there's a profile file, handle the image update
+        if (req.file) {
+            try {
+                // Get the current user to check for existing profile image
+                const currentUser = await Users.findById(userId);
                 
-            })
+                // If user has an existing profile image, delete it
+                if (currentUser && currentUser.profileUrl) {
+                    const oldImagePath = path.join(__dirname, '..', currentUser.profileUrl);
+                    try {
+                        await fs.access(oldImagePath); // Check if file exists
+                        await fs.unlink(oldImagePath); // Delete the file
+                        console.log('Old profile image deleted successfully');
+                    } catch (error) {
+                        console.error('Error deleting old profile image:', error);
+                        // Continue with the update even if deletion fails
+                    }
+                }
+
+                // Update with new profile image path
+                updateData.profileUrl = `/uploads/${req.file.filename}`;
+            } catch (error) {
+                console.error('Error handling profile image:', error);
+                return res.status(500).json({
+                    success: false,
+                    message: "Error handling profile image",
+                    error: error.message
+                });
+            }
         }
-    }
-    catch(error){
+
+        // Update the user
+        const updatedUser = await Users.findByIdAndUpdate(
+            userId,
+            updateData,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        // Send the complete user data including the profile URL
+        res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            user: {
+                fName: updatedUser.fName,
+                lName: updatedUser.lName,
+                email: updatedUser.email,
+                phone: updatedUser.phone,
+                gender: updatedUser.gender,
+                address: updatedUser.address,
+                profileUrl: updatedUser.profileUrl ? `${process.env.BASE_URL || 'http://localhost:3000'}${updatedUser.profileUrl}` : null
+            }
+        });
+    } catch (error) {
+        console.error('Update user error:', error);
         res.status(500).json({
-            success:false,
-            message:"Failed to update user",
-            error:error.message
-        })
+            success: false,
+            message: "Failed to update user",
+            error: error.message
+        });
     }
-}
+};
 
 
 

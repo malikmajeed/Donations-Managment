@@ -15,7 +15,6 @@ export default function UserDashboard(){
     useEffect(()=>{
         fetchUserData();
         fetchDonations();
-        token;
     },[])
 
     const fetchUserData = async () => {
@@ -40,7 +39,7 @@ export default function UserDashboard(){
 
     const fetchDonations = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/donation/', {
+            const response = await axios.get(`${API_CONFIG.ENDPOINTS.DONATIONS.LIST}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -54,18 +53,29 @@ export default function UserDashboard(){
     };
 
     const getProfileImageUrl = () => {
+        console.log('Current user:', user);
         if (!user || !user.profileUrl) {
+            console.log('No profile URL, using default avatar');
             return defaultAvatar;
         }
-        // If the profileUrl is a relative path, prepend the base URL
-        if (user.profileUrl.startsWith('/')) {
-            return `http://localhost:3000${user.profileUrl}`;
+
+        // If the URL is already absolute, use it directly
+        if (user.profileUrl.startsWith('http')) {
+            console.log('Using absolute URL:', user.profileUrl);
+            return user.profileUrl;
         }
-        return user.profileUrl;
+
+        // If it's a relative URL, construct the full URL
+        const fullUrl = `${API_CONFIG.BASE_URL}${user.profileUrl}`;
+        console.log('Constructed full URL:', fullUrl);
+        return fullUrl;
     };
 
     const handleProfileUpdate = (updatedUser) => {
+        console.log('Profile updated:', updatedUser);
         setUser(updatedUser);
+        // Refresh the user data to ensure we have the latest profile image
+        fetchUserData();
     };
 
     return(

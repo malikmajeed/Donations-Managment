@@ -22,15 +22,17 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
-        // Create unique filename with timestamp
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const filename = 'student-' + uniqueSuffix + path.extname(file.originalname);
-        console.log('Generated filename:', filename);
-        console.log('File details:', {
-            originalname: file.originalname,
-            mimetype: file.mimetype,
-            size: file.size
-        });
+        // Get user ID from the authenticated user
+        const userId = req.user.id;
+        if (!userId) {
+            return cb(new Error('User ID not found'), false);
+        }
+
+        // Create filename with user ID and timestamp
+        const timestamp = Date.now();
+        const extension = path.extname(file.originalname);
+        const filename = `user-${userId}-${timestamp}${extension}`;
+        
         cb(null, filename);
     }
 });
