@@ -52,24 +52,24 @@ export default function UserDashboard(){
         }
     };
 
-    const getProfileImageUrl = () => {
-        console.log('Current user:', user);
-        if (!user || !user.profileUrl) {
-            console.log('No profile URL, using default avatar');
-            return defaultAvatar;
-        }
+    // const getProfileImageUrl = () => {
+    //     console.log('Current user:', user);
+    //     if (!user || !user.profileUrl) {
+    //         console.log('No profile URL, using default avatar');
+    //         return defaultAvatar;
+    //     }
 
-        // If the URL is already absolute, use it directly
-        if (user.profileUrl.startsWith('http')) {
-            console.log('Using absolute URL:', user.profileUrl);
-            return user.profileUrl;
-        }
+    //     // If the URL is already absolute, use it directly
+    //     if (user.profileUrl.startsWith('http')) {
+    //         console.log('Using absolute URL:', user.profileUrl);
+    //         return user.profileUrl;
+    //     }
 
-        // If it's a relative URL, construct the full URL
-        const fullUrl = `${API_CONFIG.BASE_URL}${user.profileUrl}`;
-        console.log('Constructed full URL:', fullUrl);
-        return fullUrl;
-    };
+    //     // If it's a relative URL, construct the full URL
+    //     const fullUrl = `${API_CONFIG.BASE_URL}${user.profileUrl}`;
+    //     console.log('Constructed full URL:', fullUrl);
+    //     return fullUrl;
+    // };
 
     const handleProfileUpdate = (updatedUser) => {
         console.log('Profile updated:', updatedUser);
@@ -88,11 +88,12 @@ export default function UserDashboard(){
                             <div className={styles.loadingPlaceholder}>Loading...</div>
                         ) : (
                             <img 
-                                src={getProfileImageUrl()}
+                                src={user.profileUrl}
                                 alt={user ? `${user.fName || 'User'}'s profile` : 'User profile'} 
                                 className={styles.profileImage}
                                 onError={(e) => {
                                     console.log('Image load error, using default avatar');
+                                    console.log(`user profile link is: ${user.profileUrl}`);
                                     e.target.onerror = null;
                                     e.target.src = defaultAvatar;
                                 }}

@@ -16,10 +16,22 @@ if (!fs.existsSync(uploadDir)) {
 // Configure storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        console.log('Upload destination:', uploadDir);
-        console.log('Request headers:', req.headers);
-        console.log('Request body:', req.body);
-        cb(null, uploadDir);
+        // Determine if this is a user or student upload
+        let destDir;
+        // If the route contains 'user' or the field is 'profile', save to users
+        if (
+            (req.baseUrl && req.baseUrl.includes('/user')) ||
+            (file.fieldname === 'profile')
+        ) {
+            destDir = path.join(__dirname, '..', 'uploads', 'users');
+        } else {
+            destDir = path.join(__dirname, '..', 'uploads', 'students');
+        }
+        if (!fs.existsSync(destDir)) {
+            fs.mkdirSync(destDir, { recursive: true });
+        }
+        console.log('Upload destination:', destDir);
+        cb(null, destDir);
     },
     filename: function (req, file, cb) {
         // Get user ID from the authenticated user
@@ -27,12 +39,10 @@ const storage = multer.diskStorage({
         if (!userId) {
             return cb(new Error('User ID not found'), false);
         }
-
         // Create filename with user ID and timestamp
         const timestamp = Date.now();
         const extension = path.extname(file.originalname);
         const filename = `user-${userId}-${timestamp}${extension}`;
-        
         cb(null, filename);
     }
 });
