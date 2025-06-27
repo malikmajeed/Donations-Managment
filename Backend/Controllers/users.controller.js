@@ -262,7 +262,7 @@ const updateUser = async (req, res) => {
                 }
 
                 // Update with new profile image path
-                updateData.profileUrl = `/uploads/${req.file.filename}`;
+                updateData.profileUrl = `/uploads/users/${req.file.filename}`;
             } catch (error) {
                 console.error('Error handling profile image:', error);
                 return res.status(500).json({

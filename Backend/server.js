@@ -28,7 +28,7 @@ if (!fs.existsSync(uploadsDir)) {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Log static file requests for debugging
-app.use('/uploads', (req, res, next) => {
+app.use('/uploads/', (req, res, next) => {
     console.log('Static file request:', req.url);
     next();
 });
