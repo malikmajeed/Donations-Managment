@@ -373,6 +373,7 @@ async function sendEmail(to, subject, text) {
 // Controller for requesting password reset (send OTP)
 const requestPasswordReset = async (req, res) => {
     try {
+        console.log('reseting the password');
         const { email } = req.body;
         if (!email) {
             return res.status(400).json({ success: false, message: 'Email is required' });

@@ -38,6 +38,7 @@ export default function ForgetPassword() {
     try {
       // Replace with your actual endpoint
       const response = await axios.post(`${API_CONFIG.ENDPOINTS.USER.RESET}`, { email });
+      console.log(response.data)
       if (response.data.success) {
         setSuccess('Password reset instructions sent to your email.');
         setEmail('');
