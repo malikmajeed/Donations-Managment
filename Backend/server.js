@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import studentRouter from './Routes/students.router.js';
 import usersRouter from './Routes/users.router.js';
 import donationsRouter from './Routes/donations.routes.js'
+import donationCausesRouter from './Routes/donationCauses.router.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -22,6 +23,12 @@ app.use(cors());
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Create causes uploads directory if it doesn't exist
+const causesUploadsDir = path.join(__dirname, 'uploads', 'causes');
+if (!fs.existsSync(causesUploadsDir)) {
+    fs.mkdirSync(causesUploadsDir, { recursive: true });
 }
 
 // Serve static files from the uploads directory
@@ -41,6 +48,7 @@ console.log('reading controllers')
 app.use('/student/', studentRouter );
 app.use('/user/', usersRouter );
 app.use('/donation/', donationsRouter)
+app.use('/causes/', donationCausesRouter)
 
 app.listen(process.env.PORT,()=>{
     console.log('Server is listening at : http://localhost:3000/')
