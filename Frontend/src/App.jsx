@@ -2,6 +2,7 @@ import { useState } from 'react'
 import HeroSection from './pages/Home/HeroSection.jsx'
 import SignUp from './components/signUp'
 import './App.css'
+import ErrorBoundary from './components/ErrorBoundary.jsx' 
 import SignIn from './components/signIn'
 import AddStudent from './components/addStudent'
 import GetStudentByID from './components/getStudent'
@@ -32,7 +33,10 @@ function App() {
     
     
     <AddStudent />
+    <ErrorBoundary >
     <UserDashboard />
+    </ErrorBoundary>
+   
     <UpdateProfile userId="683af0de9c826d38dca8fb34"/>
     </>
   )
