@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs/promises';
 import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -155,7 +156,7 @@ const getUser = async (req, res) => {
                 success: false,
                 message: "User ID is required"
             });
-        }
+        }   
 
         const user = await Users.findById(userId);
         if (!user) {
@@ -346,6 +347,58 @@ const deleteUser = async(req,res)=>{
 
 }
 
+// Generate a random 6-digit OTP
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
 
+// Send email utility
+async function sendEmail(to, subject, text) {
+    // Configure your transporter (use environment variables for real projects)
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+    await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to,
+        subject,
+        text
+    });
+}
 
-export {signUp, login, getUser, getAllDonors, updateUser, deleteUser};
+// Controller for requesting password reset (send OTP)
+const requestPasswordReset = async (req, res) => {
+    try {
+        console.log('reseting the password');
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ success: false, message: 'Email is required' });
+        }
+        const user = await Users.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User with this email does not exist' });
+        }
+        // Generate OTP and set expiry (10 min)
+        const otp = generateOTP();
+        const otpExpiry = Date.now() + 10 * 60 * 1000;
+        user.resetPasswordOTP = otp;
+        user.resetPasswordOTPExpiry = otpExpiry;
+        await user.save();
+        // Send OTP to user's email
+        await sendEmail(
+            user.email,
+            'Your Password Reset OTP',
+            `Your OTP for password reset is: ${otp}. It is valid for 10 minutes.`
+        );
+        res.status(200).json({ success: true, message: 'OTP sent to email' });
+    } catch (error) {
+        console.error('Request password reset error:', error);
+        res.status(500).json({ success: false, message: 'Failed to send OTP', error: error.message });
+    }
+};
+
+export {signUp, login, getUser, getAllDonors, updateUser, deleteUser, requestPasswordReset};

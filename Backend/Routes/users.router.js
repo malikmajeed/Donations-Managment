@@ -1,5 +1,5 @@
 import express from "express";
-import { signUp, login, getUser, getAllDonors, deleteUser, updateUser } from "../Controllers/users.controller.js";
+import { signUp, login, getUser, getAllDonors, deleteUser, updateUser, requestPasswordReset } from "../Controllers/users.controller.js";
 import { authenticateToken as Auth, isAdmin } from "../Middlewares/authentication.js";
 import {upload} from "../Middlewares/upload.js";
 
@@ -26,5 +26,8 @@ router.delete("/delete/:id", Auth, deleteUser)//✅ verified
 
 //dashboard route
 router.get("/dashboard", Auth, getUser);
+
+// forgot password route (send OTP)
+router.post("/forgot-password", requestPasswordReset);
 
 export default router;
