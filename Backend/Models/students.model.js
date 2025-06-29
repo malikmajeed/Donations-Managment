@@ -53,6 +53,31 @@ const studentsSchema= new mongoose.Schema({
         default:false
      },
 
+     // Fee related fields
+     monthlyFee: {
+       type: Number,
+       default: 0,
+       min: 0
+     },
+     feeStatus: {
+       type: String,
+       enum: ["paid", "pending", "overdue"],
+       default: "pending"
+     },
+     lastPaymentDate: {
+       type: Date
+     },
+     totalPaid: {
+       type: Number,
+       default: 0,
+       min: 0
+     },
+     outstandingAmount: {
+       type: Number,
+       default: 0,
+       min: 0
+     },
+
      // Reference to Donations model
      donations: {
        type: mongoose.Schema.Types.ObjectId, 

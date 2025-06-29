@@ -17,7 +17,8 @@ export default function AddStudent() {
         address: '',
         school: '',
         studentGrade: '',
-        introduction: ''
+        introduction: '',
+        monthlyFee: ''
     });
 
     const [previewImage, setPreviewImage] = useState(null);
@@ -143,7 +144,8 @@ export default function AddStudent() {
                     address: '',
                     school: '',
                     studentGrade: '',
-                    introduction: ''
+                    introduction: '',
+                    monthlyFee: ''
                 });
                 setPreviewImage(null);
                 setError({});
@@ -202,7 +204,8 @@ export default function AddStudent() {
                 address: draftData.address || '',
                 school: draftData.school || '',
                 studentGrade: draftData.studentGrade || '',
-                introduction: draftData.introduction || ''
+                introduction: draftData.introduction || '',
+                monthlyFee: draftData.monthlyFee || ''
             });
             if (draftData.previewImage) {
                 setPreviewImage(draftData.previewImage);
@@ -405,6 +408,22 @@ export default function AddStudent() {
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
+                            />
+                        </div>
+                    </div>
+
+                    <div className={styles.formRow}>
+                        <div className={styles.formGroup}>
+                            <label htmlFor="monthlyFee">Monthly Fee (PKR)</label>
+                            <input
+                                type="number"
+                                id="monthlyFee"
+                                name="monthlyFee"
+                                value={formData.monthlyFee}
+                                onChange={handleChange}
+                                min="0"
+                                step="0.01"
+                                placeholder="Enter monthly fee amount"
                             />
                         </div>
                     </div>

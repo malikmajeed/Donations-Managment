@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
-import { Search, ArrowUpDown, User, Filter } from 'lucide-react';
+import { Search, ArrowUpDown, User, Filter, DollarSign } from 'lucide-react';
 import ProfileCard from '../Models/StdProfile_Card';
+import FeeManagement from '../feeManagement';
 
 
 
@@ -11,11 +12,14 @@ export default function GetAllStudents() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isCardOpen, setIsCardOpen]=useState(false)
+    const [selectedStudentId, setSelectedStudentId] = useState(null);
+    const [showFeeModal, setShowFeeModal] = useState(false);
     const [filters, setFilters] = useState({
         name: '',
         school: '',
         grade: '',
-        status: ''
+        status: '',
+        feeStatus: ''
     });
     const [sortConfig, setSortConfig] = useState({
         key: null,
@@ -72,8 +76,10 @@ export default function GetAllStudents() {
             const statusMatch = filters.status === '' || 
                 (filters.status === 'sponsored' && student.sponsorship) ||
                 (filters.status === 'not-sponsored' && !student.sponsorship);
+            const feeStatusMatch = filters.feeStatus === '' || 
+                (filters.feeStatus === student.feeStatus);
 
-            return nameMatch && schoolMatch && gradeMatch && statusMatch;
+            return nameMatch && schoolMatch && gradeMatch && statusMatch && feeStatusMatch;
         })
         .sort((a, b) => {
             if (!sortConfig.key) return 0;
@@ -155,6 +161,23 @@ export default function GetAllStudents() {
                         </select>
                     </div>
                 </div>
+
+                <div className={styles.filterGroup}>
+                    <label>Fee Status</label>
+                    <div className={styles.filterInputWrapper}>
+                        <Filter className={styles.filterIcon} />
+                        <select
+                            value={filters.feeStatus}
+                            onChange={(e) => handleFilterChange('feeStatus', e.target.value)}
+                            className={styles.filterSelect}
+                        >
+                            <option value="">All</option>
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div className={styles.tableContainer}>
@@ -198,6 +221,28 @@ export default function GetAllStudents() {
                             <th>
                                 <div className={styles.columnHeader}>
                                     <div className={styles.headerContent}>
+                                        <span>Monthly Fee</span>
+                                        <ArrowUpDown 
+                                            className={styles.sortIcon} 
+                                            onClick={() => handleSort('monthlyFee')}
+                                        />
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.columnHeader}>
+                                    <div className={styles.headerContent}>
+                                        <span>Fee Status</span>
+                                        <ArrowUpDown 
+                                            className={styles.sortIcon} 
+                                            onClick={() => handleSort('feeStatus')}
+                                        />
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div className={styles.columnHeader}>
+                                    <div className={styles.headerContent}>
                                         <span>Status</span>
                                         <ArrowUpDown 
                                             className={styles.sortIcon} 
@@ -220,6 +265,12 @@ export default function GetAllStudents() {
                                 </td>
                                 <td>{student.school || 'N/A'}</td>
                                 <td>{student.studentGrade || 'N/A'}</td>
+                                <td>PKR {student.monthlyFee || '0'}</td>
+                                <td>
+                                    <span className={`${styles.feeStatusBadge} ${styles[student.feeStatus || 'pending']}`}>
+                                        {student.feeStatus || 'pending'}
+                                    </span>
+                                </td>
                                 <td>
                                     <span className={`${styles.statusBadge} ${student.sponsorship ? styles.sponsored : styles.notSponsored}`}>
                                         {student.sponsorship ? 'Active' : 'Inactive'}
@@ -235,6 +286,16 @@ export default function GetAllStudents() {
                                     >
                                         View/Edit
                                     </button>
+                                    <button 
+                                        className={styles.feeButton}
+                                        onClick={() => {
+                                            setSelectedStudentId(student._id);
+                                            setShowFeeModal(true);
+                                        }}
+                                    >
+                                        <DollarSign size={16} />
+                                        Fees
+                                    </button>
                                     {/* <ProfileCard student={student}/> */}
                                 </td>
                             </tr>
@@ -242,6 +303,17 @@ export default function GetAllStudents() {
                     </tbody>
                 </table>
             </div>
+
+            {showFeeModal && selectedStudentId && (
+                <FeeManagement 
+                    studentId={selectedStudentId}
+                    onClose={() => {
+                        setShowFeeModal(false);
+                        setSelectedStudentId(null);
+                        fetchStudents(); // Refresh the list after fee changes
+                    }}
+                />
+            )}
         </div>
     );
 } 

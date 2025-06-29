@@ -5,6 +5,7 @@ import { FaPhone, FaMapMarkerAlt, FaSchool, FaGraduationCap,FaPen,FaTrash,FaCame
 import { User, Crown, Heart } from 'lucide-react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { DollarSign } from 'lucide-react';
 
 
 export default function GetStudentByID({ studentId }) {
@@ -156,7 +157,8 @@ export default function GetStudentByID({ studentId }) {
                     school: student.school,
                     studentGrade: student.studentGrade,
                     introduction: student.introduction,
-                    sponsorship: student.sponsorship
+                    sponsorship: student.sponsorship,
+                    monthlyFee: student.monthlyFee
                 },
                 {
                     headers: {
@@ -370,6 +372,20 @@ export default function GetStudentByID({ studentId }) {
                                     value={student.school}
                                     onChange={handleInputChange}
                                     className={styles.infoInput}
+                                />
+                            </div>
+                            
+                            <div className={styles.infoItem}>
+                                <label><DollarSign className={styles.icon} /> Monthly Fee (PKR)</label>
+                                <input 
+                                    type="number"
+                                    name="monthlyFee"
+                                    value={student.monthlyFee || ''}
+                                    onChange={handleInputChange}
+                                    className={styles.infoInput}
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Enter monthly fee"
                                 />
                             </div>
                             
