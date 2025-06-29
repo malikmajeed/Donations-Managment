@@ -3,7 +3,7 @@ const router = express.Router();
 
 import {addStudent, deleteStudent, updateStudent, 
     getStudentbyId, getAllStudents,
-      updateSponsorship
+      updateSponsorship, updateFeeStatus, recordPayment, getFeeSummary
     } from '../Controllers/students.controller.js';
 
     import { authenticateToken as Auth, isAdmin } from '../Middlewares/authentication.js';
@@ -26,5 +26,14 @@ router.get('/getAllStudents', getAllStudents);//✅ verified
 
 //Route for updating a student's sponsorship
 router.patch('/updateSponsorship/:id', updateSponsorship);//✅ verified
+
+//Route for updating fee status
+router.patch('/updateFeeStatus/:id', Auth, isAdmin, updateFeeStatus);//✅ verified
+
+//Route for recording a payment
+router.post('/recordPayment/:id', Auth, isAdmin, recordPayment);//✅ verified
+
+//Route for getting fee summary
+router.get('/getFeeSummary/:id', Auth, getFeeSummary);//✅ verified
 
 export default router;

@@ -21,7 +21,8 @@ const addStudent = async (req, res) => {
         address,
         school,
         studentGrade,
-        introduction
+        introduction,
+        monthlyFee
       } = req.body;
 
       // Get the uploaded file path if exists
@@ -74,7 +75,8 @@ const addStudent = async (req, res) => {
         address,
         school,
         studentGrade,
-        introduction
+        introduction,
+        monthlyFee: monthlyFee || 0
       });
   
       await newStudent.save();
@@ -134,7 +136,8 @@ const updateStudent = async (req, res) => {
       address, 
       school, 
       studentGrade, 
-      introduction 
+      introduction,
+      monthlyFee
     } = req.body;
 
     if (!id) {
@@ -153,7 +156,8 @@ const updateStudent = async (req, res) => {
       address, 
       school, 
       studentGrade, 
-      introduction
+      introduction,
+      monthlyFee
     }, {runValidators:true}, {new:true});
 
     if(!isUpdatedStudent){
@@ -219,12 +223,130 @@ const updateSponsorship = async (req, res) => {
     }
 } 
 
+// Update fee status
+const updateFeeStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { feeStatus } = req.body;
+        
+        if (!id) {
+            return res.status(400).send('Student ID is required');
+        }
+        
+        if (!['paid', 'pending', 'overdue'].includes(feeStatus)) {
+            return res.status(400).send('Invalid fee status');
+        }
+        
+        const updatedStudent = await Students.findByIdAndUpdate(
+            id, 
+            { feeStatus },
+            { new: true, runValidators: true }
+        );
+        
+        if (!updatedStudent) {
+            return res.status(404).send('Student not found');
+        }
+        
+        return res.status(200).json({
+            success: true,
+            message: 'Fee status updated successfully',
+            student: updatedStudent
+        });
+    } catch (error) {
+        console.error('An Error occurred while updating fee status: ', error.message);
+        return res.status(500).send('Server Error while updating fee status');
+    }
+};
 
+// Record a payment
+const recordPayment = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { amount, paymentDate } = req.body;
+        
+        if (!id) {
+            return res.status(400).send('Student ID is required');
+        }
+        
+        if (!amount || amount <= 0) {
+            return res.status(400).send('Valid payment amount is required');
+        }
+        
+        const student = await Students.findById(id);
+        if (!student) {
+            return res.status(404).send('Student not found');
+        }
+        
+        // Calculate new totals
+        const newTotalPaid = (student.totalPaid || 0) + parseFloat(amount);
+        const newOutstandingAmount = Math.max(0, (student.outstandingAmount || 0) - parseFloat(amount));
+        
+        // Determine new fee status
+        let newFeeStatus = 'pending';
+        if (newOutstandingAmount === 0) {
+            newFeeStatus = 'paid';
+        } else if (newOutstandingAmount > 0) {
+            newFeeStatus = 'overdue';
+        }
+        
+        const updatedStudent = await Students.findByIdAndUpdate(
+            id,
+            {
+                totalPaid: newTotalPaid,
+                outstandingAmount: newOutstandingAmount,
+                feeStatus: newFeeStatus,
+                lastPaymentDate: paymentDate || new Date()
+            },
+            { new: true, runValidators: true }
+        );
+        
+        return res.status(200).json({
+            success: true,
+            message: 'Payment recorded successfully',
+            student: updatedStudent
+        });
+    } catch (error) {
+        console.error('An Error occurred while recording payment: ', error.message);
+        return res.status(500).send('Server Error while recording payment');
+    }
+};
 
-
-
+// Get fee summary for a student
+const getFeeSummary = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        if (!id) {
+            return res.status(400).send('Student ID is required');
+        }
+        
+        const student = await Students.findById(id);
+        if (!student) {
+            return res.status(404).send('Student not found');
+        }
+        
+        const feeSummary = {
+            monthlyFee: student.monthlyFee || 0,
+            totalPaid: student.totalPaid || 0,
+            outstandingAmount: student.outstandingAmount || 0,
+            feeStatus: student.feeStatus || 'pending',
+            lastPaymentDate: student.lastPaymentDate
+        };
+        
+        return res.status(200).json({
+            success: true,
+            feeSummary
+        });
+    } catch (error) {
+        console.error('An Error occurred while fetching fee summary: ', error.message);
+        return res.status(500).send('Server Error while fetching fee summary');
+    }
+};
 
 export {addStudent, deleteStudent, 
   updateStudent, getStudentbyId, 
   updateSponsorship, 
-  getAllStudents};
+  getAllStudents,
+  updateFeeStatus,
+  recordPayment,
+  getFeeSummary};
