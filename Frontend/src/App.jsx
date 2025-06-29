@@ -10,19 +10,20 @@ import GetAllStudents from './components/getAllStudents'
 import UpdateAndDeleteStudent from './components/updateStudent'
 import UserDashboard from './components/userDashboard/index.jsx'
 import UpdateProfile from './components/updateProfile'
+import ForgetPassword from './components/forgetPassword'
 
 function App() {
   
-  const [form, setForm]=useState(false)
+ 
 
   return (
     <>
  
-    {form?( 
-     <SignUp selectForm={setForm} />  //first setForm is the name of prop your passing
-    ):(         
-      <SignIn selectForm={setForm}/>              //while the setForm is the actual value of it/>
-    )}
+    
+     <SignUp />  
+           
+      <SignIn/>              
+      <ForgetPassword />
      
     
       <GetAllStudents />
@@ -31,7 +32,7 @@ function App() {
 
   
     
-    
+   
     <AddStudent />
     <ErrorBoundary >
     <UserDashboard />

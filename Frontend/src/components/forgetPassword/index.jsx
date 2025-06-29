@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from '../signIn/index.module.css';
+import API_CONFIG from '../../config/api.config';
 
-export default function ForgetPassword({ selectForm }) {
+
+
+
+
+export default function ForgetPassword() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -32,7 +37,7 @@ export default function ForgetPassword({ selectForm }) {
     setSuccess('');
     try {
       // Replace with your actual endpoint
-      const response = await axios.post('http://localhost:3000/user/forgot-password', { email });
+      const response = await axios.post(`${API_CONFIG.ENDPOINTS.USER.RESET}`, { email });
       if (response.data.success) {
         setSuccess('Password reset instructions sent to your email.');
         setEmail('');
