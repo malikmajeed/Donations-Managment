@@ -11,7 +11,7 @@ export const API_CONFIG = {
         USER: {
             PROFILE: `${API_BASE_URL}/user/dashboard`,
             UPDATE: `${API_BASE_URL}/user/update`,
-            RESET: `${API_BASE_URL}/user/forgot-password`
+            RESET: `${API_BASE_URL}/user/forget-password`
         },
         DONATIONS: {
             LIST: `${API_BASE_URL}/donation`,
