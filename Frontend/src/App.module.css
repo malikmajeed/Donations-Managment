@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+}
+
+.app {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.mainArea {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  flex: auto auto;
+  min-height: 0;
+}
+
+/* Sidebar: fixed width, content: flex */
+.mainArea > :first-child {
+  width: 260px;
+  min-width: 72px;
+  max-width: 320px;
+  z-index: 2222;
+}
+.mainArea > :last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 2rem 0 0 0;
+}
+
+@media (max-width: 900px) {
+  .mainArea > :first-child {
+    width: 72px;
+  }
+}
+
+/* Remove old .hero-section styles from here, as they are now in the HeroSection's own module */

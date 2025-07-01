@@ -2,15 +2,16 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 100dvh;
   width: 260px;
   background: #fff;
   box-shadow: 2px 0 16px rgba(0,0,0,0.08);
   z-index: 200;
   display: flex;
   flex-direction: column;
+  
   transform: translateX(-100%);
-  transition: transform 0.3s cubic-bezier(.4,0,.2,1), width 0.2s;
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), width 0.45s cubic-bezier(.4,0,.2,1);
 }
 
 .sidebar.open {
@@ -24,24 +25,25 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 0.5rem;
-  padding: 1.2rem 1.2rem 1rem 1.2rem;
+  padding: 1.2rem 1rem 1rem 1.2rem;
   border-bottom: 1px solid #e5e7eb;
 }
 
 .collapseBtn {
   background: none;
-  border: none;
+  border: 1px solid #e5e7eb;
   color: #2563eb;
   cursor: pointer;
   padding: 0.2rem;
   border-radius: 4px;
-  transition: background 0.2s;
+  transition: background 0.2s, border 0.2s, color 0.2s;
   margin-right: 0.5rem;
 }
 .collapseBtn:hover {
   background: #f1f5f9;
+  border-color: #2563eb;
 }
 
 .logoText {
@@ -65,7 +67,9 @@
   flex-direction: column;
   gap: 0.5rem;
   margin: 1.5rem 0 0 0;
-  flex: 1;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .navLink {
@@ -88,6 +92,18 @@
   width: 32px;
   height: 32px;
   display: block;
+  transition: color 0.2s;
+}
+
+.navLink span {
+  display: inline-block;
+  opacity: 1;
+  max-width: 160px;
+  width: auto;
+  margin-left: 0.5rem;
+  pointer-events: auto;
+  overflow: hidden;
+  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), max-width 0.25s cubic-bezier(.4,0,.2,1), margin 0.25s cubic-bezier(.4,0,.2,1);
 }
 
 .sidebar.collapsed .navLink {
@@ -96,7 +112,11 @@
   gap: 0;
 }
 .sidebar.collapsed .navLink span {
-  display: none;
+  opacity: 0;
+  max-width: 0;
+  margin-left: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .navLink:hover {
@@ -126,9 +146,8 @@
   color: #fff !important;
 }
 
-
 .logoutBtn {
-  margin: 1.5rem 1.2rem 1.2rem 1.2rem;
+  margin: 1.2rem 1.2rem 0 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -142,6 +161,7 @@
   cursor: pointer;
   transition: background 0.2s;
   justify-content: flex-start;
+  margin-top: auto;
 }
 .sidebar.collapsed .logoutBtn {
   justify-content: center;
