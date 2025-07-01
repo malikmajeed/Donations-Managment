@@ -28,6 +28,6 @@ router.delete("/delete/:id", Auth, deleteUser)//✅ verified
 router.get("/dashboard", Auth, getUser);
 
 // forgot password route (send OTP)
-router.post("/forgot-password", requestPasswordReset);
+router.post("/forget-password", requestPasswordReset);
 
 export default router;

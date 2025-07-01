@@ -45,9 +45,28 @@ export default function UserDashboard(){
                 }
             });
             console.log('Donations data:', response.data);
-            setDonationsList(response.data);
+            if (response.data.success) {
+                const donations = response.data.donations || [];
+                console.log('Processed donations:', donations);
+                // Log each donation to debug target field
+                donations.forEach((donation, index) => {
+                    console.log(`Donation ${index + 1}:`, {
+                        id: donation._id,
+                        donationToType: donation.donationToType,
+                        target: donation.target,
+                        donationTo: donation.donationTo
+                    });
+                });
+                setDonationsList(donations);
+            } else {
+                console.warn('Donations response not successful:', response.data);
+                setDonationsList([]);
+            }
         } catch (error) {
             console.error('Error fetching donations:', error.message);
+            if (error.response) {
+                console.error('Error response:', error.response.data);
+            }
             setDonationsList([]);
         }
     };
@@ -131,7 +150,7 @@ export default function UserDashboard(){
                 {/* Right Column - Content Section */}
                 <div className={styles.contentSection}>
                     <div className={styles.donationsTable}>
-                        <h3>Sponsorship History</h3>
+                        <h3>Donation History</h3>
                         {isLoading ? (
                             <div className={styles.loadingPlaceholder}>Loading donations...</div>
                         ) : donationsList.length > 0 ? (
@@ -139,7 +158,7 @@ export default function UserDashboard(){
                                 <thead>
                                     <tr>
                                         <th>Sr.</th>
-                                        <th>Students</th>
+                                        <th>Recipient</th>
                                         <th>Current Status</th>
                                         <th>Amount</th>
                                     </tr> 
@@ -150,13 +169,18 @@ export default function UserDashboard(){
                                             <td className={styles.srNoColumn}>{index+1}</td>
                                             <td>
                                                 <span>
-                                                    {donation.donationTo ? 
-                                                        `${donation.donationTo.firstName} ${donation.donationTo.lastName}` : 
-                                                        'Student not found'}
+                                                    {donation.target ? 
+                                                        (donation.donationToType === 'student' 
+                                                            ? `${donation.target.firstName || 'Unknown'} ${donation.target.lastName || ''}`
+                                                            : donation.target.name || 'Unknown Cause'
+                                                        ) : 
+                                                        donation.donationToType === 'student' ? 'Student not found' : 
+                                                        donation.donationToType === 'cause' ? 'Cause not found' : 
+                                                        'Unknown recipient'}
                                                 </span>
                                             </td>
                                             <td><span>{donation.status || 'NA'}</span></td>
-                                            <td><span>${donation.Amount || 'NA'}</span></td>
+                                            <td><span>${donation.amount || 'NA'}</span></td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -172,15 +196,21 @@ export default function UserDashboard(){
                             <p className={styles.statValue}>{donationsList.length}</p>
                         </div>
                         <div className={styles.statBox}>
-                            <p>Number Of Students Sponsored</p>
+                            <p>Students Sponsored</p>
                             <p className={styles.statValue}>
-                                {new Set(donationsList.map(d => d.donationTo?._id)).size}
+                                {new Set(donationsList.filter(d => d.donationToType === 'student').map(d => d.donationTo)).size}
+                            </p>
+                        </div>
+                        <div className={styles.statBox}>
+                            <p>Causes Supported</p>
+                            <p className={styles.statValue}>
+                                {new Set(donationsList.filter(d => d.donationToType === 'cause').map(d => d.donationTo)).size}
                             </p>
                         </div>
                         <div className={styles.statBox}>
                             <p>Total Amount Donated</p>
                             <p className={styles.statValue}>
-                                ${donationsList.reduce((sum, donation) => sum + (donation.Amount || 0), 0)}
+                                ${donationsList.reduce((sum, donation) => sum + (donation.amount || 0), 0)}
                             </p>
                         </div>
                     </div>

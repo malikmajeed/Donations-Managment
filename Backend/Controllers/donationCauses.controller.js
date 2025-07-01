@@ -32,13 +32,13 @@ const createDonationCause = async (req, res) => {
         }
 
         // Check if cause with same name already exists
-        const existingCause = await DonationCauses.findOne({ name });
-        if (existingCause) {
-            return res.status(409).json({
-                success: false,
-                message: 'A cause with this name already exists'
-            });
-        }
+        // const existingCause = await DonationCauses.findOne({ name });
+        // if (existingCause) {
+        //     return res.status(409).json({
+        //         success: false,
+        //         message: 'A cause with this name already exists'
+        //     });
+        // }
 
         // Create new donation cause
         const newCause = new DonationCauses({

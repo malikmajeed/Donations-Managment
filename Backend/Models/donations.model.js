@@ -61,14 +61,6 @@ donationsSchema.index({ donationFrom: 1 });
 donationsSchema.index({ status: 1 });
 donationsSchema.index({ createdAt: -1 });
 
-// Virtual populate for the donation target
-donationsSchema.virtual('target', {
-    refPath: 'donationToModel',
-    localField: 'donationTo',
-    foreignField: '_id',
-    justOne: true
-});
-
 // Pre-save middleware to generate receipt number
 donationsSchema.pre('save', function(next) {
     if (!this.receiptNumber) {

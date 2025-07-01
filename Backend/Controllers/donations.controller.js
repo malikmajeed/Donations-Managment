@@ -133,17 +133,47 @@ export const getAllDonations = async (req, res) => {
 
         const donations = await Donations.find(filter)
             .populate('donationFrom', 'firstName lastName email')
-            .populate('target')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(parseInt(limit));
+
+        // Manually populate the target based on donationToType
+        const processedDonations = await Promise.all(donations.map(async (donation) => {
+            const donationObj = donation.toObject();
+            
+            try {
+                if (donationObj.donationToType === 'student') {
+                    const student = await Students.findById(donationObj.donationTo).select('firstName lastName');
+                    if (student) {
+                        donationObj.target = {
+                            firstName: student.firstName,
+                            lastName: student.lastName
+                        };
+                    } else {
+                        donationObj.target = { firstName: 'Unknown', lastName: 'Student' };
+                    }
+                } else if (donationObj.donationToType === 'cause') {
+                    const cause = await DonationCauses.findById(donationObj.donationTo).select('name');
+                    if (cause) {
+                        donationObj.target = { name: cause.name };
+                    } else {
+                        donationObj.target = { name: 'Unknown Cause' };
+                    }
+                }
+            } catch (error) {
+                console.error('Error populating target:', error);
+                donationObj.target = { firstName: 'Unknown', lastName: 'Recipient' };
+            }
+            
+            return donationObj;
+        }));
 
         const totalDonations = await Donations.countDocuments(filter);
         const totalPages = Math.ceil(totalDonations / parseInt(limit));
 
         return res.status(200).json({
             success: true,
-            donations,
+            donations: processedDonations,
             pagination: {
                 currentPage: parseInt(page),
                 totalPages,
