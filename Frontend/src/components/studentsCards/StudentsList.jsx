@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import StudentCard from './index.jsx';
 import styles from './index.module.css';
+import axios from 'axios';
 
 const STUDENTS_PER_PAGE = 9;
 
@@ -11,20 +12,20 @@ export default function StudentsList() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setLoading(true);
-    fetch('http://localhost:3000/student/getAllStudents')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch students');
-        return res.json();
-      })
-      .then(data => {
-        setStudents(data.students || data); // support both {students: [...]} and [...] formats
+    const fetchStudents = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get('http://localhost:3000/student/getAllStudents');
+        const data = response.data;
+        setStudents(data); // support both {students: [...]} and [...] formats
         setLoading(false);
-      })
-      .catch(err => {
+        // console.log(data);
+      } catch (err) {
         setError(err.message);
         setLoading(false);
-      });
+      }
+    };
+    fetchStudents();
   }, []);
 
   const totalPages = Math.ceil(students.length / STUDENTS_PER_PAGE);
@@ -43,14 +44,14 @@ export default function StudentsList() {
       <div className={styles.studentsGrid}>
         {currentStudents.map(student => (
           <StudentCard key={student._id || student.id}
-            profileImage={student.profileImage}
+            profileImage={student.profileUrl || student.profileImage}
             firstName={student.firstName}
             lastName={student.lastName}
             gender={student.gender}
             age={student.age}
             studentClass={student.studentClass}
-            fee={student.fee}
-            sponsored={student.sponsored}
+            fee={student.monthlyFee || student.fee}
+            sponsored={student.sponsorship || student.sponsored}
           />
         ))}
       </div>
