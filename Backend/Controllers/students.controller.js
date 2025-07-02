@@ -192,9 +192,17 @@ const getStudentbyId = async (req, res) => {
 //get all students
 const getAllStudents = async (req, res) => {
     try{
-
         const students = await Students.find();
-        return res.status(200).json(students);
+        // Map students to ensure profileUrl is a full URL
+        const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+        const studentsWithFullProfileUrl = students.map(student => {
+            const s = student.toObject();
+            if (s.profileUrl && !s.profileUrl.startsWith('http')) {
+                s.profileUrl = `${baseUrl}${s.profileUrl}`;
+            }
+            return s;
+        });
+        return res.status(200).json(studentsWithFullProfileUrl);
     } catch (error) {
         console.error('An Error occurred while fetching all students: ', error.message);
         return res.status(500).send('Server Error while fetching all students');
