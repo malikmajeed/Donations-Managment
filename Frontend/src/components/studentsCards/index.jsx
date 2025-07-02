@@ -7,6 +7,7 @@ export default function StudentCard({
   lastName,
   gender,
   age,
+  profileUrl,
   studentClass,
   fee,
   sponsored
@@ -14,6 +15,16 @@ export default function StudentCard({
   let GenderIcon = MdPerson;
   if (gender === 'male') GenderIcon = MdBoy;
   else if (gender === 'female') GenderIcon = MdGirl;
+
+  // Use default avatar if profileImage is missing, null, or empty string
+  let imageSrc = '/default-avatar.avif';
+  if (profileImage && profileImage.trim() !== '') {
+    imageSrc = profileImage.startsWith('http')
+      ? profileImage
+      : `http://localhost:3000/${profileImage.replace(/^\/+/, '')}`;
+  }
+
+  
 
   return (
     <div className={styles.studentCard}>
@@ -26,7 +37,7 @@ export default function StudentCard({
         </span>
       </div>
       <img
-        src={profileImage || '/default-avatar.avif'}
+        src={imageSrc}
         alt={firstName + ' ' + lastName}
         className={styles.profileImage}
         loading="lazy"
@@ -35,7 +46,7 @@ export default function StudentCard({
         <span className={styles.fullName}>{firstName} {lastName}</span>
       </div>
       <div className={styles.infoColumn}>
-        <span className={styles.infoItem}><MdCalendarToday size={20} style={{marginRight: 6, color: '#4f8cff'}}/>Age: {age}</span>
+        <span className={styles.infoItem}><MdCalendarToday size={20} style={{marginRight: 6, color: '#4f8cff'}}/>Age: {age} years</span>
         <span className={styles.infoItem}><MdClass size={20} style={{marginRight: 6, color: '#4f8cff'}}/>Class: {studentClass}</span>
         <span className={styles.infoItem}>Monthly Fee: <span className={styles.feeValue}>${fee}</span></span>
       </div>
