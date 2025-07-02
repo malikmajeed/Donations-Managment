@@ -189,18 +189,47 @@ const getStudentbyId = async (req, res) => {
     }1
 }
 
-//get all students
-const getAllStudents = async (req, res) => {
-    try{
-
-        const students = await Students.find();
-        return res.status(200).json(students);
-    } catch (error) {
-        console.error('An Error occurred while fetching all students: ', error.message);
-        return res.status(500).send('Server Error while fetching all students');
-    }
+// Helper function to calculate age
+function calculateAge(dob) {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+  }
+  return age;
 }
-    
+
+// Get all students
+const getAllStudents = async (req, res) => {
+  try {
+      const students = await Students.find();
+      const baseUrl = process.env.BASE_URL || 'http://localhost:3000';
+
+      const studentsWithExtras = students.map(student => {
+          const s = student.toObject();
+
+          // Ensure full profileUrl
+          if (s.profileUrl && !s.profileUrl.startsWith('http')) {
+              s.profileUrl = `${baseUrl}${s.profileUrl}`;
+          }
+
+          // Add calculated age
+          if (s.dateOfBirth) {
+              s.age = calculateAge(s.dateOfBirth);
+          }
+
+          return s;
+      });
+
+      return res.status(200).json(studentsWithExtras);
+  } catch (error) {
+      console.error('An error occurred while fetching all students:', error.message);
+      return res.status(500).send('Server Error while fetching all students');
+  }
+};
+
 
 
 
