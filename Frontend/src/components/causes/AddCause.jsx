@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from './AddCause.module.css';
+import { MdCameraAlt } from 'react-icons/md';
 
 const CAUSE_TYPES = [
   'education',
@@ -73,51 +74,46 @@ export default function AddCause() {
     <form onSubmit={handleSubmit} className={styles.addCauseForm}>
       <h2 className={styles.heading}>Add New Donation Cause</h2>
       <div>
-        <label className={styles.label}>Name<br/>
-          <input name="name" value={form.name} onChange={handleChange} required className={styles.input} />
-        </label>
-      </div>
-      <div>
-        <label className={styles.label}>Location<br/>
-          <input name="location" value={form.location} onChange={handleChange} required className={styles.input} />
-        </label>
-      </div>
-      <div>
-        <label className={styles.label}>Type<br/>
-          <select name="type" value={form.type} onChange={handleChange} required className={styles.select}>
-            <option value="">Select type</option>
-            {CAUSE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </label>
-      </div>
-      <div>
-        <label className={styles.label}>Budget Required<br/>
-          <input name="budgetRequired" type="number" min="0" value={form.budgetRequired} onChange={handleChange} required className={styles.input} />
-        </label>
-      </div>
-      <div>
-        <label className={styles.label}>Description<br/>
-          <textarea name="description" value={form.description} onChange={handleChange} rows={3} className={styles.textarea} />
-        </label>
-      </div>
-      <div>
-        <label className={styles.label}>End Date<br/>
-          <input name="endDate" type="date" value={form.endDate} onChange={handleChange} className={styles.input} />
-        </label>
-      </div>
-      <div className={styles.checkboxRow}>
-        <input name="isUrgent" type="checkbox" checked={form.isUrgent} onChange={handleChange} id="isUrgent" />
-        <label htmlFor="isUrgent">Is Urgent?</label>
-      </div>
-      {imagePreview && (
-        <div className={styles.imagePreviewBox}>
-          <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
+        <div className={styles.circlePreviewBox}>
+          {imagePreview ? (
+            <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
+          ) : (
+            <MdCameraAlt className={styles.cameraIcon} />
+          )}
         </div>
-      )}
-      <div>
-        <label className={styles.label}>Feature Image<br/>
-          <input name="featureImage" type="file" accept="image/*" onChange={handleChange} className={styles.fileInput} />
-        </label>
+        <div className={styles.uploadText}>Upload an image</div>
+        <input name="featureImage" type="file" accept="image/*" onChange={handleChange} className={styles.fileInput} style={{ display: 'block', margin: '0 auto 0.5rem auto' }} />
+      </div>
+      <div className={styles.formGrid}>
+        <div className={styles.formCol}>
+          <label className={styles.label}>Name<br/>
+            <input name="name" value={form.name} onChange={handleChange} required className={styles.input} />
+          </label>
+          <label className={styles.label}>Type<br/>
+            <select name="type" value={form.type} onChange={handleChange} required className={styles.select}>
+              <option value="">Select type</option>
+              {CAUSE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+          <label className={styles.label}>Description<br/>
+            <textarea name="description" value={form.description} onChange={handleChange} rows={3} className={styles.textarea} />
+          </label>
+        </div>
+        <div className={styles.formCol}>
+          <label className={styles.label}>Location<br/>
+            <input name="location" value={form.location} onChange={handleChange} required className={styles.input} />
+          </label>
+          <label className={styles.label}>Budget Required<br/>
+            <input name="budgetRequired" type="number" min="0" value={form.budgetRequired} onChange={handleChange} required className={styles.input} />
+          </label>
+          <label className={styles.label}>End Date<br/>
+            <input name="endDate" type="date" value={form.endDate} onChange={handleChange} className={styles.input} />
+          </label>
+          <div className={styles.checkboxRow}>
+            <input name="isUrgent" type="checkbox" checked={form.isUrgent} onChange={handleChange} id="isUrgent" />
+            <label htmlFor="isUrgent">Is Urgent?</label>
+          </div>
+        </div>
       </div>
       {error && <div className={styles.error}>{error}</div>}
       {success && <div className={styles.success}>{success}</div>}
