@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import StudentsList from '../../studentsCards/StudentsList';
+import StudentsList from '../../Students/studentsCards/StudentsList';
 
 export default function HomePage() {
   return (

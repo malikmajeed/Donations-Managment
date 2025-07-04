@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './index.module.css';
 // import { useAuth } from '../../contexts/AuthContext';
-import { updateUserProfile } from '../../services/api';
+import { updateUserProfile } from '../../../services/api';
 import defaultAvatar from '/default-avatar.avif';
 import { FaCamera } from 'react-icons/fa';
 import { FaCheckCircle } from 'react-icons/fa';
 import axios from 'axios';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { API_CONFIG } from '../../config/api.config';
+import { API_CONFIG } from '../../../config/api.config';
 
 const UpdateProfile = ({ isOpen, onClose, onUpdate, userId }) => {
     const [formData, setFormData] = useState({

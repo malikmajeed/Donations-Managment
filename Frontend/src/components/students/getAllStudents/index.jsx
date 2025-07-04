@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './index.module.css';
 import { Search, ArrowUpDown, User, Filter, DollarSign } from 'lucide-react';
-import ProfileCard from '../Models/StdProfile_Card';
-import FeeManagement from '../feeManagement';
+import ProfileCard from '../../Models/StdProfile_Card';
+import FeeManagement from '../../feeManagement';
 
 
 
