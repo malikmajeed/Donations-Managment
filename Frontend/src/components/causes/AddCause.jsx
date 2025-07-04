@@ -2,7 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import styles from './AddCause.module.css';
 import { MdCameraAlt } from 'react-icons/md';
-import API_CONFIG from '../../../config/api.config.js';
+// import API_CONFIG from '../../../config/api.config.js';
+import { API_CONFIG } from '../../config/api.config';
 
 const CAUSE_TYPES = [
   'education',
