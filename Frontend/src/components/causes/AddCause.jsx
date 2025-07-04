@@ -74,15 +74,22 @@ export default function AddCause() {
     <form onSubmit={handleSubmit} className={styles.addCauseForm}>
       <h2 className={styles.heading}>Add New Donation Cause</h2>
       <div>
-        <div className={styles.circlePreviewBox}>
+        <label htmlFor="featureImageUpload" className={styles.circlePreviewBox}>
           {imagePreview ? (
             <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
           ) : (
             <MdCameraAlt className={styles.cameraIcon} />
           )}
-        </div>
+          <input
+            id="featureImageUpload"
+            name="featureImage"
+            type="file"
+            accept="image/*"
+            onChange={handleChange}
+            className={styles.hiddenInput}
+          />
+        </label>
         <div className={styles.uploadText}>Upload an image</div>
-        <input name="featureImage" type="file" accept="image/*" onChange={handleChange} className={styles.fileInput} style={{ display: 'block', margin: '0 auto 0.5rem auto' }} />
       </div>
       <div className={styles.formGrid}>
         <div className={styles.formCol}>
