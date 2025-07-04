@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import styles from '../signIn/index.module.css';
-import API_CONFIG from '../../config/api.config';
+import API_CONFIG from '../../../config/api.config';
 
 
 

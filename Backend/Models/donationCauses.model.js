@@ -9,7 +9,7 @@ const donationCausesSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
         maxlength: 500
     },

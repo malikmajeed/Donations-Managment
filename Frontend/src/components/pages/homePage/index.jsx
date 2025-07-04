@@ -1,6 +1,6 @@
 import styles from './index.module.css';
-import StudentsList from '../../studentsCards/StudentsList';
-
+import StudentsList from '../../Students/studentsCards/StudentsList';
+import AddCause from '../../causes/AddCause';
 export default function HomePage() {
   return (
     <>
@@ -24,6 +24,7 @@ export default function HomePage() {
         </div>
       </section>
       <StudentsList />
+      <AddCause />
     </>
   );
 }

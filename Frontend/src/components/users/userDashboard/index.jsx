@@ -3,7 +3,7 @@ import styles from './index.module.css';
 import axios from 'axios';
 import defaultAvatar from '/default-avatar.avif'
 import UpdateProfile from '../updateProfile';
-import API_CONFIG from '../../config/api.config';
+import API_CONFIG from '../../../config/api.config';
 
 export default function UserDashboard(){
     const[donationsList, setDonationsList]=useState([]);
