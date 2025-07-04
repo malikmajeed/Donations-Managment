@@ -21,6 +21,7 @@ export default function AddCause() {
     isUrgent: false,
     featureImage: null
   });
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -31,6 +32,11 @@ export default function AddCause() {
       setForm(f => ({ ...f, [name]: checked }));
     } else if (type === 'file') {
       setForm(f => ({ ...f, [name]: files[0] }));
+      if (files && files[0]) {
+        setImagePreview(URL.createObjectURL(files[0]));
+      } else {
+        setImagePreview(null);
+      }
     } else {
       setForm(f => ({ ...f, [name]: value }));
     }
@@ -55,6 +61,7 @@ export default function AddCause() {
       setForm({
         name: '', location: '', type: '', budgetRequired: '', description: '', endDate: '', isUrgent: false, featureImage: null
       });
+      setImagePreview(null);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to create cause');
     } finally {
@@ -102,6 +109,11 @@ export default function AddCause() {
         <input name="isUrgent" type="checkbox" checked={form.isUrgent} onChange={handleChange} id="isUrgent" />
         <label htmlFor="isUrgent">Is Urgent?</label>
       </div>
+      {imagePreview && (
+        <div className={styles.imagePreviewBox}>
+          <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
+        </div>
+      )}
       <div>
         <label className={styles.label}>Feature Image<br/>
           <input name="featureImage" type="file" accept="image/*" onChange={handleChange} className={styles.fileInput} />
