@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import styles from './AddCause.module.css';
 import { MdCameraAlt } from 'react-icons/md';
+import API_CONFIG from '../../../config/api.config.js';
 
 const CAUSE_TYPES = [
   'education',
@@ -55,7 +56,7 @@ export default function AddCause() {
           formData.append(key, value);
         }
       });
-      const res = await axios.post('http://localhost:3000/causes/createCause', formData, {
+      const res = await axios.post(`${API_CONFIG.ENDPOINTS.CAUSES.CREATE}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setSuccess('Cause created successfully!');
