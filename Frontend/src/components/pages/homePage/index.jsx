@@ -1,6 +1,7 @@
 import styles from './index.module.css';
 import StudentsList from '../../Students/studentsCards/StudentsList';
-import AddCause from '../../causes/AddCause';
+import { CausesList, AddCause, UpdateCause, ViewCause } from '../../causes';
+
 export default function HomePage() {
   return (
     <>
@@ -24,7 +25,11 @@ export default function HomePage() {
         </div>
       </section>
       <StudentsList />
-      <AddCause />
+      <CausesList /> // List all causes
+<AddCause /> // Add new cause
+<UpdateCause /> // Edit cause (requires id parameter)
+<ViewCause />
+      
     </>
   );
 }

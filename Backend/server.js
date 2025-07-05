@@ -5,7 +5,7 @@ import cors from 'cors'
 import mongoose from 'mongoose';
 import studentRouter from './Routes/students.router.js';
 import usersRouter from './Routes/users.router.js';
-import donationsRouter from './Routes/donations.routes.js'
+import donationsRouter from './Routes/donations.router.js'
 import donationCausesRouter from './Routes/donationCauses.router.js'
 import path from 'path';
 import { fileURLToPath } from 'url';
