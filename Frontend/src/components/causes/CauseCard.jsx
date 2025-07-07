@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
-import { MdLocationOn, MdAccessTime, MdEdit, MdDelete, MdVisibility } from 'react-icons/md';
+import { MdLocationOn, MdAccessTime, MdEdit, MdDelete, MdVisibility, MdCalendarToday } from 'react-icons/md';
 import styles from './CauseCard.module.css';
 
-export default function CauseCard({ cause, onUpdate }) {
+export default function CauseCard({ cause, onDonate }) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
@@ -24,6 +24,8 @@ export default function CauseCard({ cause, onUpdate }) {
     }
   };
 
+  const progressPercentage = Math.min((cause.amountCollected / cause.budgetRequired) * 100, 100);
+
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -34,12 +36,24 @@ export default function CauseCard({ cause, onUpdate }) {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'No end date';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
     });
+  };
+
+  const timeUntilDeadline = () => {
+    const now = new Date();
+    const deadline = new Date(cause.endDate);
+    const diffTime = deadline.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return 'Past due';
+    if (diffDays === 0) return 'Due today';
+    if (diffDays === 1) return '1 day left';
+    if (diffDays < 7) return `${diffDays} days left`;
+    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks left`;
+    return `${Math.ceil(diffDays / 30)} months left`;
   };
 
   const getStatusColor = (status) => {
@@ -62,105 +76,77 @@ export default function CauseCard({ cause, onUpdate }) {
     }
   };
 
-  const progressPercentage = cause.budgetRequired > 0 
-    ? Math.round((cause.amountCollected / cause.budgetRequired) * 100)
-    : 0;
+  const TYPE_LABELS = {
+    education: 'Education',
+    empowerment: 'Empowerment',
+    foodDistribution: 'Food Distribution',
+    mobileClinic: 'Mobile Clinic',
+    waterWells: 'Water Wells'
+  };
 
   return (
     <div className={styles.card}>
+      {/* Image Container */}
       <div className={styles.imageContainer}>
-        {cause.featureImage ? (
-          <img 
-            src={`${API_CONFIG.BASE_URL}/${cause.featureImage}`} 
-            alt={cause.name}
-            className={styles.featureImage}
-          />
-        ) : (
-          <div className={styles.placeholderImage}>
-            <span>No Image</span>
-          </div>
-        )}
-        
+        <img
+          src={cause.featureImage ? `${API_CONFIG.BASE_URL}/${cause.featureImage}` : '/default-avatar.avif'}
+          alt={cause.name}
+          className={styles.image}
+        />
+        {/* Urgent Badge */}
         {cause.isUrgent && (
           <div className={styles.urgentBadge}>
             Urgent
           </div>
         )}
-        
-        <div className={styles.statusBadge} style={{ backgroundColor: getStatusColor(cause.status) }}>
-          {cause.status}
+        {/* Progress Badge */}
+        <div className={styles.progressBadge}>
+          {Math.round(progressPercentage)}% funded
         </div>
       </div>
-
+      {/* Content */}
       <div className={styles.content}>
-        <div className={styles.header}>
-          <h3 className={styles.title}>{cause.name}</h3>
-          <span 
-            className={styles.typeBadge}
-            style={{ backgroundColor: getTypeColor(cause.type) }}
-          >
-            {cause.type}
-          </span>
-        </div>
-
-        <p className={styles.description}>
-          {cause.description || 'No description available'}
-        </p>
-
-        <div className={styles.location}>
+        {/* Title */}
+        <h3 className={styles.title}>{cause.name}</h3>
+        {/* Description */}
+        <p className={styles.description}>{cause.description}</p>
+        {/* Location */}
+        <div className={styles.infoRow}>
           <MdLocationOn className={styles.icon} />
-          <span>{cause.location || 'Location not specified'}</span>
+          <span className={styles.infoText}>{cause.location}</span>
         </div>
-
-        <div className={styles.endDate}>
-          <MdAccessTime className={styles.icon} />
-          <span>Ends: {formatDate(cause.endDate)}</span>
-        </div>
-
-        <div className={styles.funding}>
-          <div className={styles.fundingHeader}>
-            <span className={styles.fundingLabel}>Funding Progress</span>
-            <span className={styles.fundingAmount}>
-              {formatCurrency(cause.amountCollected)} / {formatCurrency(cause.budgetRequired)}
-            </span>
-          </div>
+        {/* Date and Time Left */}
+        <div className={styles.infoRow}>
+          <MdCalendarToday className={styles.icon} />
+          <span className={styles.infoText}>Needed By {formatDate(cause.endDate)}</span>
           
+        </div>
+        {/* Budget Information */}
+        <div className={styles.budgetSection}>
+          <div className={styles.budgetHeader}>
+            <span className={styles.budgetRaised}>{formatCurrency(cause.amountCollected)} raised</span>
+            <span className={styles.budgetTotal}>of {formatCurrency(cause.budgetRequired)}</span>
+          </div>
+          {/* Progress Bar */}
           <div className={styles.progressBar}>
-            <div 
+            <div
               className={styles.progressFill}
-              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+              style={{ width: `${progressPercentage}%` }}
             />
           </div>
-          
-          <span className={styles.progressText}>{progressPercentage}% Complete</span>
+          <div className={styles.budgetRemaining}>
+            {cause.budgetRequired - cause.amountCollected > 0
+              ? `${formatCurrency(cause.budgetRequired - cause.amountCollected)} still needed`
+              : 'Fully funded!'}
+          </div>
         </div>
-
-        <div className={styles.actions}>
-          <button 
-            className={`${styles.actionButton} ${styles.viewButton}`}
-            onClick={() => window.open(`/causes/${cause._id}`, '_blank')}
-          >
-            <MdVisibility />
-            View
-          </button>
-          
-          <button 
-            className={`${styles.actionButton} ${styles.editButton}`}
-            onClick={() => window.open(`/causes/edit/${cause._id}`, '_blank')}
-          >
-            <MdEdit />
-            Edit
-          </button>
-          
-          <button 
-            className={`${styles.actionButton} ${styles.deleteButton}`}
-            onClick={handleDelete}
-            disabled={loading}
-          >
-            <MdDelete />
-            {loading ? 'Deleting...' : 'Delete'}
-          </button>
-        </div>
+        {/* Donate Button */}
+        <button
+          onClick={() => onDonate && onDonate(cause._id)}
+          className={styles.donateButton}
+        >
+          Donate Now
+        </button>
       </div>
     </div>
   );

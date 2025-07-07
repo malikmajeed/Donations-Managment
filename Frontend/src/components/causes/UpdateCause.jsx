@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
-import { MdCameraAlt, MdArrowBack } from 'react-icons/md';
+import { MdCameraAlt, MdArrowBack, MdTextFields, MdLocationOn, MdCalendarToday, MdWarning, MdAttachMoney } from 'react-icons/md';
 import styles from './UpdateCause.module.css';
 
 const CAUSE_TYPES = [
@@ -12,6 +12,14 @@ const CAUSE_TYPES = [
   'mobileClinic',
   'waterWells'
 ];
+
+const TYPE_LABELS = {
+  education: 'Education',
+  empowerment: 'Empowerment',
+  foodDistribution: 'Food Distribution',
+  mobileClinic: 'Mobile Clinic',
+  waterWells: 'Water Wells'
+};
 
 export default function UpdateCause() {
   const { id } = useParams();
@@ -135,151 +143,170 @@ export default function UpdateCause() {
         <h1 className={styles.title}>Update Donation Cause</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className={styles.updateForm}>
-        <div className={styles.imageSection}>
-          <label htmlFor="featureImageUpload" className={styles.imageUploadArea}>
-            {imagePreview ? (
-              <img src={imagePreview} alt="Preview" className={styles.imagePreview} />
-            ) : (
-              <div className={styles.uploadPlaceholder}>
-                <MdCameraAlt className={styles.cameraIcon} />
-                <span>Upload Image</span>
-              </div>
-            )}
-            <input
-              id="featureImageUpload"
-              name="featureImage"
-              type="file"
-              accept="image/*"
-              onChange={handleChange}
-              className={styles.hiddenInput}
-            />
-          </label>
+      <div className={styles.modal} style={{ boxShadow: '0 4px 24px 0 rgba(35,83,182,0.10)', margin: '2rem auto' }}>
+        <div className={styles.header} style={{ borderBottom: 'none', marginBottom: 0 }}>
+          <h2 className={styles.title}>Update Donation Cause</h2>
         </div>
-
-        <div className={styles.formGrid}>
-          <div className={styles.formCol}>
-            <label className={styles.label}>
-              Name
-              <input 
-                name="name" 
-                value={form.name} 
-                onChange={handleChange} 
-                required 
-                className={styles.input} 
-              />
-            </label>
-            
-            <label className={styles.label}>
-              Type
-              <select 
-                name="type" 
-                value={form.type} 
-                onChange={handleChange} 
-                required 
-                className={styles.select}
-              >
-                <option value="">Select type</option>
-                {CAUSE_TYPES.map(t => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
-            </label>
-            
-            <label className={styles.label}>
-              Status
-              <select 
-                name="status" 
-                value={form.status} 
-                onChange={handleChange} 
-                className={styles.select}
-              >
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-                <option value="paused">Paused</option>
-              </select>
-            </label>
-            
-            <label className={styles.label}>
-              Description
-              <textarea 
-                name="description" 
-                value={form.description} 
-                onChange={handleChange} 
-                rows={4} 
-                className={styles.textarea} 
-              />
-            </label>
-          </div>
-          
-          <div className={styles.formCol}>
-            <label className={styles.label}>
-              Location
-              <input 
-                name="location" 
-                value={form.location} 
-                onChange={handleChange} 
-                className={styles.input} 
-              />
-            </label>
-            
-            <label className={styles.label}>
-              Budget Required
-              <input 
-                name="budgetRequired" 
-                type="number" 
-                min="0" 
-                value={form.budgetRequired} 
-                onChange={handleChange} 
-                required 
-                className={styles.input} 
-              />
-            </label>
-            
-            <label className={styles.label}>
-              End Date
-              <input 
-                name="endDate" 
-                type="date" 
-                value={form.endDate} 
-                onChange={handleChange} 
-                className={styles.input} 
-              />
-            </label>
-            
-            <div className={styles.checkboxRow}>
-              <input 
-                name="isUrgent" 
-                type="checkbox" 
-                checked={form.isUrgent} 
-                onChange={handleChange} 
-                id="isUrgent" 
-              />
-              <label htmlFor="isUrgent">Is Urgent?</label>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {/* First Row: Image + (Title & Location) */}
+          <div className={styles.formRowGrid}>
+            {/* Feature Image Upload */}
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                <MdCameraAlt className={styles.labelIcon} /> Feature Image
+              </label>
+              <div className={styles.imageUploadContainer}>
+                {imagePreview ? (
+                  <div className={styles.imagePreview}>
+                    <img src={imagePreview} alt="Preview" className={styles.previewImage} />
+                    <button type="button" onClick={() => { setForm(f => ({ ...f, featureImage: null })); setImagePreview(null); }} className={styles.removeImageButton}>
+                      <MdCameraAlt className={styles.removeIcon} />
+                    </button>
+                  </div>
+                ) : (
+                  <label className={styles.uploadArea}>
+                    <input type="file" accept="image/*" onChange={handleChange} className={styles.fileInput} />
+                    <MdCameraAlt className={styles.uploadIcon} />
+                    <span className={styles.uploadText}>Click to upload image</span>
+                    <span className={styles.uploadSubtext}>PNG, JPG up to 5MB</span>
+                  </label>
+                )}
+              </div>
+              {error && error.toLowerCase().includes('image') && <span className={styles.error}>{error}</span>}
+            </div>
+            <div className={styles.formRowGridInner}>
+              <div className={styles.formGroup}>
+                <label htmlFor="name" className={styles.label}>
+                  <MdTextFields className={styles.labelIcon} /> Title *
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className={`${styles.input} ${error && error.toLowerCase().includes('title') ? styles.inputError : ''}`}
+                  placeholder="Enter cause title"
+                  maxLength={100}
+                  required
+                />
+                {error && error.toLowerCase().includes('title') && <span className={styles.error}>{error}</span>}
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="location" className={styles.label}>
+                  <MdLocationOn className={styles.labelIcon} /> Location *
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={form.location}
+                  onChange={handleChange}
+                  className={`${styles.input} ${error && error.toLowerCase().includes('location') ? styles.inputError : ''}`}
+                  placeholder="City, State or Country"
+                  required
+                />
+                {error && error.toLowerCase().includes('location') && <span className={styles.error}>{error}</span>}
+              </div>
             </div>
           </div>
-        </div>
 
-        {error && <div className={styles.error}>{error}</div>}
-        {success && <div className={styles.success}>{success}</div>}
-        
-        <div className={styles.buttonGroup}>
-          <button 
-            type="button" 
-            onClick={() => navigate('/causes')}
-            className={styles.cancelButton}
-          >
-            Cancel
-          </button>
-          <button 
-            type="submit" 
-            disabled={submitting} 
-            className={styles.updateButton}
-          >
-            {submitting ? 'Updating...' : 'Update Cause'}
-          </button>
-        </div>
-      </form>
+          {/* Budget and End Date Row */}
+          <div className={styles.formRow2}>
+            <div className={styles.formGroup} style={{ flex: 1 }}>
+              <label htmlFor="budgetRequired" className={styles.label}>
+                <MdAttachMoney className={styles.labelIcon} /> Budget Required *
+              </label>
+              <div className={styles.currencyInput}>
+                <span className={styles.currencySymbol}>$</span>
+                <input
+                  type="number"
+                  id="budgetRequired"
+                  name="budgetRequired"
+                  value={form.budgetRequired}
+                  onChange={handleChange}
+                  className={`${styles.input} ${styles.currencyField} ${error && error.toLowerCase().includes('budget') ? styles.inputError : ''}`}
+                  placeholder="0"
+                  min="1"
+                  step="1"
+                  required
+                />
+              </div>
+              {error && error.toLowerCase().includes('budget') && <span className={styles.error}>{error}</span>}
+            </div>
+            <div className={styles.formGroup} style={{ flex: 1 }}>
+              <label htmlFor="endDate" className={styles.label}>
+                <MdCalendarToday className={styles.labelIcon} /> End Date *
+              </label>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                value={form.endDate}
+                onChange={handleChange}
+                className={`${styles.input} ${error && error.toLowerCase().includes('end date') ? styles.inputError : ''}`}
+                required
+              />
+              {error && error.toLowerCase().includes('end date') && <span className={styles.error}>{error}</span>}
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className={styles.formGroup}>
+            <label htmlFor="description" className={styles.label}>Description</label>
+            <textarea
+              id="description"
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              className={styles.textarea}
+              rows={3}
+              required
+            />
+            {error && error.toLowerCase().includes('description') && <span className={styles.error}>{error}</span>}
+          </div>
+
+          {/* Is Urgent (below description, above buttons) */}
+          <div className={styles.formGroup}>
+            <label className={styles.checkboxLabel} htmlFor="isUrgent">
+              <input
+                type="checkbox"
+                id="isUrgent"
+                name="isUrgent"
+                checked={form.isUrgent}
+                onChange={handleChange}
+                className={styles.checkbox}
+              />
+              <span className={styles.checkboxCustom}>{form.isUrgent && <MdWarning className={styles.checkboxIcon} />}</span>
+              <span className={styles.checkboxText}>
+                Mark as urgent
+                <span className={styles.checkboxSubtext}>
+                  This will highlight your cause and give it priority visibility
+                </span>
+              </span>
+            </label>
+          </div>
+
+          {/* Buttons */}
+          <div className={styles.formActions}>
+            <button
+              type="button"
+              className={styles.cancelButton}
+              onClick={() => navigate('/causes')}
+              disabled={submitting}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={submitting}
+            >
+              {submitting ? 'Updating...' : 'Update Cause'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 } 
