@@ -66,6 +66,14 @@ export default function CauseCard({ cause, onUpdate }) {
     ? Math.round((cause.amountCollected / cause.budgetRequired) * 100)
     : 0;
 
+  const TYPE_LABELS = {
+    education: 'Education',
+    empowerment: 'Empowerment',
+    foodDistribution: 'Food Distribution',
+    mobileClinic: 'Mobile Clinic',
+    waterWells: 'Water Wells'
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -99,13 +107,9 @@ export default function CauseCard({ cause, onUpdate }) {
             className={styles.typeBadge}
             style={{ backgroundColor: getTypeColor(cause.type) }}
           >
-            {cause.type}
+            {TYPE_LABELS[cause.type] || cause.type}
           </span>
         </div>
-
-        <p className={styles.description}>
-          {cause.description || 'No description available'}
-        </p>
 
         <div className={styles.location}>
           <MdLocationOn className={styles.icon} />
@@ -161,6 +165,10 @@ export default function CauseCard({ cause, onUpdate }) {
             {loading ? 'Deleting...' : 'Delete'}
           </button>
         </div>
+
+        <p className={styles.description}>
+          {cause.description || 'No description available'}
+        </p>
       </div>
     </div>
   );
