@@ -156,4 +156,17 @@
   color: #fff;
   box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
   transform: scale(1.045);
+}
+.needByUrgentRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 900px) {
+  .needByUrgentRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
 } 

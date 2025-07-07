@@ -13,6 +13,14 @@ const CAUSE_TYPES = [
   'waterWells'
 ];
 
+const TYPE_LABELS = {
+  education: 'Education',
+  empowerment: 'Empowerment',
+  foodDistribution: 'Food Distribution',
+  mobileClinic: 'Mobile Clinic',
+  waterWells: 'Water Wells'
+};
+
 export default function AddCause() {
   const [form, setForm] = useState({
     name: '',
@@ -94,36 +102,38 @@ export default function AddCause() {
         <div className={styles.uploadText}>Upload an image</div>
       </div>
       <div className={styles.formGrid}>
-        <div className={styles.formCol}>
-          <label className={styles.label}>Name<br/>
+        <div className={styles.formRow}>
+          <label className={styles.label} style={{ flex: 1 }}>Name<br/>
             <input name="name" value={form.name} onChange={handleChange} required className={styles.input} />
           </label>
-          <label className={styles.label}>Type<br/>
+          <label className={styles.label} style={{ flex: 1 }}>Type<br/>
             <select name="type" value={form.type} onChange={handleChange} required className={styles.select}>
               <option value="">Select type</option>
-              {CAUSE_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+              {CAUSE_TYPES.map(t => <option key={t} value={t}>{TYPE_LABELS[t] || t}</option>)}
             </select>
           </label>
-          <label className={styles.label}>Description<br/>
-            <textarea name="description" value={form.description} onChange={handleChange} rows={3} className={styles.textarea} />
-          </label>
         </div>
-        <div className={styles.formCol}>
-          <label className={styles.label}>Location<br/>
+        <div className={styles.formRow}>
+          <label className={styles.label} style={{ flex: 1 }}>Location<br/>
             <input name="location" value={form.location} onChange={handleChange} required className={styles.input} />
           </label>
-          <label className={styles.label}>Budget Required<br/>
+          <label className={styles.label} style={{ flex: 1 }}>Budget Required<br/>
             <input name="budgetRequired" type="number" min="0" value={form.budgetRequired} onChange={handleChange} required className={styles.input} />
           </label>
-          <label className={styles.label}>End Date<br/>
+        </div>
+        <div className={styles.needByUrgentRow}>
+          <label className={styles.label} style={{ flex: 1, marginRight: '1rem' }}>Need by<br/>
             <input name="endDate" type="date" value={form.endDate} onChange={handleChange} className={styles.input} />
           </label>
-          <div className={styles.checkboxRow}>
+          <div className={styles.checkboxRow} style={{ flex: 1, marginTop: '1.5em' }}>
             <input name="isUrgent" type="checkbox" checked={form.isUrgent} onChange={handleChange} id="isUrgent" />
             <label htmlFor="isUrgent">Is Urgent?</label>
           </div>
         </div>
       </div>
+      <label className={styles.label}>Description<br/>
+        <textarea name="description" value={form.description} onChange={handleChange} rows={3} className={styles.textarea} />
+      </label>
       {error && <div className={styles.error}>{error}</div>}
       {success && <div className={styles.success}>{success}</div>}
       <button type="submit" disabled={loading} className={styles.macButton}>

@@ -229,6 +229,13 @@
   padding: 3rem;
 }
 
+.needByUrgentRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -264,5 +271,13 @@
   .cancelButton, .updateButton {
     width: 100%;
     text-align: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .needByUrgentRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
   }
 } 

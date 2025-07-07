@@ -13,6 +13,14 @@ const CAUSE_TYPES = [
   'waterWells'
 ];
 
+const TYPE_LABELS = {
+  education: 'Education',
+  empowerment: 'Empowerment',
+  foodDistribution: 'Food Distribution',
+  mobileClinic: 'Mobile Clinic',
+  waterWells: 'Water Wells'
+};
+
 export default function UpdateCause() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -158,8 +166,8 @@ export default function UpdateCause() {
         </div>
 
         <div className={styles.formGrid}>
-          <div className={styles.formCol}>
-            <label className={styles.label}>
+          <div className={styles.formRow}>
+            <label className={styles.label} style={{ flex: 1 }}>
               Name
               <input 
                 name="name" 
@@ -169,8 +177,7 @@ export default function UpdateCause() {
                 className={styles.input} 
               />
             </label>
-            
-            <label className={styles.label}>
+            <label className={styles.label} style={{ flex: 1 }}>
               Type
               <select 
                 name="type" 
@@ -181,39 +188,13 @@ export default function UpdateCause() {
               >
                 <option value="">Select type</option>
                 {CAUSE_TYPES.map(t => (
-                  <option key={t} value={t}>{t}</option>
+                  <option key={t} value={t}>{TYPE_LABELS[t] || t}</option>
                 ))}
               </select>
             </label>
-            
-            <label className={styles.label}>
-              Status
-              <select 
-                name="status" 
-                value={form.status} 
-                onChange={handleChange} 
-                className={styles.select}
-              >
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-                <option value="paused">Paused</option>
-              </select>
-            </label>
-            
-            <label className={styles.label}>
-              Description
-              <textarea 
-                name="description" 
-                value={form.description} 
-                onChange={handleChange} 
-                rows={4} 
-                className={styles.textarea} 
-              />
-            </label>
           </div>
-          
-          <div className={styles.formCol}>
-            <label className={styles.label}>
+          <div className={styles.formRow}>
+            <label className={styles.label} style={{ flex: 1 }}>
               Location
               <input 
                 name="location" 
@@ -222,8 +203,7 @@ export default function UpdateCause() {
                 className={styles.input} 
               />
             </label>
-            
-            <label className={styles.label}>
+            <label className={styles.label} style={{ flex: 1 }}>
               Budget Required
               <input 
                 name="budgetRequired" 
@@ -235,9 +215,10 @@ export default function UpdateCause() {
                 className={styles.input} 
               />
             </label>
-            
-            <label className={styles.label}>
-              End Date
+          </div>
+          <div className={styles.needByUrgentRow}>
+            <label className={styles.label} style={{ flex: 1, marginRight: '1rem' }}>
+              Need by
               <input 
                 name="endDate" 
                 type="date" 
@@ -246,8 +227,7 @@ export default function UpdateCause() {
                 className={styles.input} 
               />
             </label>
-            
-            <div className={styles.checkboxRow}>
+            <div className={styles.checkboxRow} style={{ flex: 1, marginTop: '1.5em' }}>
               <input 
                 name="isUrgent" 
                 type="checkbox" 
@@ -259,6 +239,16 @@ export default function UpdateCause() {
             </div>
           </div>
         </div>
+        <label className={styles.label}>
+          Description
+          <textarea 
+            name="description" 
+            value={form.description} 
+            onChange={handleChange} 
+            rows={4} 
+            className={styles.textarea} 
+          />
+        </label>
 
         {error && <div className={styles.error}>{error}</div>}
         {success && <div className={styles.success}>{success}</div>}
