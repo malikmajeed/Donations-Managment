@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './AddCause.module.css';
-import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning } from 'react-icons/md';
+import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning, MdAttachMoney } from 'react-icons/md';
 
 export default function AddCause({ onSubmit, onCancel }) {
   const [form, setForm] = useState({
@@ -153,7 +153,7 @@ export default function AddCause({ onSubmit, onCancel }) {
           <div className={styles.formRow2}>
             <div className={styles.formGroup} style={{ flex: 1 }}>
               <label htmlFor="budgetRequired" className={styles.label}>
-                Budget Needed *
+                <MdAttachMoney className={styles.labelIcon} /> Budget Required *
               </label>
               <div className={styles.currencyInput}>
                 <span className={styles.currencySymbol}>$</span>

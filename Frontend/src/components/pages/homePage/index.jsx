@@ -26,7 +26,7 @@ export default function HomePage() {
       </section>
       <StudentsList />
       <CausesList /> // List all causes
-<AddCause /> // Add new cause
+// <AddCause /> // Add new cause (removed to prevent always-on modal)
 <UpdateCause /> // Edit cause (requires id parameter)
 <ViewCause />
       
