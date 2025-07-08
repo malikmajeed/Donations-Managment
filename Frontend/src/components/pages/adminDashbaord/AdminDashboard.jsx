@@ -1,15 +1,9 @@
 import React from 'react';
 import styles from './AdminDashboard.module.css';
+import Dashboard from './Dashboard';
 import {
   MdAttachMoney, MdFavorite, MdPeople, MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup
 } from 'react-icons/md';
-
-const stats = [
-  { label: 'Total Donations', value: '$12,500', icon: <MdAttachMoney />, color: styles.cardGreen },
-  { label: 'Active Causes', value: '8', icon: <MdListAlt />, color: styles.cardBlue },
-  { label: 'Students Sponsored', value: '24', icon: <MdPeople />, color: styles.cardPurple },
-  { label: 'Users', value: '120', icon: <MdFavorite />, color: styles.cardPink }
-];
 
 const menu = [
   { label: 'Dashboard', icon: <MdDashboard /> },
@@ -55,24 +49,7 @@ export default function AdminDashboard() {
           <button className={styles.logoutBtn}>Logout</button>
         </div>
         {/* Dashboard Content */}
-        <div className={styles.dashboardContainer}>
-          <header className={styles.header}>
-            <h1 className={styles.title}>Admin Dashboard</h1>
-            <p className={styles.subtitle}>Overview of platform activity and statistics</p>
-          </header>
-          <div className={styles.statsGrid}>
-            {stats.map((stat, idx) => (
-              <div key={stat.label} className={`${styles.statCard} ${stat.color}`}>
-                <div className={styles.icon}>{stat.icon}</div>
-                <div className={styles.statInfo}>
-                  <div className={styles.statValue}>{stat.value}</div>
-                  <div className={styles.statLabel}>{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          {/* Add more dashboard sections here as needed */}
-        </div>
+        <Dashboard />
       </div>
     </div>
   );
