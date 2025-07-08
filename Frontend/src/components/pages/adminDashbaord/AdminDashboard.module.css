@@ -1,0 +1,310 @@
+.adminDashboardWrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100dvh;
+  width: 260px;
+  background: #fff;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e5e7eb;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  padding: 1.2rem 1rem 1rem 1.2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logoText {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 1.5rem;
+  color: #2563eb;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+.menuItemActive {
+  background: #2563eb;
+  color: #fff !important;
+}
+.menuItemActive .menuIcon {
+  color: #fff !important;
+}
+.menuItemActive:hover {
+  background: #1746a2;
+  color: #fff !important;
+}
+.menuItemActive:hover .menuIcon {
+  color: #fff !important;
+}
+.menuItem:hover:not(.menuItemActive) {
+  background: #f1f5f9;
+  color: #2563eb;
+}
+.menuIcon {
+  font-size: 1.5rem;
+  min-width: 32px;
+  min-height: 32px;
+  width: 32px;
+  height: 32px;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  background: none !important;
+  box-shadow: none !important;
+}
+.menuLabel {
+  display: inline-block;
+  opacity: 1;
+  max-width: 160px;
+  width: auto;
+  margin-left: 0.5rem;
+  pointer-events: auto;
+  overflow: hidden;
+  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), max-width 0.25s cubic-bezier(.4,0,.2,1), margin 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+.logoutBtn {
+  margin: 1.2rem 1.2rem 0 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  justify-content: flex-start;
+  margin-top: auto;
+}
+.logoutBtn:hover {
+  background: #1746a2;
+}
+
+.mainContent {
+  margin-left: 260px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.headerBar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1.2rem 2rem 1.2rem 2rem;
+  box-shadow: 0 2px 8px 0 rgba(35,83,182,0.06);
+  border-bottom: 1px solid #e5e7eb;
+  gap: 1.5rem;
+  min-height: 72px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 0.3rem 1rem 0.3rem 0.3rem;
+}
+.profileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2563eb;
+  background: #fff;
+}
+.profileName {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 1.08rem;
+  margin-right: 0.5rem;
+}
+.logoutBtn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-left: 0.5rem;
+}
+.logoutBtn:hover {
+  background: #1746a2;
+}
+
+/* Existing dashboard/stat card styles below */
+.dashboardContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.statCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(35,83,182,0.08);
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 1.2rem;
+  gap: 1.2rem;
+  transition: box-shadow 0.2s;
+}
+
+.statCard:hover {
+  box-shadow: 0 8px 32px 0 rgba(35,83,182,0.14);
+}
+
+.icon {
+  font-size: 2.4rem;
+  border-radius: 50%;
+  background: #f1f5f9;
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardGreen .icon {
+  background: #dcfce7;
+  color: #22c55e;
+}
+.cardBlue .icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+.cardPurple .icon {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+.cardPink .icon {
+  background: #ffe4e6;
+  color: #ec4899;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.statValue {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.statLabel {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 70px;
+  }
+  .sidebarHeader, .menuLabel {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .headerBar {
+    padding: 1rem 0.5rem;
+  }
+  .mainContent {
+    padding: 0.5rem;
+  }
+  .dashboardContainer {
+    padding: 1rem 0.3rem;
+  }
+  .statsGrid {
+    gap: 1rem;
+  }
+  .statCard {
+    padding: 1rem 0.7rem;
+  }
+  .title {
+    font-size: 1.3rem;
+  }
+} 
