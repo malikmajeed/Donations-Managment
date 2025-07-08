@@ -492,8 +492,6 @@
   box-shadow: 0 4px 24px 0 rgba(35,83,182,0.10);
   width: 100%;
   max-width: 700px;
-  max-height: 90vh;
-  overflow-y: auto;
   margin: 2rem auto;
   animation: modalSlideIn 0.3s ease-out;
 }
@@ -614,8 +612,6 @@ removeImageButton {
   box-shadow: 0 4px 24px 0 rgba(35,83,182,0.10);
   width: 100%;
   max-width: 700px;
-  max-height: 90vh;
-  overflow-y: auto;
   margin: 2rem auto;
   animation: modalSlideIn 0.3s ease-out;
 }

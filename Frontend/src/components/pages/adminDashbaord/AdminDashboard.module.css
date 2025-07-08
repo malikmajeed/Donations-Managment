@@ -1,0 +1,249 @@
+.adminDashboardWrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.sidebar {
+  width: 240px;
+  background: #1e293b;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+  transition: width 0.2s;
+  position: relative;
+}
+
+.sidebarCollapsed {
+  width: 70px;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem 1.5rem 1rem;
+}
+
+.closeSidebarBtn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.closeSidebarBtn:hover {
+  color: #3b82f6;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.menuItem:hover, .menuItemActive {
+  background: #3b82f6;
+  color: #fff;
+}
+.menuIcon {
+  font-size: 1.5rem;
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menuLabel {
+  transition: opacity 0.2s;
+}
+.menuLabelCollapsed {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.headerBar {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1.2rem 2rem 1.2rem 2rem;
+  box-shadow: 0 2px 8px 0 rgba(35,83,182,0.06);
+  gap: 1.5rem;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.profileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #3b82f6;
+}
+.profileName {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 1.08rem;
+}
+.logoutBtn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.logoutBtn:hover {
+  background: #b91c1c;
+}
+
+/* Existing dashboard/stat card styles below */
+.dashboardContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.statCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(35,83,182,0.08);
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 1.2rem;
+  gap: 1.2rem;
+  transition: box-shadow 0.2s;
+}
+
+.statCard:hover {
+  box-shadow: 0 8px 32px 0 rgba(35,83,182,0.14);
+}
+
+.icon {
+  font-size: 2.4rem;
+  border-radius: 50%;
+  background: #f1f5f9;
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardGreen .icon {
+  background: #dcfce7;
+  color: #22c55e;
+}
+.cardBlue .icon {
+  background: #dbeafe;
+  color: #2563eb;
+}
+.cardPurple .icon {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+.cardPink .icon {
+  background: #ffe4e6;
+  color: #ec4899;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.statValue {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.statLabel {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 70px;
+  }
+  .sidebarHeader, .menuLabel {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .headerBar {
+    padding: 1rem 0.5rem;
+  }
+  .mainContent {
+    padding: 0.5rem;
+  }
+  .dashboardContainer {
+    padding: 1rem 0.3rem;
+  }
+  .statsGrid {
+    gap: 1rem;
+  }
+  .statCard {
+    padding: 1rem 0.7rem;
+  }
+  .title {
+    font-size: 1.3rem;
+  }
+} 
