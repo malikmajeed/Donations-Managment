@@ -32,6 +32,14 @@
   font-weight: 600;
   color: #2563eb;
 }
+.statValueGreen {
+  color: #22c55e;
+  font-weight: 600;
+}
+.statValueRed {
+  color: #ef4444;
+  font-weight: 600;
+}
 .statLabel {
   font-size: 1rem;
   color: #111827;

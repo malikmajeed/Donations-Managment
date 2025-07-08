@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './AdminDashboard.module.css';
 import Dashboard from './Dashboard';
 import {
@@ -22,6 +22,8 @@ const profile = {
 };
 
 export default function AdminDashboard() {
+  const [activeMenu, setActiveMenu] = useState('Dashboard');
+
   return (
     <div className={styles.adminDashboardWrapper}>
       {/* Sidebar */}
@@ -31,8 +33,23 @@ export default function AdminDashboard() {
         </div>
         <nav className={styles.menu}>
           {menu.map(item => (
-            <div key={item.label} className={styles.menuItem}>
-              <span className={styles.menuIcon}>{item.icon}</span>
+            <div
+              key={item.label}
+              className={
+                activeMenu === item.label
+                  ? `${styles.menuItem} ${styles.menuItemActive}`
+                  : styles.menuItem
+              }
+              onClick={() => setActiveMenu(item.label)}
+              style={{ cursor: 'pointer' }}
+            >
+              <span className={
+                activeMenu === item.label
+                  ? `${styles.menuIcon} ${styles.menuItemActive}`
+                  : styles.menuIcon
+              }>
+                {item.icon}
+              </span>
               <span className={styles.menuLabel}>{item.label}</span>
             </div>
           ))}
@@ -49,7 +66,8 @@ export default function AdminDashboard() {
           <button className={styles.logoutBtn}>Logout</button>
         </div>
         {/* Dashboard Content */}
-        <Dashboard />
+        {activeMenu === 'Dashboard' && <Dashboard />}
+        {/* Add other components for other menu items here as needed */}
       </div>
     </div>
   );

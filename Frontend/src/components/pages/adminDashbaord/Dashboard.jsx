@@ -5,8 +5,8 @@ import {
 } from 'react-icons/md';
 
 const summaryStats = [
-  { label: 'Donations', value: '$25,000', icon: <MdAttachMoney />, color: styles.cardGreen },
-  { label: 'Amount Needed', value: '$40,000', icon: <MdTrendingUp />, color: styles.cardBlue },
+  { label: 'Donations', value: '$25,000', icon: <MdAttachMoney />, color: styles.cardGreen, valueClass: styles.statValueGreen },
+  { label: 'Amount Needed', value: '$40,000', icon: <MdTrendingUp />, color: styles.cardBlue, valueClass: styles.statValueRed },
   { label: 'Users', value: '120', icon: <MdPeople />, color: styles.cardPurple },
   { label: 'Students', value: '60', icon: <MdGroup />, color: styles.cardNeutral },
   { label: 'Students', value: '24', pill: 'Sponsored', pillColor: styles.pillGreen, color: styles.cardGreen },
@@ -40,7 +40,7 @@ export default function Dashboard() {
               <div className={`${styles.iconCircle} ${stat.color}`}>{stat.icon}</div>
             )}
             <div>
-              <div className={styles.statValue}>{stat.value}</div>
+              <div className={stat.valueClass ? `${styles.statValue} ${stat.valueClass}` : styles.statValue}>{stat.value}</div>
               <div className={styles.statLabel}>{stat.label}</div>
             </div>
           </div>
