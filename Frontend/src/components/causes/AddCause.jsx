@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './AddCause.module.css';
-import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning, MdAttachMoney } from 'react-icons/md';
+import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning, MdAttachMoney, MdClose } from 'react-icons/md';
 
 export default function AddCause({ onSubmit, onCancel }) {
   const [form, setForm] = useState({
@@ -42,7 +42,7 @@ export default function AddCause({ onSubmit, onCancel }) {
 
   const removeImage = () => {
     setForm(prev => ({ ...prev, featureImage: null }));
-    setImagePreview(null);
+        setImagePreview(null);
   };
 
   const validateForm = () => {
@@ -96,11 +96,11 @@ export default function AddCause({ onSubmit, onCancel }) {
                 <MdImage className={styles.labelIcon} /> Feature Image
               </label>
               <div className={styles.imageUploadContainer}>
-                {imagePreview ? (
+          {imagePreview ? (
                   <div className={styles.imagePreview}>
                     <img src={imagePreview} alt="Preview" className={styles.previewImage} />
                     <button type="button" onClick={removeImage} className={styles.removeImageButton}>
-                      <MdImage className={styles.removeIcon} />
+                      <MdClose className={styles.removeIcon} />
                     </button>
                   </div>
                 ) : (
@@ -119,7 +119,7 @@ export default function AddCause({ onSubmit, onCancel }) {
                 <label htmlFor="name" className={styles.label}>
                   <MdTextFields className={styles.labelIcon} /> Title *
                 </label>
-                <input
+          <input
                   type="text"
                   id="name"
                   name="name"
@@ -134,7 +134,7 @@ export default function AddCause({ onSubmit, onCancel }) {
               <div className={styles.formGroup}>
                 <label htmlFor="location" className={styles.label}>
                   <MdLocationOn className={styles.labelIcon} /> Location *
-                </label>
+        </label>
                 <input
                   type="text"
                   id="location"
@@ -147,14 +147,14 @@ export default function AddCause({ onSubmit, onCancel }) {
                 {errors.location && <span className={styles.error}>{errors.location}</span>}
               </div>
             </div>
-          </div>
+      </div>
 
           {/* Budget and End Date Row */}
           <div className={styles.formRow2}>
             <div className={styles.formGroup} style={{ flex: 1 }}>
               <label htmlFor="budgetRequired" className={styles.label}>
                 <MdAttachMoney className={styles.labelIcon} /> Budget Required *
-              </label>
+          </label>
               <div className={styles.currencyInput}>
                 <span className={styles.currencySymbol}>$</span>
                 <input
@@ -174,7 +174,7 @@ export default function AddCause({ onSubmit, onCancel }) {
             <div className={styles.formGroup} style={{ flex: 1 }}>
               <label htmlFor="endDate" className={styles.label}>
                 <MdCalendarToday className={styles.labelIcon} /> End Date *
-              </label>
+          </label>
               <input
                 type="date"
                 id="endDate"
@@ -220,8 +220,8 @@ export default function AddCause({ onSubmit, onCancel }) {
                   This will highlight your cause and give it priority visibility
                 </span>
               </span>
-            </label>
-          </div>
+          </label>
+        </div>
 
           {/* Buttons */}
           <div className={styles.formActions}>

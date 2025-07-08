@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
-import { MdCameraAlt, MdArrowBack, MdTextFields, MdLocationOn, MdCalendarToday, MdWarning, MdAttachMoney } from 'react-icons/md';
+import { MdCameraAlt, MdArrowBack, MdTextFields, MdLocationOn, MdCalendarToday, MdWarning, MdAttachMoney, MdClose } from 'react-icons/md';
 import styles from './UpdateCause.module.css';
 
 const CAUSE_TYPES = [
@@ -133,13 +133,7 @@ export default function UpdateCause() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button 
-          onClick={() => navigate('/causes')}
-          className={styles.backButton}
-        >
-          <MdArrowBack />
-          Back to Causes
-        </button>
+        {/* Removed back button */}
         <h1 className={styles.title}>Update Donation Cause</h1>
       </div>
 
@@ -156,14 +150,14 @@ export default function UpdateCause() {
                 <MdCameraAlt className={styles.labelIcon} /> Feature Image
               </label>
               <div className={styles.imageUploadContainer}>
-                {imagePreview ? (
+            {imagePreview ? (
                   <div className={styles.imagePreview}>
                     <img src={imagePreview} alt="Preview" className={styles.previewImage} />
                     <button type="button" onClick={() => { setForm(f => ({ ...f, featureImage: null })); setImagePreview(null); }} className={styles.removeImageButton}>
-                      <MdCameraAlt className={styles.removeIcon} />
+                      <MdClose className={styles.removeIcon} />
                     </button>
                   </div>
-                ) : (
+            ) : (
                   <label className={styles.uploadArea}>
                     <input type="file" accept="image/*" onChange={handleChange} className={styles.fileInput} />
                     <MdCameraAlt className={styles.uploadIcon} />
@@ -178,58 +172,58 @@ export default function UpdateCause() {
               <div className={styles.formGroup}>
                 <label htmlFor="name" className={styles.label}>
                   <MdTextFields className={styles.labelIcon} /> Title *
-                </label>
-                <input
+          </label>
+              <input 
                   type="text"
                   id="name"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
+                name="name" 
+                value={form.name} 
+                onChange={handleChange} 
                   className={`${styles.input} ${error && error.toLowerCase().includes('title') ? styles.inputError : ''}`}
                   placeholder="Enter cause title"
                   maxLength={100}
-                  required
-                />
+                required 
+              />
                 {error && error.toLowerCase().includes('title') && <span className={styles.error}>{error}</span>}
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="location" className={styles.label}>
                   <MdLocationOn className={styles.labelIcon} /> Location *
-                </label>
+            </label>
                 <input
                   type="text"
                   id="location"
                   name="location"
                   value={form.location}
-                  onChange={handleChange}
+                onChange={handleChange} 
                   className={`${styles.input} ${error && error.toLowerCase().includes('location') ? styles.inputError : ''}`}
                   placeholder="City, State or Country"
-                  required
+                required 
                 />
                 {error && error.toLowerCase().includes('location') && <span className={styles.error}>{error}</span>}
               </div>
             </div>
           </div>
-
+          
           {/* Budget and End Date Row */}
           <div className={styles.formRow2}>
             <div className={styles.formGroup} style={{ flex: 1 }}>
               <label htmlFor="budgetRequired" className={styles.label}>
                 <MdAttachMoney className={styles.labelIcon} /> Budget Required *
-              </label>
+            </label>
               <div className={styles.currencyInput}>
                 <span className={styles.currencySymbol}>$</span>
-                <input
+              <input 
                   type="number"
                   id="budgetRequired"
-                  name="budgetRequired"
-                  value={form.budgetRequired}
-                  onChange={handleChange}
+                name="budgetRequired" 
+                value={form.budgetRequired} 
+                onChange={handleChange} 
                   className={`${styles.input} ${styles.currencyField} ${error && error.toLowerCase().includes('budget') ? styles.inputError : ''}`}
                   placeholder="0"
                   min="1"
                   step="1"
-                  required
+                required 
                 />
               </div>
               {error && error.toLowerCase().includes('budget') && <span className={styles.error}>{error}</span>}
@@ -237,13 +231,13 @@ export default function UpdateCause() {
             <div className={styles.formGroup} style={{ flex: 1 }}>
               <label htmlFor="endDate" className={styles.label}>
                 <MdCalendarToday className={styles.labelIcon} /> End Date *
-              </label>
-              <input
+            </label>
+              <input 
                 type="date"
                 id="endDate"
-                name="endDate"
-                value={form.endDate}
-                onChange={handleChange}
+                name="endDate" 
+                value={form.endDate} 
+                onChange={handleChange} 
                 className={`${styles.input} ${error && error.toLowerCase().includes('end date') ? styles.inputError : ''}`}
                 required
               />
@@ -269,12 +263,12 @@ export default function UpdateCause() {
           {/* Is Urgent (below description, above buttons) */}
           <div className={styles.formGroup}>
             <label className={styles.checkboxLabel} htmlFor="isUrgent">
-              <input
+              <input 
                 type="checkbox"
                 id="isUrgent"
-                name="isUrgent"
-                checked={form.isUrgent}
-                onChange={handleChange}
+                name="isUrgent" 
+                checked={form.isUrgent} 
+                onChange={handleChange} 
                 className={styles.checkbox}
               />
               <span className={styles.checkboxCustom}>{form.isUrgent && <MdWarning className={styles.checkboxIcon} />}</span>
@@ -286,26 +280,26 @@ export default function UpdateCause() {
               </span>
             </label>
           </div>
-
+        
           {/* Buttons */}
           <div className={styles.formActions}>
-            <button
-              type="button"
+          <button 
+            type="button" 
               className={styles.cancelButton}
-              onClick={() => navigate('/causes')}
+            onClick={() => navigate('/causes')}
               disabled={submitting}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
               className={styles.submitButton}
-              disabled={submitting}
-            >
-              {submitting ? 'Updating...' : 'Update Cause'}
-            </button>
-          </div>
-        </form>
+            disabled={submitting} 
+          >
+            {submitting ? 'Updating...' : 'Update Cause'}
+          </button>
+        </div>
+      </form>
       </div>
     </div>
   );
