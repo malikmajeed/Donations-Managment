@@ -288,13 +288,16 @@
 
 .filtersContainer {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
   padding: 1.5rem;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 24px 0 rgba(35,83,182,0.08);
+  align-items: flex-end;
+  overflow-x: auto;
 }
 
 .filterGroup {
@@ -337,6 +340,15 @@
   .sidebarHeader, .menuLabel {
     display: none;
   }
+  .filtersContainer {
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .filterGroup {
+    min-width: 180px;
+    flex: 1 1 45%;
+  }
 }
 
 @media (max-width: 600px) {
@@ -357,5 +369,15 @@
   }
   .title {
     font-size: 1.3rem;
+  }
+  .filtersContainer {
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 0.7rem;
+  }
+  .filterGroup {
+    min-width: 0;
+    width: 100%;
+    flex: 1 1 100%;
   }
 } 
