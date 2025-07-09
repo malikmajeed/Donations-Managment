@@ -279,6 +279,57 @@
   font-weight: 500;
 }
 
+.allStudentsWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  background: none;
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 rgba(35,83,182,0.08);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+}
+
+.filterInput {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1rem;
+  color: #1e293b;
+  flex: 1;
+}
+
+.filterSelect {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1rem;
+  color: #1e293b;
+  padding-right: 0.5rem;
+}
+
+.studentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
 @media (max-width: 900px) {
   .sidebar {
     width: 70px;
