@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import StudentCard from '../../Students/studentsCards/index.jsx';
-import styles from './AdminDashboard.module.css';
+import styles from './AllStudents.module.css';
 import axios from 'axios';
 
 export default function AllStudents() {
