@@ -280,9 +280,10 @@
 }
 
 .allStudentsWrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 2.5rem 2.5rem 2.5rem 0.5rem;
   background: none;
 }
 
@@ -296,41 +297,60 @@
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 24px 0 rgba(35,83,182,0.08);
-  align-items: flex-end;
+  align-items: flex-start;
   overflow-x: auto;
 }
 
 .filterGroup {
   display: flex;
-  align-items: center;
-  gap: 0.8rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
   background: #f1f5f9;
   border-radius: 8px;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1.1rem;
+  min-width: 160px;
 }
 
-.filterInput {
-  border: none;
-  outline: none;
-  background: none;
-  font-size: 1rem;
-  color: #1e293b;
-  flex: 1;
+.filterGroup label {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 0.2rem;
 }
 
-.filterSelect {
+.filterInput, .filterSelect {
+  width: 100%;
   border: none;
   outline: none;
-  background: none;
+  background: #fff;
   font-size: 1rem;
   color: #1e293b;
-  padding-right: 0.5rem;
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  box-shadow: 0 1px 2px 0 rgba(35,83,182,0.04);
 }
 
 .studentsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  .studentsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .studentsGrid {
+    grid-template-columns: 1fr;
+  }
+  .allStudentsWrapper {
+    padding: 1.2rem 0.5rem;
+  }
 }
 
 @media (max-width: 900px) {
@@ -346,7 +366,7 @@
     padding: 1rem;
   }
   .filterGroup {
-    min-width: 180px;
+    min-width: 140px;
     flex: 1 1 45%;
   }
 }

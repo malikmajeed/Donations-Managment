@@ -10,8 +10,7 @@ export default function AllStudents() {
   const [filters, setFilters] = useState({
     sponsorId: '',
     status: '',
-    startDate: '',
-    endDate: ''
+    dateOrder: 'descending'
   });
 
   useEffect(() => {
@@ -35,13 +34,18 @@ export default function AllStudents() {
     setFilters(prev => ({ ...prev, [name]: value }));
   };
 
-  // TODO: Implement actual filter logic
-  const filteredStudents = students.filter(student => {
+  // Filter and sort students
+  let filteredStudents = students.filter(student => {
     let match = true;
     if (filters.sponsorId && student.sponsorId !== filters.sponsorId) match = false;
     if (filters.status && ((filters.status === 'sponsored' && !student.sponsorship) || (filters.status === 'not-sponsored' && student.sponsorship))) match = false;
-    // Date filtering can be added here
     return match;
+  });
+  // Sort by date added
+  filteredStudents = filteredStudents.sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    return filters.dateOrder === 'ascending' ? dateA - dateB : dateB - dateA;
   });
 
   if (loading) return <div className={styles.loading}>Loading students...</div>;
@@ -76,24 +80,16 @@ export default function AllStudents() {
           </select>
         </div>
         <div className={styles.filterGroup}>
-          <label>Start Date</label>
-          <input
-            type="date"
-            name="startDate"
-            value={filters.startDate}
+          <label>Date Added</label>
+          <select
+            name="dateOrder"
+            value={filters.dateOrder}
             onChange={handleFilterChange}
-            className={styles.filterInput}
-          />
-        </div>
-        <div className={styles.filterGroup}>
-          <label>End Date</label>
-          <input
-            type="date"
-            name="endDate"
-            value={filters.endDate}
-            onChange={handleFilterChange}
-            className={styles.filterInput}
-          />
+            className={styles.filterSelect}
+          >
+            <option value="descending">Descending</option>
+            <option value="ascending">Ascending</option>
+          </select>
         </div>
       </div>
       <div className={styles.studentsGrid}>
