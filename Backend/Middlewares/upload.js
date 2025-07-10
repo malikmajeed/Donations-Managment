@@ -6,27 +6,37 @@ import fs from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ensure upload directory exists
-const uploadDir = path.join(__dirname, '..', 'uploads', 'students');
-if (!fs.existsSync(uploadDir)) {
-    console.log('Creating upload directory:', uploadDir);
-    fs.mkdirSync(uploadDir, { recursive: true });
+// Ensure upload directories exist
+const uploadDirs = {
+    students: path.join(__dirname, '..', 'uploads', 'students'),
+    users: path.join(__dirname, '..', 'uploads', 'users'),
+    causes: path.join(__dirname, '..', 'uploads', 'causes'),
+};
+Object.values(uploadDirs).forEach(dir => {
+    if (!fs.existsSync(dir)) {
+        console.log('Creating upload directory:', dir);
+        fs.mkdirSync(dir, { recursive: true });
+    }
+});
+
+// Helper to determine upload type
+function getUploadType(req, file) {
+    // Priority: fieldname, then route
+    if (file.fieldname === 'cause' || (req.baseUrl && req.baseUrl.includes('/cause'))) {
+        return 'causes';
+    }
+    if (file.fieldname === 'user' || (req.baseUrl && req.baseUrl.includes('/user'))) {
+        return 'users';
+    }
+    // Default to students
+    return 'students';
 }
 
 // Configure storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Determine if this is a user or student upload
-        let destDir;
-        // If the route contains 'user' or the field is 'profile', save to users
-        if (
-            (req.baseUrl && req.baseUrl.includes('/user')) ||
-            (file.fieldname === 'profile')
-        ) {
-            destDir = path.join(__dirname, '..', 'uploads', 'users');
-        } else {
-            destDir = path.join(__dirname, '..', 'uploads', 'students');
-        }
+        const type = getUploadType(req, file);
+        const destDir = uploadDirs[type];
         if (!fs.existsSync(destDir)) {
             fs.mkdirSync(destDir, { recursive: true });
         }
@@ -34,15 +44,15 @@ const storage = multer.diskStorage({
         cb(null, destDir);
     },
     filename: function (req, file, cb) {
-        // Get user ID from the authenticated user
-        const userId = req.user.id;
-        if (!userId) {
-            return cb(new Error('User ID not found'), false);
-        }
-        // Create filename with user ID and timestamp
+        // Get user ID from the authenticated user if available
+        const userId = req.user && req.user.id ? req.user.id : 'anonymous';
         const timestamp = Date.now();
         const extension = path.extname(file.originalname);
-        const filename = `user-${userId}-${timestamp}${extension}`;
+        const type = getUploadType(req, file);
+        let prefix = 'student';
+        if (type === 'users') prefix = 'user';
+        if (type === 'causes') prefix = 'cause';
+        const filename = `${prefix}-${userId}-${timestamp}${extension}`;
         cb(null, filename);
     }
 });

@@ -4,13 +4,14 @@ import HomePage from './components/pages/homePage'
 import AdminDashboard from './components/pages/adminDashbaord/AdminDashboard'
 import styles from './App.module.css'
 
+
 function App() {
 
   return (
-    
-     
+    <> <HomePage />
         <AdminDashboard />
-      
+        </>
+        
   )
 }
 

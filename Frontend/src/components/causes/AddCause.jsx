@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styles from './AddCause.module.css';
 import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning, MdAttachMoney, MdClose } from 'react-icons/md';
+import {API_CONFIG} from '../../config/api.config.js';
+import axios from 'axios';
 
-export default function AddCause({ onSubmit, onCancel }) {
+
+export default function AddCause() {
   const [form, setForm] = useState({
     name: '',
     description: '',
@@ -25,6 +28,18 @@ export default function AddCause({ onSubmit, onCancel }) {
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: undefined }));
   };
 
+
+  const onCancel= ()=>{
+    setForm({
+      name: '',
+      description: '',
+      location: '',
+      budgetRequired: '',
+      endDate: '',
+      isUrgent: false,
+      featureImage: null
+    });
+  }
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -66,10 +81,33 @@ export default function AddCause({ onSubmit, onCancel }) {
     e.preventDefault();
     if (!validateForm()) return;
     setIsSubmitting(true);
+    const token = localStorage.getItem('token');
     try {
-      if (onSubmit) await onSubmit(form);
+      // if (onSubmit) await onSubmit(form);
+    const res = await axios.post(`${API_CONFIG.ENDPOINTS.CAUSES.CREATE}`,form,
+     { headers: {
+        'Content-Type':'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+     
+      }}
+    );
+
+    if(res.data.success){
+      setForm({
+        name: '',
+        description: '',
+        location: '',
+        budgetRequired: '',
+        endDate: '',
+        isUrgent: false,
+        featureImage: null
+      });
+      return alert ("Form Submitted Successfully!")
+    }
     } catch (error) {
-      // handle error
+      console.log(error.mesage)
+    
+            return alert(error.message)
     } finally {
       setIsSubmitting(false);
     }
@@ -229,7 +267,7 @@ export default function AddCause({ onSubmit, onCancel }) {
               type="button"
               className={styles.cancelButton}
               onClick={onCancel}
-              disabled={!onCancel}
+              
             >
               Cancel
             </button>

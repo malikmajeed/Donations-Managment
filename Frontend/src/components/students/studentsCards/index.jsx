@@ -10,7 +10,9 @@ export default function StudentCard({
   profileUrl,
   studentClass,
   fee,
-  sponsored
+  sponsored,
+  adminView = false,
+  studentId
 }) {
   let GenderIcon = MdPerson;
   if (gender === 'male') GenderIcon = MdBoy;
@@ -51,8 +53,17 @@ export default function StudentCard({
         <span className={styles.infoItem}>Monthly Fee: <span className={styles.feeValue}>${fee}</span></span>
       </div>
       <div className={styles.cardButtons}>
-        <button className={styles.sponsorBtn}>Sponsor</button>
-        <button className={styles.viewProfileBtn}>View Profile</button>
+        {adminView ? (
+          <>
+            <button className={styles.viewProfileBtn} data-studentid={studentId}>View Profile</button>
+            <button className={styles.sponsorBtn} data-studentid={studentId}>Edit</button>
+          </>
+        ) : (
+          <>
+            <button className={styles.sponsorBtn}>Sponsor</button>
+            <button className={styles.viewProfileBtn}>View Profile</button>
+          </>
+        )}
       </div>
     </div>
   );

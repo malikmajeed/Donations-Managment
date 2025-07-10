@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from './AdminDashboard.module.css';
 import Dashboard from './Dashboard';
+import AllStudents from './AllStudents'; // (to be created)
+import Education from './Education';
 import {
   MdAttachMoney, MdFavorite, MdPeople, MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup
 } from 'react-icons/md';
@@ -8,7 +10,7 @@ import {
 const menu = [
   { label: 'Dashboard', icon: <MdDashboard /> },
   { label: 'All Causes', icon: <MdListAlt /> },
-  { label: 'Students', icon: <MdGroup /> },
+  { label: 'All Students', icon: <MdGroup /> },
   { label: 'Education', icon: <MdSchool /> },
   { label: 'Empowerment', icon: <MdEmojiObjects /> },
   { label: 'Food', icon: <MdFastfood /> },
@@ -67,6 +69,8 @@ export default function AdminDashboard() {
         </div>
         {/* Dashboard Content */}
         {activeMenu === 'Dashboard' && <Dashboard />}
+        {activeMenu === 'All Students' && <AllStudents />}
+        {activeMenu === 'Education' && <Education />}
         {/* Add other components for other menu items here as needed */}
       </div>
     </div>
