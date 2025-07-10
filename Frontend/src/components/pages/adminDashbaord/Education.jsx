@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CauseCard from '../../causes/CauseCard';
 import axios from 'axios';
 import { API_CONFIG } from '../../../config/api.config';
+import styles from './Education.module.css';
 
 const Education = () => {
   const [causes, setCauses] = useState([]);
@@ -29,8 +30,8 @@ const Education = () => {
 
   return (
     <div>
-      <h2>Education Causes</h2>
-      <div>
+      <h2 className={styles.heading}>Education Causes</h2>
+      <div className={styles.container}>
         {causes.length === 0 ? (
           <div>No education causes found.</div>
         ) : (
