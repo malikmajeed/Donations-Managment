@@ -6,6 +6,8 @@ import styles from './CauseCard.module.css';
 
 export default function CauseCard({ cause, onDonate }) {
   const [loading, setLoading] = useState(false);
+  // console.log(`${API_CONFIG.BASE_URL}${cause.featureImage}`)
+  // console.log('Image src:', cause.featureImage, `${API_CONFIG.BASE_URL}${cause.featureImage}`)
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this cause?')) {
@@ -89,7 +91,7 @@ export default function CauseCard({ cause, onDonate }) {
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img
-          src={cause.featureImage ? `${API_CONFIG.BASE_URL}/${cause.featureImage}` : '/default-avatar.avif'}
+          src={cause.featureImage ? `${API_CONFIG.BASE_URL}${cause.featureImage}` : '/default-avatar.avif'}
           alt={cause.name}
           className={styles.image}
         />
