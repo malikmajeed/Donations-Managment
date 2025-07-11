@@ -14,8 +14,9 @@ const Education = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.GET_ALL);
-        setCauses(res.data.filter(cause => cause.type === 'education'));
+        const res = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.LIST);
+        console.log(res.data.causes[0])
+        setCauses(res.data.causes.filter(cause => cause.type === 'education'));
       } catch (err) {
         setError('Failed to load causes');
       } finally {
