@@ -6,10 +6,18 @@ import axios from 'axios';
 
 
 export default function AddCause() {
+  const CAUSE_TYPES = [
+    { value: 'education', label: 'Education' },
+    { value: 'empowerment', label: 'Empowerment' },
+    { value: 'foodDistribution', label: 'Food Distribution' },
+    { value: 'mobileClinic', label: 'Mobile Clinic' },
+    { value: 'waterWells', label: 'Water Wells' }
+  ];
   const [form, setForm] = useState({
     name: '',
     description: '',
     location: '',
+    type: '',
     budgetRequired: '',
     endDate: '',
     isUrgent: false,
@@ -34,6 +42,7 @@ export default function AddCause() {
       name: '',
       description: '',
       location: '',
+      type: '',
       budgetRequired: '',
       endDate: '',
       isUrgent: false,
@@ -65,6 +74,7 @@ export default function AddCause() {
     if (!form.name.trim()) newErrors.name = 'Title is required';
     if (!form.description.trim()) newErrors.description = 'Description is required';
     if (!form.location.trim()) newErrors.location = 'Location is required';
+    if (!form.type) newErrors.type = 'Type is required';
     if (!form.budgetRequired || isNaN(form.budgetRequired) || Number(form.budgetRequired) <= 0) newErrors.budgetRequired = 'Budget must be greater than 0';
     if (!form.endDate) newErrors.endDate = 'End date is required';
     else {
@@ -97,6 +107,7 @@ export default function AddCause() {
         name: '',
         description: '',
         location: '',
+        type: '',
         budgetRequired: '',
         endDate: '',
         isUrgent: false,
@@ -184,6 +195,25 @@ export default function AddCause() {
                 />
                 {errors.location && <span className={styles.error}>{errors.location}</span>}
               </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="type" className={styles.label}>
+                  Type *
+                </label>
+                <select
+                  id="type"
+                  name="type"
+                  value={form.type}
+                  onChange={handleInputChange}
+                  className={`${styles.input} ${errors.type ? styles.inputError : ''}`}
+                  required
+                >
+                  <option value="">Select type</option>
+                  {CAUSE_TYPES.map(option => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+                {errors.type && <span className={styles.error}>{errors.type}</span>}
+              </div>
             </div>
       </div>
 
@@ -211,7 +241,7 @@ export default function AddCause() {
             </div>
             <div className={styles.formGroup} style={{ flex: 1 }}>
               <label htmlFor="endDate" className={styles.label}>
-                <MdCalendarToday className={styles.labelIcon} /> End Date *
+                <MdCalendarToday className={styles.labelIcon} /> Needed By *
           </label>
               <input
                 type="date"
