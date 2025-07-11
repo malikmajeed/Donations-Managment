@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
+import {  Routes, Route } from 'react-router-dom';
+import Sidebar from './Sidebar';
 import styles from './AdminDashboard.module.css';
 import Dashboard from './Dashboard';
 import AllStudents from './AllStudents'; // (to be created)
 import Education from './Education';
-import {
-  MdAttachMoney, MdFavorite, MdPeople, MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup
-} from 'react-icons/md';
 
-const menu = [
-  { label: 'Dashboard', icon: <MdDashboard /> },
-  { label: 'All Causes', icon: <MdListAlt /> },
-  { label: 'All Students', icon: <MdGroup /> },
-  { label: 'Education', icon: <MdSchool /> },
-  { label: 'Empowerment', icon: <MdEmojiObjects /> },
-  { label: 'Food', icon: <MdFastfood /> },
-  { label: 'Mobile Clinic', icon: <MdLocalHospital /> },
-  { label: 'Water Wells', icon: <MdOpacity /> },
-];
+
 
 const profile = {
   name: 'Admin User',
@@ -24,39 +14,12 @@ const profile = {
 };
 
 export default function AdminDashboard() {
-  const [activeMenu, setActiveMenu] = useState('Dashboard');
+
 
   return (
     <div className={styles.adminDashboardWrapper}>
-      {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>Admin</span>
-        </div>
-        <nav className={styles.menu}>
-          {menu.map(item => (
-            <div
-              key={item.label}
-              className={
-                activeMenu === item.label
-                  ? `${styles.menuItem} ${styles.menuItemActive}`
-                  : styles.menuItem
-              }
-              onClick={() => setActiveMenu(item.label)}
-              style={{ cursor: 'pointer' }}
-            >
-              <span className={
-                activeMenu === item.label
-                  ? `${styles.menuIcon} ${styles.menuItemActive}`
-                  : styles.menuIcon
-              }>
-                {item.icon}
-              </span>
-              <span className={styles.menuLabel}>{item.label}</span>
-            </div>
-          ))}
-        </nav>
-      </aside>
+
+
       {/* Main Content */}
       <div className={styles.mainContent}>
         {/* Header Bar */}
@@ -68,10 +31,27 @@ export default function AdminDashboard() {
           <button className={styles.logoutBtn}>Logout</button>
         </div>
         {/* Dashboard Content */}
-        {activeMenu === 'Dashboard' && <Dashboard />}
+        {/* {activeMenu === 'Dashboard' && <Dashboard />}
         {activeMenu === 'All Students' && <AllStudents />}
-        {activeMenu === 'Education' && <Education />}
+        {activeMenu === 'Education' && <Education />} */}
         {/* Add other components for other menu items here as needed */}
+
+        
+          {/* SiderBard */}
+          <Sidebar />
+          {/* Main Components */}
+
+          <Routes>
+            <Route path='dashboard' element={<Dashboard />}></Route>
+            {/* <Route path='AllCauses' element={<AllCauses />}></Route> */}
+            <Route path='students' element={<AllStudents />}></Route>
+            <Route path='education' element={<Education />}></Route>
+            {/* <Route path='Empowerment' element={<Empowerment />}></Route>
+            <Route path='Food-Distribution' element={<FoodDistribution />}></Route>
+            <Route path='Modile-Clinic' element={<ModileClinic />}></Route>
+            <Route path='Water-wells' element={<WaterWells />}></Route> */}
+          </Routes>
+        
       </div>
     </div>
   );
