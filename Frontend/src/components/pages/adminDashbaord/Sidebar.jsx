@@ -7,18 +7,7 @@ import {
 
 
 export default function Sidebar() {
-    // const [activeMenu, setActiveMenu] = useState('Dashboard');
 
-    // const menu = [
-    //     { label: 'Dashboard', icon: <MdDashboard /> },
-    //     { label: 'All Causes', icon: <MdListAlt /> },
-    //     { label: 'All Students', icon: <MdGroup /> },
-    //     { label: 'Education', icon: <MdSchool /> },
-    //     { label: 'Empowerment', icon: <MdEmojiObjects /> },
-    //     { label: 'Food', icon: <MdFastfood /> },
-    //     { label: 'Mobile Clinic', icon: <MdLocalHospital /> },
-    //     { label: 'Water Wells', icon: <MdOpacity /> },
-    // ];
 
 
     return (
