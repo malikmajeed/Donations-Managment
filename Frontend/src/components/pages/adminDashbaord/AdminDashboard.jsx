@@ -18,9 +18,7 @@ export default function AdminDashboard() {
 
   return (
     <div className={styles.adminDashboardWrapper}>
-
-
-      {/* Main Content */}
+      <Sidebar />
       <div className={styles.mainContent}>
         {/* Header Bar */}
         <div className={styles.headerBar}>
@@ -38,7 +36,6 @@ export default function AdminDashboard() {
 
         
           {/* SiderBard */}
-          <Sidebar />
           {/* Main Components */}
 
           <Routes>
