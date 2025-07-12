@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './AdminDashboard.module.css';
+import styles from './Sidebar.module.css';
 import {
     MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup
 } from 'react-icons/md';
@@ -30,14 +30,14 @@ export default function Sidebar() {
                 </div>
                 <nav className={styles.menu}>
 
-                    <NavLink to="/dashboard" end className={({ isActive }) => isActive ? 'active' : ''}>
-                    <MdDashboard />  Dashboard
+                    <NavLink to="/dashboard" end className={({ isActive }) => `${styles.menuLink} ${isActive ? styles.active : ''}`}>
+                        <MdDashboard /> <span>Dashboard</span>
                     </NavLink>
-                    <NavLink to="/students" className={({ isActive }) => isActive ? 'active' : ''}>
-                        Students
+                    <NavLink to="/students" className={({ isActive }) => `${styles.menuLink} ${isActive ? styles.active : ''}`}>
+                        <MdGroup /> <span>Students</span>
                     </NavLink>
-                    <NavLink to="/education" className={({ isActive }) => isActive ? 'active' : ''}>
-                        Education
+                    <NavLink to="/education" className={({ isActive }) => `${styles.menuLink} ${isActive ? styles.active : ''}`}>
+                        <MdSchool /> <span>Education</span>
                     </NavLink>
 
                 </nav>
