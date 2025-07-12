@@ -4,128 +4,6 @@
   background: #f8fafc;
 }
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100dvh;
-  width: 260px;
-  background: #fff;
-  box-shadow: 2px 0 16px rgba(0,0,0,0.08);
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #e5e7eb;
-}
-
-.sidebarHeader {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  padding: 1.2rem 1rem 1rem 1.2rem;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.logoText {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2563eb;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin: 1.5rem 0 0 0;
-  flex: 1 1 auto;
-  overflow-y: auto;
-  min-height: 0;
-}
-
-.menuItem {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 0.7rem 1.5rem;
-  color: #2563eb;
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: 8px;
-  transition: background 0.2s, color 0.2s;
-  cursor: pointer;
-}
-.menuItem:hover {
-  background: #f1f5f9;
-  color: #2563eb;
-}
-.menuItemActive {
-  background: #2563eb;
-  color: #fff !important;
-}
-.menuItemActive .menuIcon {
-  color: #fff !important;
-}
-.menuItemActive:hover {
-  background: #1746a2;
-  color: #fff !important;
-}
-.menuItemActive:hover .menuIcon {
-  color: #fff !important;
-}
-.menuItem:hover:not(.menuItemActive) {
-  background: #f1f5f9;
-  color: #2563eb;
-}
-.menuIcon {
-  font-size: 1.5rem;
-  min-width: 32px;
-  min-height: 32px;
-  width: 32px;
-  height: 32px;
-  color: #2563eb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s;
-  background: none !important;
-  box-shadow: none !important;
-}
-.menuLabel {
-  display: inline-block;
-  opacity: 1;
-  max-width: 160px;
-  width: auto;
-  margin-left: 0.5rem;
-  pointer-events: auto;
-  overflow: hidden;
-  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), max-width 0.25s cubic-bezier(.4,0,.2,1), margin 0.25s cubic-bezier(.4,0,.2,1);
-}
-
-.logoutBtn {
-  margin: 1.2rem 1.2rem 0 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  justify-content: flex-start;
-  margin-top: auto;
-}
-.logoutBtn:hover {
-  background: #1746a2;
-}
-
 .mainContent {
   margin-left: 260px;
   flex: 1;
@@ -170,21 +48,6 @@
   color: #1e293b;
   font-size: 1.08rem;
   margin-right: 0.5rem;
-}
-.logoutBtn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-left: 0.5rem;
-}
-.logoutBtn:hover {
-  background: #1746a2;
 }
 
 /* All styles for AllStudents have been removed. Only dashboard-related styles remain. */
@@ -281,12 +144,6 @@
 }
 
 @media (max-width: 900px) {
-  .sidebar {
-    width: 70px;
-  }
-  .sidebarHeader, .menuLabel {
-    display: none;
-  }
   .filtersContainer {
     flex-wrap: wrap;
     gap: 1rem;
