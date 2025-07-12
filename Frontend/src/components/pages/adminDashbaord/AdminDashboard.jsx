@@ -29,10 +29,7 @@ export default function AdminDashboard() {
           <button className={styles.logoutBtn}>Logout</button>
         </div>
         {/* Dashboard Content */}
-        {/* {activeMenu === 'Dashboard' && <Dashboard />}
-        {activeMenu === 'All Students' && <AllStudents />}
-        {activeMenu === 'Education' && <Education />} */}
-        {/* Add other components for other menu items here as needed */}
+     
 
         
           {/* SiderBard */}
