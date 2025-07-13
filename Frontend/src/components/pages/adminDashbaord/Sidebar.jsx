@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-   MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup
+   MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup, MdLightbulb, MdWaterDrop
   } from 'react-icons/md';
   
 export default function Sidebar() {
@@ -77,7 +77,7 @@ export default function Sidebar() {
                     </li>
                     <li>
                         <NavLink 
-                            to="/causes" 
+                            to="/empowerment" 
                             className={({ isActive }) => 
                                 `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
                                     isActive 
@@ -88,15 +88,15 @@ export default function Sidebar() {
                         >
                             {({ isActive }) => (
                                 <>
-                                    <MdListAlt className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Causes</span>
+                                    <MdLightbulb className={getIconClassName(isActive)} />
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Empowerment</span>
                                 </>
                             )}
                         </NavLink>
                     </li>
                     <li>
                         <NavLink 
-                            to="/donations" 
+                            to="/food-distribution" 
                             className={({ isActive }) => 
                                 `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
                                     isActive 
@@ -107,8 +107,46 @@ export default function Sidebar() {
                         >
                             {({ isActive }) => (
                                 <>
-                                    <MdEmojiObjects className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Donations</span>
+                                    <MdFastfood className={getIconClassName(isActive)} />
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Food Distribution</span>
+                                </>
+                            )}
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink 
+                            to="/mobile-clinic" 
+                            className={({ isActive }) => 
+                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
+                                    isActive 
+                                        ? 'bg-blue-600 text-white' 
+                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                                }`
+                            }
+                        >
+                            {({ isActive }) => (
+                                <>
+                                    <MdLocalHospital className={getIconClassName(isActive)} />
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Mobile Clinic</span>
+                                </>
+                            )}
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink 
+                            to="/water-wells" 
+                            className={({ isActive }) => 
+                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
+                                    isActive 
+                                        ? 'bg-blue-600 text-white' 
+                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                                }`
+                            }
+                        >
+                            {({ isActive }) => (
+                                <>
+                                    <MdWaterDrop className={getIconClassName(isActive)} />
+                                    <span className="flex-1 ml-3 whitespace-nowrap">Water Wells</span>
                                 </>
                             )}
                         </NavLink>

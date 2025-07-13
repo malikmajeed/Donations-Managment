@@ -152,7 +152,10 @@ export default function AllStudents() {
       const selectedCount = currentValue.length || 0;
       return selectedCount === 0 ? dropdown.label : `${dropdown.label}: ${selectedCount}`;
     } else {
-      // For single value dropdowns like dateOrder
+      // For single value dropdowns
+      if (!currentValue || currentValue === '') {
+        return dropdown.label;
+      }
       const item = dropdown.items.find(item => item.value === currentValue);
       return item ? item.label : dropdown.label;
     }
@@ -167,10 +170,10 @@ export default function AllStudents() {
           [dropdownName]: currentValue.filter(item => item !== value)
         };
       } else {
-        // For single value dropdowns, reset to default
+        // For single value dropdowns, reset to empty string to allow removal
         return {
           ...prev,
-          [dropdownName]: dropdownName === 'dateOrder' ? 'descending' : ''
+          [dropdownName]: ''
         };
       }
     });
@@ -233,7 +236,7 @@ export default function AllStudents() {
               <button
                 type="button"
                 onClick={() => toggleDropdown(dropdown.name)}
-                className="inline-flex justify-between w-full bg-white rounded md:w-48 px-2 py-2 text-base text-gray-500 bg-gray-50 border border-gray-300 appearance-none focus:outline-none ring-0 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 peer"
+                className="inline-flex justify-between w-full bg-white rounded md:w-48 px-2 py-1 text-base text-gray-500 bg-gray-50 border border-gray-300 appearance-none focus:outline-none ring-0 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 peer"
               >
                 <span className="truncate mx-2">{getSelectedLabel(dropdown)}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -304,7 +307,7 @@ export default function AllStudents() {
           {/* Apply button */}
           <button
             type="button"
-            className="w-full md:w-auto inline-flex justify-center font-medium appearance-none border border-blue-700 bg-blue-700 rounded px-8 py-2 text-base text-white hover:bg-blue-800 ring-0 peer"
+            className="w-full md:w-auto inline-flex justify-center font-medium appearance-none border border-blue-700 bg-blue-700 rounded px-8 py-1 text-base text-white hover:bg-blue-800 ring-0 peer"
           >
             Apply Filters
           </button>
@@ -323,7 +326,10 @@ export default function AllStudents() {
                       <span>{item.label}</span>
                       <button
                         type="button"
-                        onClick={() => removeFilter(dropdown.name, value)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeFilter(dropdown.name, value);
+                        }}
                         className="ml-2 inline-flex items-center p-0.5 hover:bg-blue-200 rounded-full"
                       >
                         <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
@@ -334,14 +340,20 @@ export default function AllStudents() {
                   ) : null;
                 });
               } else {
-                // Handle single value dropdowns
+                // Handle single value dropdowns - only show if there's a value
+                if (!currentValue || currentValue === '') {
+                  return null;
+                }
                 const item = dropdown.items.find(item => item.value === currentValue);
                 return item ? (
                   <span key={`${dropdown.name}-${currentValue}`} className="inline-flex items-center px-3 py-1 rounded-full text-base bg-blue-100 text-blue-800">
                     <span>{item.label}</span>
                     <button
                       type="button"
-                      onClick={() => removeFilter(dropdown.name, currentValue)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFilter(dropdown.name, currentValue);
+                      }}
                       className="ml-2 inline-flex items-center p-0.5 hover:bg-blue-200 rounded-full"
                     >
                       <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
@@ -357,7 +369,7 @@ export default function AllStudents() {
       </div>
 
       {/* Students Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredStudents.map(student => (
           <StudentCard
             key={student._id || student.id}
