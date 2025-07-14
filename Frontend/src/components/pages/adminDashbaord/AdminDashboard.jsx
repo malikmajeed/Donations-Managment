@@ -34,6 +34,10 @@ export default function AdminDashboard() {
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='students' element={<AllStudents />} />
             <Route path='education' element={<CauseComponent CauseType="education" />} />
+            <Route path='empowerment' element={<CauseComponent CauseType="empowerment" />} />
+            <Route path='food-distribution' element={<CauseComponent CauseType="foodDistribution" />} />
+            <Route path='mobile-clinic' element={<CauseComponent CauseType="mobileClinic" />} />
+            <Route path='water-wells' element={<CauseComponent CauseType="waterWells" />} />
           </Routes>
         </div>
       </div>
