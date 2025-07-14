@@ -225,7 +225,7 @@ export default function AllStudents() {
       {/* Multi-filter form */}
       <div className="w-full">
         {/* Filters container */}
-        <div className="flex flex-wrap items-start gap-2 mb-4">
+        <div className="flex flex-wrap items-start gap-2 mb-4 justify-center">
           {dropdowns.map(dropdown => (
             <div 
               key={dropdown.name} 

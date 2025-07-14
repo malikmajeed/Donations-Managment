@@ -3,7 +3,7 @@ import CauseCard from '../../causes/CauseCard';
 import axios from 'axios';
 import { API_CONFIG } from '../../../config/api.config';
 
-const CauseComponent = ({CauseType}) => {
+const  FoodDistribution = ({CauseType}) => {
   const [causes, setCauses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,14 +30,14 @@ const CauseComponent = ({CauseType}) => {
       name: 'category',
       label: 'Category',
       items: [
-        { value: 'primary', label: 'Primary Education' },
-        { value: 'secondary', label: 'Secondary Education' },
-        { value: 'higher', label: 'Higher Education' },
-        { value: 'vocational', label: 'Vocational Training' },
-        { value: 'special-needs', label: 'Special Needs Education' },
-        { value: 'adult-literacy', label: 'Adult Literacy' },
-        { value: 'computer-training', label: 'Computer Training' },
-        { value: 'language-courses', label: 'Language Courses' }
+        { value: 'general-food', label: 'General Food Aid' },
+        { value: 'iftar', label: 'Iftar Distribution' },
+        { value: 'ramadan', label: 'Ramadan Food Pack' },
+        { value: 'meat', label: 'Meat Distribution' },
+        { value: 'family-packs', label: 'Family Food Packs' },
+        { value: 'orphan-support', label: 'Orphan Food Support' },
+        { value: 'community-kitchen', label: 'Community Kitchen' },
+        { value: 'emergency-relief', label: 'Emergency Food Relief' }
       ]
     },
     {
@@ -212,12 +212,12 @@ const CauseComponent = ({CauseType}) => {
     return dateOrder === 'ascending' ? dateA - dateB : dateB - dateA;
   });
 
-  if (loading) return <div className="text-center py-8 text-gray-600">Loading education causes...</div>;
+  if (loading) return <div className="text-center py-8 text-gray-600">Loading food distribution causes...</div>;
   if (error) return <div className="text-center py-8 text-red-600">{error}</div>;
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Education Causes</h2>
+      <h2 className="text-2xl font-bold text-gray-900">Food Distribution Causes</h2>
       
       {/* Multi-filter form */}
       <div className="w-full">
@@ -368,7 +368,7 @@ const CauseComponent = ({CauseType}) => {
       {/* Causes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredCauses.length === 0 ? (
-          <div className="col-span-full text-center py-8 text-gray-600">No education causes found.</div>
+          <div className="col-span-full text-center py-8 text-gray-600">No food distribution causes found.</div>
         ) : (
           filteredCauses.map(cause => (
             <CauseCard key={cause._id} cause={cause} />
@@ -379,4 +379,4 @@ const CauseComponent = ({CauseType}) => {
   );
 };
 
-export default CauseComponent; 
+export default FoodDistribution; 
