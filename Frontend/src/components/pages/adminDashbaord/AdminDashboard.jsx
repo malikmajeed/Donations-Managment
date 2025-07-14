@@ -3,7 +3,8 @@ import {  Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import AllStudents from './AllStudents'; // (to be created)
-import CauseComponent from './CauseComponenet';
+import Education from './Education';
+import FoodDistribution from './FoodDistribution';
 
 const profile = {
   name: 'Admin User',
@@ -33,11 +34,11 @@ export default function AdminDashboard() {
           <Routes>
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='students' element={<AllStudents />} />
-            <Route path='education' element={<CauseComponent CauseType="education" />} />
-            <Route path='empowerment' element={<CauseComponent CauseType="empowerment" />} />
-            <Route path='food-distribution' element={<CauseComponent CauseType="foodDistribution" />} />
-            <Route path='mobile-clinic' element={<CauseComponent CauseType="mobileClinic" />} />
-            <Route path='water-wells' element={<CauseComponent CauseType="waterWells" />} />
+            <Route path='education' element={<Education CauseType="education" />} />
+            {/* <Route path='empowerment' element={<CauseComponent CauseType="empowerment" />} /> */}
+            <Route path='food-distribution' element={<FoodDistribution CauseType="foodDistribution" />} />
+ 
+
           </Routes>
         </div>
       </div>
