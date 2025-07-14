@@ -1,15 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
-import StudentCard from '../../Students/studentsCards/index.jsx';
+import React, { useEffect, useState, useRef } from 'react';
+import CauseCard from '../../causes/CauseCard';
 import axios from 'axios';
+import { API_CONFIG } from '../../../config/api.config';
 
-export default function AllStudents() {
-  const [students, setStudents] = useState([]);
+const CauseComponent = ({CauseType}) => {
+  const [causes, setCauses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     status: [],
-    gender: [],
-    grade: [],
+    category: [],
+    urgency: [],
     dateOrder: 'descending'
   });
 
@@ -19,36 +20,34 @@ export default function AllStudents() {
       name: 'status',
       label: 'Status',
       items: [
-        { value: 'sponsored', label: 'Sponsored' },
-        { value: 'not-sponsored', label: 'Not Sponsored' },
-        { value: 'pending', label: 'Pending' }
+        { value: 'active', label: 'Active' },
+        { value: 'completed', label: 'Completed' },
+        { value: 'pending', label: 'Pending' },
+        { value: 'urgent', label: 'Urgent' }
       ]
     },
     {
-      name: 'gender',
-      label: 'Gender',
+      name: 'category',
+      label: 'Category',
       items: [
-        { value: 'male', label: 'Male' },
-        { value: 'female', label: 'Female' },
-        { value: 'other', label: 'Other' }
+        { value: 'primary', label: 'Primary Education' },
+        { value: 'secondary', label: 'Secondary Education' },
+        { value: 'higher', label: 'Higher Education' },
+        { value: 'vocational', label: 'Vocational Training' },
+        { value: 'special-needs', label: 'Special Needs Education' },
+        { value: 'adult-literacy', label: 'Adult Literacy' },
+        { value: 'computer-training', label: 'Computer Training' },
+        { value: 'language-courses', label: 'Language Courses' }
       ]
     },
     {
-      name: 'grade',
-      label: 'Grade',
+      name: 'urgency',
+      label: 'Urgency',
       items: [
-        { value: '1', label: 'Grade 1' },
-        { value: '2', label: 'Grade 2' },
-        { value: '3', label: 'Grade 3' },
-        { value: '4', label: 'Grade 4' },
-        { value: '5', label: 'Grade 5' },
-        { value: '6', label: 'Grade 6' },
-        { value: '7', label: 'Grade 7' },
-        { value: '8', label: 'Grade 8' },
-        { value: '9', label: 'Grade 9' },
-        { value: '10', label: 'Grade 10' },
-        { value: '11', label: 'Grade 11' },
-        { value: '12', label: 'Grade 12' }
+        { value: 'low', label: 'Low Priority' },
+        { value: 'medium', label: 'Medium Priority' },
+        { value: 'high', label: 'High Priority' },
+        { value: 'critical', label: 'Critical' }
       ]
     },
     {
@@ -66,7 +65,20 @@ export default function AllStudents() {
   const dropdownRefs = useRef({});
 
   useEffect(() => {
-    fetchStudents();
+    const fetchCauses = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.LIST);
+        console.log(res.data.causes[0])
+        setCauses(res.data.causes.filter(cause => cause.type === `${CauseType}`));
+      } catch (err) {
+        setError('Failed to load causes');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCauses();
   }, []);
 
   // Handle clicking outside dropdowns
@@ -90,18 +102,6 @@ export default function AllStudents() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [openDropdowns]);
-
-  const fetchStudents = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:3000/student/getAllStudents');
-      setStudents(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    }
-  };
 
   const toggleDropdown = (dropdownName) => {
     setOpenDropdowns(prev => ({
@@ -179,28 +179,25 @@ export default function AllStudents() {
     });
   };
 
-  // Filter and sort students
-  let filteredStudents = students.filter(student => {
+  // Filter and sort causes
+  let filteredCauses = causes.filter(cause => {
     let match = true;
     
     // Status filter
     const statusFilters = Array.isArray(filters.status) ? filters.status : [];
-    if (statusFilters.length > 0) {
-      const isSponsored = student.sponsorship || student.sponsored;
-      if (!statusFilters.includes(isSponsored ? 'sponsored' : 'not-sponsored')) {
-        match = false;
-      }
-    }
-    
-    // Gender filter
-    const genderFilters = Array.isArray(filters.gender) ? filters.gender : [];
-    if (genderFilters.length > 0 && !genderFilters.includes(student.gender)) {
+    if (statusFilters.length > 0 && !statusFilters.includes(cause.status)) {
       match = false;
     }
     
-    // Grade filter
-    const gradeFilters = Array.isArray(filters.grade) ? filters.grade : [];
-    if (gradeFilters.length > 0 && !gradeFilters.includes(student.studentGrade || student.studentClass)) {
+    // Category filter
+    const categoryFilters = Array.isArray(filters.category) ? filters.category : [];
+    if (categoryFilters.length > 0 && !categoryFilters.includes(cause.category)) {
+      match = false;
+    }
+    
+    // Urgency filter
+    const urgencyFilters = Array.isArray(filters.urgency) ? filters.urgency : [];
+    if (urgencyFilters.length > 0 && !urgencyFilters.includes(cause.urgency)) {
       match = false;
     }
     
@@ -208,19 +205,19 @@ export default function AllStudents() {
   });
 
   // Sort by date added
-  filteredStudents = filteredStudents.sort((a, b) => {
+  filteredCauses = filteredCauses.sort((a, b) => {
     const dateA = new Date(a.createdAt);
     const dateB = new Date(b.createdAt);
     const dateOrder = filters.dateOrder || 'descending';
     return dateOrder === 'ascending' ? dateA - dateB : dateB - dateA;
   });
 
-  if (loading) return <div className="text-center py-8 text-gray-600">Loading students...</div>;
+  if (loading) return <div className="text-center py-8 text-gray-600">Loading education causes...</div>;
   if (error) return <div className="text-center py-8 text-red-600">{error}</div>;
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">All Students</h2>
+      <h2 className="text-2xl font-bold text-gray-900">Education Causes</h2>
       
       {/* Multi-filter form */}
       <div className="w-full">
@@ -368,24 +365,18 @@ export default function AllStudents() {
         </div>
       </div>
 
-      {/* Students Grid */}
+      {/* Causes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredStudents.map(student => (
-          <StudentCard
-            key={student._id || student.id}
-            profileImage={student.profileUrl || student.profileImage}
-            firstName={student.firstName}
-            lastName={student.lastName}
-            gender={student.gender}
-            age={student.age}
-            studentClass={student.studentClass}
-            fee={student.monthlyFee || student.fee}
-            sponsored={student.sponsorship || student.sponsored}
-            adminView
-            studentId={student._id || student.id}
-          />
-        ))}
+        {filteredCauses.length === 0 ? (
+          <div className="col-span-full text-center py-8 text-gray-600">No education causes found.</div>
+        ) : (
+          filteredCauses.map(cause => (
+            <CauseCard key={cause._id} cause={cause} />
+          ))
+        )}
       </div>
     </div>
   );
-} 
+};
+
+export default CauseComponent; 
