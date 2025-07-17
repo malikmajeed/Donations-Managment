@@ -3,7 +3,7 @@ import CauseCard from '../../causes/CauseCard';
 import axios from 'axios';
 import { API_CONFIG } from '../../../config/api.config';
 
-const CauseComponent = ({CauseType}) => {
+const Education = ({CauseType}) => {
   const [causes, setCauses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -379,4 +379,4 @@ const CauseComponent = ({CauseType}) => {
   );
 };
 
-export default CauseComponent; 
+export default Education; 
