@@ -4,7 +4,10 @@ import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import AllStudents from './AllStudents'; // (to be created)
 import Education from './Education';
+import Empowerment from './Empowerment';
 import FoodDistribution from './FoodDistribution';
+import MobileClinic from './MobileClinic';
+import WaterWells from './WaterWells';
 
 const profile = {
   name: 'Admin User',
@@ -34,11 +37,11 @@ export default function AdminDashboard() {
           <Routes>
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='students' element={<AllStudents />} />
-            <Route path='education' element={<Education CauseType="education" />} />
-            {/* <Route path='empowerment' element={<CauseComponent CauseType="empowerment" />} /> */}
+            <Route path='education' element={<Education />} />
+            <Route path='empowerment' element={<Empowerment />} />
             <Route path='food-distribution' element={<FoodDistribution CauseType="foodDistribution" />} />
- 
-
+            <Route path='mobile-clinic' element={<MobileClinic />} />
+            <Route path='water-wells' element={<WaterWells />} />
           </Routes>
         </div>
       </div>
