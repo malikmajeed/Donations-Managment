@@ -249,11 +249,11 @@ export default function AllStudents() {
                 <div className="absolute z-10 w-full mt-2 rounded bg-white ring-2 ring-blue-200 border border-blue-500">
                   {/* Search input with clear button */}
                   <div className="relative">
-                    <input
+          <input
                       value={searchTerms[dropdown.name] || ''}
                       onChange={(e) => handleSearchChange(dropdown.name, e.target.value)}
                       className="block w-full px-4 py-2 text-gray-800 rounded-t border-b focus:outline-none"
-                      type="text"
+            type="text"
                       placeholder={`Search for a ${dropdown.label.toLowerCase()}`}
                     />
                     {searchTerms[dropdown.name] && (
@@ -292,7 +292,7 @@ export default function AllStudents() {
                               checked={isSelected}
                               onChange={() => {}}
                               className="w-4 h-4 border-gray-300 rounded focus:ring-blue-500 flex-shrink-0"
-                            />
+          />
                             <span className="truncate">{item.label}</span>
                           </div>
                         </div>
@@ -301,7 +301,7 @@ export default function AllStudents() {
                   </div>
                 </div>
               )}
-            </div>
+        </div>
           ))}
 
           {/* Apply button */}

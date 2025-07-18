@@ -1,158 +1,118 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
-   MdListAlt, MdSchool, MdEmojiObjects, MdFastfood, MdLocalHospital, MdOpacity, MdDashboard, MdGroup, MdLightbulb, MdWaterDrop
-  } from 'react-icons/md';
-  
-export default function Sidebar() {
-    const getIconClassName = (isActive) => 
-        `flex-shrink-0 w-6 h-6 transition duration-75 ${
-            isActive ? 'text-white' : 'text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
-        }`;
+  LayoutDashboard,
+  Users,
+  ShoppingCart,
+  BarChart3,
+  Settings,
+  MessageSquare,
+  FileText,
+  Calendar,
+  Database
+} from 'lucide-react';
 
-    return (
-        <aside className="fixed top-0 left-0 w-64 h-screen bg-white shadow-lg z-50" aria-label="Sidebar">
-            <div className="px-3 py-4 overflow-y-auto h-full">
-                <div className="mb-4 px-2 py-3">
-                    <span className="text-lg font-semibold text-gray-900 dark:text-white">Admin</span>
-                </div>
-                <ul className="space-y-2">
-                    <li>
-                        <NavLink 
-                            to="/dashboard" 
-                            end 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdDashboard className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Dashboard</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/students" 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdGroup className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Students</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/education" 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdSchool className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Education</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/empowerment" 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdLightbulb className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Empowerment</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/food-distribution" 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdFastfood className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Food Distribution</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/mobile-clinic" 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdLocalHospital className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Mobile Clinic</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/water-wells" 
-                            className={({ isActive }) => 
-                                `flex items-center p-2 text-base font-normal rounded-lg transition duration-75 ${
-                                    isActive 
-                                        ? 'bg-blue-600 text-white' 
-                                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                                }`
-                            }
-                        >
-                            {({ isActive }) => (
-                                <>
-                                    <MdWaterDrop className={getIconClassName(isActive)} />
-                                    <span className="flex-1 ml-3 whitespace-nowrap">Water Wells</span>
-                                </>
-                            )}
-                        </NavLink>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-    );
+const navigationItems = [
+  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', badge: null },
+  { id: 'students', label: 'Students', icon: Users, href: '/students', badge: null },
+  { id: 'education', label: 'Education', icon: FileText, href: '/education', badge: null },
+  { id: 'empowerment', label: 'Empowerment', icon: BarChart3, href: '/empowerment', badge: null },
+  { id: 'food-distribution', label: 'Food Distribution', icon: ShoppingCart, href: '/food-distribution', badge: null },
+  { id: 'mobile-clinic', label: 'Mobile Clinic', icon: Calendar, href: '/mobile-clinic', badge: null },
+  { id: 'water-wells', label: 'Water Wells', icon: Database, href: '/water-wells', badge: null },
+  { id: 'settings', label: 'Settings', icon: Settings, href: '/settings', badge: null }
+];
+
+const adminUser = {
+  name: 'Sarah Johnson',
+  email: 'sarah@company.com',
+  avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400'
+};
+
+export default function Sidebar() {
+  const handleLogout = () => {
+    // Dummy logout
+    alert('Logging out...');
+  };
+
+  return (
+    <aside className="w-80 bg-white border-r border-gray-200 flex flex-col h-screen shadow-xl">
+      {/* Logo/Brand Section */}
+      <div className="p-6 border-b border-gray-200">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <LayoutDashboard className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-gray-900 font-bold text-lg">AdminHub</h1>
+            <p className="text-gray-500 text-xs">Management Portal</p>
+          </div>
+        </div>
+      </div>
+
+      {/* User Profile Section */}
+      <div className="px-6 py-4 border-b border-gray-200">
+        {/* Row 1: Profile, username, email */}
+        <div className="flex items-center space-x-3 mb-2">
+          <img src={adminUser.avatar} alt={adminUser.name} className="w-10 h-10 rounded-full object-cover" />
+          <div>
+            <div className="font-semibold text-gray-900 leading-tight">{adminUser.name}</div>
+            <div className="text-xs text-gray-500 leading-tight">{adminUser.email}</div>
+          </div>
+        </div>
+        {/* Row 2: Settings and Logout */}
+        <div className="flex items-center space-x-2 justify-end">
+          <button
+            className="flex items-center px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
+            title="Settings"
+          >
+            <Settings className="w-4 h-4 mr-1" /> Settings
+          </button>
+          <button
+            onClick={handleLogout}
+            className="flex items-center px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+            title="Logout"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+
+      {/* Navigation Section */}
+      <nav className="flex-1 px-2 py-4 space-y-1">
+        {navigationItems.map(item => (
+          <NavLink
+            key={item.id}
+            to={item.href}
+            className={({ isActive }) =>
+              `flex items-center px-3 py-1.5 rounded-lg transition font-medium text-sm ${
+                isActive
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-700 hover:bg-blue-100'
+              }`
+            }
+          >
+            <item.icon className="w-[22px] h-[22px] mr-2" />
+            <span className="flex-1">{item.label}</span>
+            {item.badge && (
+              <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
+                {item.badge}
+              </span>
+            )}
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-gray-200">
+        <div className="bg-gray-50 rounded-lg p-3">
+          <div className="flex items-center space-x-2 mb-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-gray-700 text-xs font-medium">System Status</span>
+          </div>
+          <p className="text-green-600 text-xs">All systems operational</p>
+        </div>
+      </div>
+    </aside>
+  );
 }
