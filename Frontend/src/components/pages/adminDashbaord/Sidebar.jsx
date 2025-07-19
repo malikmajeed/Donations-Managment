@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -12,17 +12,7 @@ import {
   Database,
   LogOut
 } from 'lucide-react';
-
-const navigationItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', badge: null },
-  { id: 'students', label: 'Students', icon: Users, href: '/students', badge: null },
-  { id: 'education', label: 'Education', icon: FileText, href: '/education', badge: null },
-  { id: 'empowerment', label: 'Empowerment', icon: BarChart3, href: '/empowerment', badge: null },
-  { id: 'food-distribution', label: 'Food Distribution', icon: ShoppingCart, href: '/food-distribution', badge: null },
-  { id: 'mobile-clinic', label: 'Mobile Clinic', icon: Calendar, href: '/mobile-clinic', badge: null },
-  { id: 'water-wells', label: 'Water Wells', icon: Database, href: '/water-wells', badge: null },
-  { id: 'settings', label: 'Settings', icon: Settings, href: '/settings', badge: null }
-];
+import axios from 'axios';
 
 const adminUser = {
   name: 'Sarah Johnson',
@@ -31,13 +21,57 @@ const adminUser = {
 };
 
 export default function Sidebar() {
+  const [counts, setCounts] = useState({
+    students: 0,
+    education: 0,
+    empowerment: 0,
+    foodDistribution: 0,
+    mobileClinic: 0,
+    waterWells: 0
+  });
+
+  useEffect(() => {
+    async function fetchCounts() {
+      try {
+        // Students
+        const studentsRes = await axios.get('http://localhost:3000/student/getAllStudents');
+        const studentsCount = Array.isArray(studentsRes.data) ? studentsRes.data.length : (studentsRes.data.students?.length || 0);
+        // Causes
+        const causesRes = await axios.get('http://localhost:3000/causes/getAllCauses');
+        const causes = Array.isArray(causesRes.data.causes) ? causesRes.data.causes : (Array.isArray(causesRes.data) ? causesRes.data : []);
+        setCounts({
+          students: studentsCount,
+          education: causes.filter(c => c.type === 'education').length,
+          empowerment: causes.filter(c => c.type === 'empowerment').length,
+          foodDistribution: causes.filter(c => c.type === 'foodDistribution').length,
+          mobileClinic: causes.filter(c => c.type === 'mobileClinic').length,
+          waterWells: causes.filter(c => c.type === 'waterWells').length
+        });
+      } catch (err) {
+        // fallback: don't show badges if error
+      }
+    }
+    fetchCounts();
+  }, []);
+
+  const navigationItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', badge: null },
+    { id: 'students', label: 'Students', icon: Users, href: '/students', badge: counts.students },
+    { id: 'education', label: 'Education', icon: FileText, href: '/education', badge: counts.education },
+    { id: 'empowerment', label: 'Empowerment', icon: BarChart3, href: '/empowerment', badge: counts.empowerment },
+    { id: 'food-distribution', label: 'Food Distribution', icon: ShoppingCart, href: '/food-distribution', badge: counts.foodDistribution },
+    { id: 'mobile-clinic', label: 'Mobile Clinic', icon: Calendar, href: '/mobile-clinic', badge: counts.mobileClinic },
+    { id: 'water-wells', label: 'Water Wells', icon: Database, href: '/water-wells', badge: counts.waterWells },
+    { id: 'settings', label: 'Settings', icon: Settings, href: '/settings', badge: null }
+  ];
+
   const handleLogout = () => {
     // Dummy logout
     alert('Logging out...');
   };
 
   return (
-    <aside className="w-60 bg-white border-r border-gray-200 flex flex-col h-screen shadow-xl">
+    <aside className="w-60 bg-white border-r border-gray-200 flex flex-col h-screen shadow-xl sticky top-0 left-0 z-30">
       {/* Logo/Brand Section */}
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center space-x-3">
@@ -90,14 +124,14 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center px-3 py-1.5 rounded-lg transition font-medium text-sm ${
                 isActive
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-blue-600 text-white shadow-lg'
                   : 'text-gray-700 hover:bg-blue-100'
               }`
             }
           >
             <item.icon className="w-[22px] h-[22px] mr-2" />
             <span className="flex-1">{item.label}</span>
-            {item.badge && (
+            {item.badge > 0 && (
               <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
                 {item.badge}
               </span>
