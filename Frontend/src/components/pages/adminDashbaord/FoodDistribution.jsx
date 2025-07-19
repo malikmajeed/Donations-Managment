@@ -468,7 +468,7 @@ const  FoodDistribution = ({CauseType}) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredCauses.length === 0 ? (
+        {filteredCauses.length === 0 ? (
               <tr>
                 <td colSpan={6} className="py-16 text-center">
                   <div className="flex flex-col items-center justify-center">
@@ -478,7 +478,7 @@ const  FoodDistribution = ({CauseType}) => {
                   </div>
                 </td>
               </tr>
-            ) : (
+        ) : (
               filteredCauses.map((cause) => (
                 <motion.tr
                   key={cause._id}
@@ -504,8 +504,8 @@ const  FoodDistribution = ({CauseType}) => {
                     </div>
                   </td>
                 </motion.tr>
-              ))
-            )}
+          ))
+        )}
           </tbody>
         </table>
       </div>
