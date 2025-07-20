@@ -23,12 +23,12 @@ export default function AdminDashboard() {
         <div className="p-4">
           <Routes>
             <Route path='dashboard' element={<Dashboard />} />
-            <Route path='students' element={<AllStudents />} />
+            <Route path='students' element={<AllStudents CauseType="students"/>} />
             <Route path='education' element={<Education CauseType="education"/>} />
-            <Route path='empowerment' element={<Empowerment />} />
+            <Route path='empowerment' element={<Empowerment CauseType="empowerment"/>} />
             <Route path='food-distribution' element={<FoodDistribution CauseType="foodDistribution" />} />
-            <Route path='mobile-clinic' element={<MobileClinic />} />
-            <Route path='water-wells' element={<WaterWells />} />
+            <Route path='mobile-clinic' element={<MobileClinic CauseType="mobileClinic"/>} />
+            <Route path='water-wells' element={<WaterWells CauseType="waterWells"/>} />
           </Routes>
         </div>
       </div>
