@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Users, UserCheck, UserX, TrendingUp, Plus } from 'lucide-react';
 import React from 'react';
 import { motion } from 'framer-motion';
+import AddStudent from '../../students/addStudent/index.jsx';
 
 // StatCard component
 const StatCard = ({ title, value, change, changeType, icon, color }) => {
@@ -75,6 +76,7 @@ export default function AllStudents() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAddStudent, setShowAddStudent] = useState(false);
   const [filters, setFilters] = useState({
     status: [],
     gender: [],
@@ -298,12 +300,31 @@ export default function AllStudents() {
           </p>
         </div>
         <div className="col-span-1 md:col-span-2 flex justify-end">
-          <button className="inline-flex items-center px-5 py-2 bg-blue-600 text-white text-base font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200">
+          <button
+            className="inline-flex items-center px-5 py-2 bg-blue-600 text-white text-base font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200"
+            onClick={() => setShowAddStudent(true)}
+          >
             <Plus className="w-5 h-5 mr-2" />
             Add New
           </button>
         </div>
       </div>
+
+      {/* Modal for Add Student */}
+      {showAddStudent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          {/* <div className="bg-white rounded-xl shadow-lg p-6 max-w-5xl w-full relative animate-fadeIn"> */}
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+              onClick={() => setShowAddStudent(false)}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <AddStudent />
+          {/* </div> */}
+        </div>
+      )}
 
       {/* Statistics Cards */}
       <UserStats />
