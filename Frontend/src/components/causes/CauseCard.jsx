@@ -3,6 +3,7 @@ import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
 import { MdLocationOn, MdAccessTime, MdEdit, MdDelete, MdVisibility, MdCalendarToday } from 'react-icons/md';
 import styles from './CauseCard.module.css';
+import { motion } from 'framer-motion';
 
 export default function CauseCard({ cause, onDonate }) {
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,13 @@ export default function CauseCard({ cause, onDonate }) {
   };
 
   return (
-    <div className={styles.card}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35, ease: 'easeInOut' }}
+      className={styles.card}
+    >
       {/* Image Container */}
       <div className={styles.imageContainer}>
         <img
@@ -150,6 +157,6 @@ export default function CauseCard({ cause, onDonate }) {
           Donate Now
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 } 

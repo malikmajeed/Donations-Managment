@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
 import CauseCard from './CauseCard';
 import styles from './CausesByType.module.css';
+import { Users, UserCheck, UserX, TrendingUp } from 'lucide-react';
+import React from 'react';
 
 const TYPE_LABELS = {
   education: 'Education',
@@ -19,6 +21,72 @@ const TYPE_DESCRIPTIONS = {
   foodDistribution: 'Providing food assistance and nutrition support to vulnerable populations.',
   mobileClinic: 'Healthcare services delivered through mobile clinics to reach remote and underserved areas.',
   waterWells: 'Building and maintaining water wells to provide clean drinking water to communities.'
+};
+
+const StatCard = ({ title, value, change, changeType, icon, color }) => {
+  const changeColor = changeType === 'positive' ? 'text-green-600' : 
+                     changeType === 'negative' ? 'text-red-600' : 'text-gray-600';
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="flex items-center justify-between mb-4">
+        <div className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center`}>
+          {icon}
+        </div>
+        <span className={`text-sm font-medium ${changeColor} flex items-center`}>
+          <TrendingUp className="w-4 h-4 mr-1" />
+          {change}
+        </span>
+      </div>
+      <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
+      <p className="text-gray-600 text-sm">{title}</p>
+    </div>
+  );
+};
+
+const UserStats = ({ type, causes }) => {
+  // Example stats, you can replace with real data if available
+  const stats = [
+    {
+      title: `Total ${TYPE_LABELS[type] || 'Causes'}`,
+      value: causes.length.toString(),
+      change: '+5.2%',
+      changeType: 'positive',
+      icon: <Users className="w-6 h-6 text-white" />, 
+      color: 'bg-blue-500'
+    },
+    {
+      title: 'Active',
+      value: causes.filter(c => c.status === 'active').length.toString(),
+      change: '+2.1%',
+      changeType: 'positive',
+      icon: <UserCheck className="w-6 h-6 text-white" />, 
+      color: 'bg-green-500'
+    },
+    {
+      title: 'Completed',
+      value: causes.filter(c => c.status === 'completed').length.toString(),
+      change: '+1.7%',
+      changeType: 'positive',
+      icon: <UserX className="w-6 h-6 text-white" />, 
+      color: 'bg-red-500'
+    },
+    {
+      title: 'Urgent',
+      value: causes.filter(c => c.isUrgent).length.toString(),
+      change: '+0.8%',
+      changeType: 'positive',
+      icon: <TrendingUp className="w-6 h-6 text-white" />, 
+      color: 'bg-purple-500'
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {stats.map((stat, index) => (
+        <StatCard key={index} {...stat} />
+      ))}
+    </div>
+  );
 };
 
 export default function CausesByType() {
@@ -82,23 +150,13 @@ export default function CausesByType() {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.typeInfo}>
-          <div 
-            className={styles.typeBadge}
-            style={{ backgroundColor: getTypeColor(type) }}
-          >
-            {TYPE_LABELS[type]}
-          </div>
-          <h1 className={styles.title}>{TYPE_LABELS[type]} Causes</h1>
-          <p className={styles.subtitle}>{TYPE_DESCRIPTIONS[type]}</p>
-          <div className={styles.causeCount}>
-            {causes.length} cause{causes.length !== 1 ? 's' : ''} found
-          </div>
-        </div>
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">{TYPE_LABELS[type]} Causes</h1>
+        <p className="text-gray-600 text-lg leading-relaxed">{TYPE_DESCRIPTIONS[type]}</p>
       </div>
-
+      <UserStats type={type} causes={causes} />
       {causes.length === 0 ? (
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>📋</div>

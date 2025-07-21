@@ -2,6 +2,81 @@ import React, { useEffect, useState, useRef } from 'react';
 import CauseCard from '../../causes/CauseCard';
 import axios from 'axios';
 import { API_CONFIG } from '../../../config/api.config';
+import { Users, UserCheck, UserX, TrendingUp, AlertCircle, Plus } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+const StatCard = ({ title, value, change, changeType, icon, color }) => {
+  const changeColor = changeType === 'positive' ? 'text-green-600' : 
+                     changeType === 'negative' ? 'text-red-600' : 'text-gray-600';
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="flex items-center justify-between mb-4">
+        <div className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center`}>
+          {icon}
+        </div>
+        <span className={`text-sm font-medium ${changeColor} flex items-center`}>
+          <TrendingUp className="w-4 h-4 mr-1" />
+          {change}
+        </span>
+      </div>
+      <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
+      <p className="text-gray-600 text-sm">{title}</p>
+    </div>
+  );
+};
+
+const UserStats = () => {
+  const stats = [
+    {
+      title: 'Total Food Distribution Causes',
+      value: '150',
+      change: '+2.2%',
+      changeType: 'positive',
+      icon: <Users className="w-6 h-6 text-white" />, 
+      color: 'bg-blue-500'
+    },
+    {
+      title: 'Active',
+      value: '100',
+      change: '+1.1%',
+      changeType: 'positive',
+      icon: <UserCheck className="w-6 h-6 text-white" />, 
+      color: 'bg-green-500'
+    },
+    {
+      title: 'Completed',
+      value: '40',
+      change: '+0.7%',
+      changeType: 'positive',
+      icon: <UserX className="w-6 h-6 text-white" />, 
+      color: 'bg-red-500'
+    },
+    {
+      title: 'Urgent',
+      value: '10',
+      change: '+0.3%',
+      changeType: 'positive',
+      icon: <TrendingUp className="w-6 h-6 text-white" />, 
+      color: 'bg-purple-500'
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {stats.map((stat, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.96 }}
+          transition={{ duration: 0.35, ease: 'easeInOut' }}
+        >
+          <StatCard {...stat} />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 const  FoodDistribution = ({CauseType}) => {
   const [causes, setCauses] = useState([]);
@@ -216,13 +291,27 @@ const  FoodDistribution = ({CauseType}) => {
   if (error) return <div className="text-center py-8 text-red-600">{error}</div>;
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Food Distribution Causes</h2>
-      
+    <div className="space-y-8">
+      {/* Hero Section */}
+      <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm grid grid-cols-1 md:grid-cols-10 gap-4 items-center text-left">
+        <div className="col-span-1 md:col-span-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4 md:mb-0">Food Distribution Causes</h1>
+          <p className="text-gray-600 text-lg leading-relaxed">
+            Providing food assistance and nutrition support to vulnerable populations. Explore, manage, and track food distribution causes here.
+          </p>
+        </div>
+        <div className="col-span-1 md:col-span-2 flex justify-end">
+          <button className="inline-flex items-center px-5 py-2 bg-blue-600 text-white text-base font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200">
+            <Plus className="w-5 h-5 mr-2" />
+            Add New
+          </button>
+        </div>
+      </div>
+      <UserStats />
       {/* Multi-filter form */}
       <div className="w-full">
         {/* Filters container */}
-        <div className="flex flex-wrap items-start gap-2 mb-4 justify-center">
+        <div className="flex flex-wrap items-start gap-2 mb-4 justify-between">
           {dropdowns.map(dropdown => (
             <div 
               key={dropdown.name} 
@@ -366,14 +455,59 @@ const  FoodDistribution = ({CauseType}) => {
       </div>
 
       {/* Causes Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="overflow-x-auto rounded-lg shadow border border-gray-200 bg-white min-h-[400px]">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Urgency</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Budget</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
         {filteredCauses.length === 0 ? (
-          <div className="col-span-full text-center py-8 text-gray-600">No food distribution causes found.</div>
+              <tr>
+                <td colSpan={6} className="py-16 text-center">
+                  <div className="flex flex-col items-center justify-center">
+                    <AlertCircle className="w-16 h-16 text-gray-300 mb-4" />
+                    <span className="text-2xl font-semibold text-gray-500">No Food Distribution Causes Found</span>
+                    <span className="text-lg text-gray-400 mt-2">Try adjusting your filters or check back later.</span>
+                  </div>
+                </td>
+              </tr>
         ) : (
-          filteredCauses.map(cause => (
-            <CauseCard key={cause._id} cause={cause} />
+              filteredCauses.map((cause) => (
+                <motion.tr
+                  key={cause._id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  className="hover:bg-gray-50 transition-colors duration-150"
+                >
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{cause.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{cause.status}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{cause.category}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{cause.urgency}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${cause.budgetRequired}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center space-x-2">
+                      <button className="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                        View
+                      </button>
+                      <button className="inline-flex items-center px-3 py-1.5 bg-gray-50 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                        Edit
+                      </button>
+                    </div>
+                  </td>
+                </motion.tr>
           ))
         )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

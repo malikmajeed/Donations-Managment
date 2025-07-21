@@ -1,11 +1,82 @@
 import { useEffect, useState, useRef } from 'react';
-import StudentCard from '../../Students/studentsCards/index.jsx';
 import axios from 'axios';
+import { Users, UserCheck, UserX, TrendingUp, Plus } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import AddStudent from '../../students/addStudent/index.jsx';
+
+// StatCard component
+const StatCard = ({ title, value, change, changeType, icon, color }) => {
+  const changeColor = changeType === 'positive' ? 'text-green-600' : 
+                     changeType === 'negative' ? 'text-red-600' : 'text-gray-600';
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="flex items-center justify-between mb-4">
+        <div className={`w-12 h-12 rounded-lg ${color} flex items-center justify-center`}>
+          {icon}
+        </div>
+        <span className={`text-sm font-medium ${changeColor} flex items-center`}>
+          <TrendingUp className="w-4 h-4 mr-1" />
+          {change}
+        </span>
+      </div>
+      <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
+      <p className="text-gray-600 text-sm">{title}</p>
+    </div>
+  );
+};
+
+// UserStats component
+const UserStats = () => {
+  const stats = [
+    {
+      title: 'Total Students',
+      value: '2,847',
+      change: '+12.5%',
+      changeType: 'positive',
+      icon: <Users className="w-6 h-6 text-white" />,
+      color: 'bg-blue-500'
+    },
+    {
+      title: 'Active Students',
+      value: '2,234',
+      change: '+8.2%',
+      changeType: 'positive',
+      icon: <UserCheck className="w-6 h-6 text-white" />,
+      color: 'bg-green-500'
+    },
+    {
+      title: 'Inactive Students',
+      value: '613',
+      change: '-3.1%',
+      changeType: 'negative',
+      icon: <UserX className="w-6 h-6 text-white" />,
+      color: 'bg-red-500'
+    },
+    {
+      title: 'Monthly Revenue',
+      value: '$45,280',
+      change: '+15.3%',
+      changeType: 'positive',
+      icon: <TrendingUp className="w-6 h-6 text-white" />,
+      color: 'bg-purple-500'
+    }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {stats.map((stat, index) => (
+        <StatCard key={index} {...stat} />
+      ))}
+    </div>
+  );
+};
 
 export default function AllStudents() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAddStudent, setShowAddStudent] = useState(false);
   const [filters, setFilters] = useState({
     status: [],
     gender: [],
@@ -219,13 +290,49 @@ export default function AllStudents() {
   if (error) return <div className="text-center py-8 text-red-600">{error}</div>;
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">All Students</h2>
-      
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm grid grid-cols-1 md:grid-cols-10 gap-4 items-center text-left">
+        <div className="col-span-1 md:col-span-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4 md:mb-0">Student Management</h1>
+          <p className="text-gray-600 text-lg leading-relaxed">
+            Comprehensive overview of all registered students, their status, and sponsorship details. Monitor student activity, manage sponsorships, and access detailed student profiles from this central dashboard.
+          </p>
+        </div>
+        <div className="col-span-1 md:col-span-2 flex justify-end">
+          <button
+            className="inline-flex items-center px-5 py-2 bg-blue-600 text-white text-base font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200"
+            onClick={() => setShowAddStudent(true)}
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Add New
+          </button>
+        </div>
+      </div>
+
+      {/* Modal for Add Student */}
+      {showAddStudent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          {/* <div className="bg-white rounded-xl shadow-lg p-6 max-w-5xl w-full relative animate-fadeIn"> */}
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+              onClick={() => setShowAddStudent(false)}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <AddStudent />
+          {/* </div> */}
+        </div>
+      )}
+
+      {/* Statistics Cards */}
+      <UserStats />
+
       {/* Multi-filter form */}
       <div className="w-full">
         {/* Filters container */}
-        <div className="flex flex-wrap items-start gap-2 mb-4 justify-center">
+        <div className="flex flex-wrap items-start gap-2 mb-4 justify-between">
           {dropdowns.map(dropdown => (
             <div 
               key={dropdown.name} 
@@ -369,22 +476,62 @@ export default function AllStudents() {
       </div>
 
       {/* Students Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredStudents.map(student => (
-          <StudentCard
-            key={student._id || student.id}
-            profileImage={student.profileUrl || student.profileImage}
-            firstName={student.firstName}
-            lastName={student.lastName}
-            gender={student.gender}
-            age={student.age}
-            studentClass={student.studentClass}
-            fee={student.monthlyFee || student.fee}
-            sponsored={student.sponsorship || student.sponsored}
-            adminView
-            studentId={student._id || student.id}
-          />
-        ))}
+      <div className="overflow-x-auto rounded-lg shadow border border-gray-200 bg-white min-h-[400px]">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fee</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {filteredStudents.map((student, idx) => (
+              <tr key={student._id || student.id} className="hover:bg-gray-50 transition-colors duration-150">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{idx + 1}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 h-10 w-10">
+                      <img
+                        className="h-10 w-10 rounded-full object-cover border border-gray-200"
+                        src={student.profileUrl || student.profileImage || '/default-avatar.avif'}
+                        alt={student.firstName + ' ' + student.lastName}
+                        onError={e => { e.target.onerror = null; e.target.src = '/default-avatar.avif'; }}
+                      />
+                    </div>
+                    <div className="ml-4">
+                      <div className="text-sm font-medium text-gray-900">{student.firstName} {student.lastName}</div>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${student.sponsorship || student.sponsored ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}>
+                    {(student.sponsorship || student.sponsored) ? 'Sponsored' : 'Not Sponsored'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.gender}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.age || 'N/A'}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.studentGrade || student.studentClass || 'N/A'}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${student.monthlyFee || student.fee || '0'}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div className="flex items-center space-x-2">
+                    <button className="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                      View Profile
+                    </button>
+                    <button className="inline-flex items-center px-3 py-1.5 bg-gray-50 text-gray-700 text-xs font-medium rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                      Edit
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

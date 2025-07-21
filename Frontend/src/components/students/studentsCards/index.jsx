@@ -1,5 +1,6 @@
 import styles from './index.module.css';
 import { MdBoy, MdGirl, MdPerson, MdCalendarToday, MdClass, MdAttachMoney } from 'react-icons/md';
+import { motion } from 'framer-motion';
 
 export default function StudentCard({
   profileImage,
@@ -29,7 +30,13 @@ export default function StudentCard({
   
 
   return (
-    <div className={styles.studentCard}>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.35, ease: 'easeInOut' }}
+      className={styles.studentCard}
+    >
       <div className={styles.statusRow}>
         <span className={styles.status + ' ' + (sponsored ? styles.sponsored : styles.notSponsored)}>
           {sponsored ? 'Sponsored' : 'Not Sponsored'}
@@ -65,6 +72,6 @@ export default function StudentCard({
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
