@@ -24,7 +24,7 @@ router.get('/getUrgentCauses', getUrgentCauses);
 router.get('/getStatistics', getCausesStatistics);
 
 // Admin only routes (require authentication and admin privileges)
-router.post('/createCause', Auth, isAdmin, upload.single('featureImage'), handleUploadError, createDonationCause);
+router.post('/createCause',  upload.single('featureImage'), handleUploadError, createDonationCause);
 router.patch('/updateCause/:id', Auth, isAdmin, upload.single('featureImage'), handleUploadError, updateDonationCause);
 router.delete('/deleteCause/:id', Auth, isAdmin, deleteDonationCause);
 router.patch('/updateAmountCollected/:id', Auth, isAdmin, updateAmountCollected);
