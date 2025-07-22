@@ -480,21 +480,21 @@ export default function AllStudents() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fee</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+              <th className="px-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fee</th>
+              <th className="px-6 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredStudents.map((student, idx) => (
-              <tr key={student._id || student.id} className="hover:bg-gray-50 transition-colors duration-150">
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{idx + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
+              <tr key={student._id || student.id} className="hover:bg-gray-50 transition-colors duration-150 px-0">
+                <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-500">{idx + 1}</td>
+                <td className="px-2 py-2 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
                       <img
@@ -509,16 +509,16 @@ export default function AllStudents() {
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${student.sponsorship || student.sponsored ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}>
+                <td className="px-2 py-2 whitespace-nowrap">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium border ${student.sponsorship || student.sponsored ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'}`}>
                     {(student.sponsorship || student.sponsored) ? 'Sponsored' : 'Not Sponsored'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.gender}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.age || 'N/A'}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{student.studentGrade || student.studentClass || 'N/A'}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${student.monthlyFee || student.fee || '0'}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{student.gender}</td>
+                <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{student.age || 'N/A'}</td>
+                <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">{student.studentGrade || student.studentClass || 'N/A'}</td>
+                <td className="px-2 py-2 whitespace-nowrap text-sm text-gray-900">${student.monthlyFee || student.fee || '0'}</td>
+                <td className="px-2 py-2 whitespace-nowrap text-sm font-medium">
                   <div className="flex items-center space-x-2">
                     <button className="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-100 transition-colors duration-200">
                       View Profile
