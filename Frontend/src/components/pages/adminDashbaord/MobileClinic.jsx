@@ -4,6 +4,7 @@ import axios from 'axios';
 import { API_CONFIG } from '../../../config/api.config';
 import { Users, UserCheck, UserX, TrendingUp, AlertCircle, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import AddCause from '../../causes/AddCause';
 
 const StatCard = ({ title, value, change, changeType, icon, color }) => {
   const changeColor = changeType === 'positive' ? 'text-green-600' : 
@@ -82,6 +83,7 @@ const MobileClinic = () => {
   const [causes, setCauses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAddCause, setShowAddCause] = useState(false);
   const [filters, setFilters] = useState({
     status: [],
     category: [],
@@ -299,7 +301,10 @@ const MobileClinic = () => {
           </p>
         </div>
         <div className="col-span-1 md:col-span-2 flex justify-end">
-          <button className="inline-flex items-center px-5 py-2 bg-blue-600 text-white text-base font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200">
+          <button
+            className="inline-flex items-center px-5 py-2 bg-blue-600 text-white text-base font-semibold rounded-lg shadow hover:bg-blue-700 transition-colors duration-200"
+            onClick={() => setShowAddCause(true)}
+          >
             <Plus className="w-5 h-5 mr-2" />
             Add New
           </button>
@@ -507,6 +512,12 @@ const MobileClinic = () => {
           </tbody>
         </table>
       </div>
+      {/* Modal for Add Cause */}
+      {showAddCause && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <AddCause type="mobileClinic" onClose={() => setShowAddCause(false)} />
+        </div>
+      )}
     </div>
   );
 };
