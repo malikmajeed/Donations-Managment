@@ -10,7 +10,7 @@ import {addStudent, deleteStudent, updateStudent,
     import { upload, handleUploadError } from '../Middlewares/upload.js';
     
     //Route for adding a student
-router.post('/addStudent', Auth,isAdmin, upload.single('profileImage'), handleUploadError, addStudent); //✅ verified
+router.post('/addStudent',Auth, isAdmin,  upload.single('profileImage'), handleUploadError, addStudent); //✅ verified
     
 //Route for deleting a student
 router.delete('/deleteStudent/:id',Auth, isAdmin,deleteStudent); //✅ verified
