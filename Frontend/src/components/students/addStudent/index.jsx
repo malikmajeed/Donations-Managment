@@ -285,8 +285,11 @@ export default function AddStudent() {
                 {/* Right Panel */}
                 <form onSubmit={handleSubmit} className="w-full md:w-3/4 p-6 flex flex-col">
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-center font-bold text-lg py-3 mb-6 text-white tracking-wide rounded-lg shadow-sm">
-                        Add New Student
+                    <div className="w-full  px-4 py-6 flex items-center justify-between">
+                        <h2 className="text-2xl font-bold text-blue-600 flex items-center gap-2">
+                            <FaUserPlus className="w-7 h-7" />
+                            Add New Student
+                        </h2>
                     </div>
                     
                     {/* Row 1 - Names */}
@@ -405,7 +408,7 @@ export default function AddStudent() {
                     <div className="flex justify-end gap-3 mt-auto">
                         <button 
                             type="button" 
-                            className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 font-semibold px-6 py-2.5 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300" 
+                            className="inline-flex items-center gap-2 bg-red-50 text-red-600 font-semibold px-6 py-[5px] rounded-lg hover:bg-red-100 transition-colors border border-red-500" 
                             onClick={() => window.history.back()}
                         >
                             <FaTimes className="w-4 h-4" /> 
@@ -413,7 +416,7 @@ export default function AddStudent() {
                         </button>
                         <button 
                             type="button" 
-                            className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 font-semibold px-6 py-2.5 rounded-lg hover:bg-amber-200 transition-colors border border-amber-300" 
+                            className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 font-semibold px-6 py-[5px] rounded-lg hover:bg-blue-100 transition-colors border border-blue-500" 
                             onClick={handleSaveDraft}
                         >
                             <FaUpload className="w-4 h-4" /> 
@@ -421,7 +424,7 @@ export default function AddStudent() {
                         </button>
                         <button 
                             type="submit" 
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold px-6 py-2.5 rounded-lg shadow-md hover:from-emerald-600 hover:to-teal-700 transition-all"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-[5px] rounded-lg shadow-md hover:from-blue-600 hover:to-blue-800 transition-all"
                         >
                             <FaUserPlus className="w-4 h-4" /> 
                             Add Student
