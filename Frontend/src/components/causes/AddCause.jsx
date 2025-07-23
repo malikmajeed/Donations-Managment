@@ -103,29 +103,29 @@ export default function AddCause({ type = '', onClose }) {
       // Always use the correct type in the form data
       const submitForm = { ...form, type: type || form.type };
       const res = await axios.post(`${API_CONFIG.ENDPOINTS.CAUSES.CREATE}`, submitForm,
-        { headers: {
-          'Content-Type':'multipart/form-data',
-          'Authorization': `Bearer ${token}`
-        }}
-      );
-      if(res.data.success){
+     { headers: {
+        'Content-Type':'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      }}
+    );
+    if(res.data.success){
         setShowSuccess(true);
-        setForm({
-          name: '',
-          description: '',
-          location: '',
+      setForm({
+        name: '',
+        description: '',
+        location: '',
           type: type || '',
-          budgetRequired: '',
-          endDate: '',
-          isUrgent: false,
-          featureImage: null
-        });
+        budgetRequired: '',
+        endDate: '',
+        isUrgent: false,
+        featureImage: null
+      });
         setImagePreview(null);
         return;
-      }
+    }
     } catch (error) {
       console.log(error.message)
-      return alert(error.message)
+            return alert(error.message)
     } finally {
       setIsSubmitting(false);
     }
@@ -165,32 +165,32 @@ export default function AddCause({ type = '', onClose }) {
                 Ok
               </button>
             </div>
-          </div>
+        </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-8 space-y-4">
-            {/* First Row: Image + (Title & Location) */}
+          {/* First Row: Image + (Title & Location) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Feature Image Upload */}
+            {/* Feature Image Upload */}
               <div className="col-span-1 flex flex-col items-center justify-center">
                 <label className="font-medium text-gray-700 flex items-center gap-2 mb-2">
                   <MdImage className="text-xl" /> Feature Image
-                </label>
+              </label>
                 <div className="w-28 h-28 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-full bg-gray-50">
-                  {imagePreview ? (
+          {imagePreview ? (
                     <div className="relative w-full h-full flex items-center justify-center">
                       <img src={imagePreview} alt="Preview" className="object-cover w-full h-full rounded-full" />
                       <button type="button" onClick={removeImage} className="absolute top-1 right-1 bg-white rounded-full p-1 shadow hover:bg-gray-100">
                         <MdClose className="text-lg text-gray-600" />
-                      </button>
-                    </div>
-                  ) : (
+                    </button>
+                  </div>
+                ) : (
                     <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
                       <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
                       <MdUpload className="text-3xl text-blue-500 mb-1" />
                       <span className="text-xs text-gray-500">Click to upload</span>
                       <span className="text-[10px] text-gray-400">PNG, JPG up to 5MB</span>
-                    </label>
-                  )}
+                  </label>
+                )}
                 </div>
                 {errors.featureImage && <span className="text-xs text-red-500 mt-1">{errors.featureImage}</span>}
               </div>
@@ -199,32 +199,32 @@ export default function AddCause({ type = '', onClose }) {
                 <div>
                   <label htmlFor="name" className="font-medium text-gray-700 flex items-center gap-2 mb-1">
                     <MdTextFields className="text-xl" /> Title *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={form.name}
-                    onChange={handleInputChange}
+                </label>
+          <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={form.name}
+                  onChange={handleInputChange}
                     className={`w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 ${errors.name ? 'border-red-400' : ''}`}
-                    placeholder="Enter cause title"
-                    maxLength={100}
-                  />
+                  placeholder="Enter cause title"
+                  maxLength={100}
+                />
                   {errors.name && <span className="text-xs text-red-500">{errors.name}</span>}
-                </div>
+              </div>
                 <div>
                   <label htmlFor="location" className="font-medium text-gray-700 flex items-center gap-2 mb-1">
                     <MdLocationOn className="text-xl" /> Location *
-                  </label>
-                  <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    value={form.location}
-                    onChange={handleInputChange}
+        </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  value={form.location}
+                  onChange={handleInputChange}
                     className={`w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 ${errors.location ? 'border-red-400' : ''}`}
-                    placeholder="City, State or Country"
-                  />
+                  placeholder="City, State or Country"
+                />
                   {errors.location && <span className="text-xs text-red-500">{errors.location}</span>}
                 </div>
               </div>
@@ -254,52 +254,52 @@ export default function AddCause({ type = '', onClose }) {
               <div>
                 <label htmlFor="budgetRequired" className="font-medium text-gray-700 flex items-center gap-2 mb-1">
                   <MdAttachMoney className="text-xl" /> Budget Required *
-                </label>
+          </label>
                 <div className="flex items-center">
                   <span className="text-gray-400 mr-2">$</span>
-                  <input
-                    type="number"
-                    id="budgetRequired"
-                    name="budgetRequired"
-                    value={form.budgetRequired}
-                    onChange={handleInputChange}
+                <input
+                  type="number"
+                  id="budgetRequired"
+                  name="budgetRequired"
+                  value={form.budgetRequired}
+                  onChange={handleInputChange}
                     className={`w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 ${errors.budgetRequired ? 'border-red-400' : ''}`}
-                    placeholder="0"
-                    min="1"
-                    step="1"
-                  />
-                </div>
-                {errors.budgetRequired && <span className="text-xs text-red-500">{errors.budgetRequired}</span>}
+                  placeholder="0"
+                  min="1"
+                  step="1"
+                />
               </div>
+                {errors.budgetRequired && <span className="text-xs text-red-500">{errors.budgetRequired}</span>}
+            </div>
               <div>
                 <label htmlFor="endDate" className="font-medium text-gray-700 flex items-center gap-2 mb-1">
                   <MdCalendarToday className="text-xl" /> Needed By *
-                </label>
-                <input
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  value={form.endDate}
-                  onChange={handleInputChange}
+          </label>
+              <input
+                type="date"
+                id="endDate"
+                name="endDate"
+                value={form.endDate}
+                onChange={handleInputChange}
                   className={`w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 ${errors.endDate ? 'border-red-400' : ''}`}
-                  min={getTomorrowDate()}
-                />
+                min={getTomorrowDate()}
+              />
                 {errors.endDate && <span className="text-xs text-red-500">{errors.endDate}</span>}
               </div>
             </div>
-            {/* Description */}
+          {/* Description */}
             <div>
               <label htmlFor="description" className="font-medium text-gray-700 mb-1">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                value={form.description}
-                onChange={handleInputChange}
+            <textarea
+              id="description"
+              name="description"
+              value={form.description}
+              onChange={handleInputChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-200 min-h-[48px]"
-                rows={3}
-                required
-              />
-            </div>
+              rows={3}
+              required
+            />
+          </div>
             {/* Is Urgent */}
             <div className="flex items-center mb-2">
               <input
@@ -314,25 +314,25 @@ export default function AddCause({ type = '', onClose }) {
                 <MdWarning className="text-lg text-yellow-500" /> Mark as urgent
                 <span className="text-xs text-gray-400 ml-2">This will highlight your cause and give it priority visibility</span>
               </span>
-            </div>
-            {/* Buttons */}
+        </div>
+          {/* Buttons */}
             <div className="flex gap-4 justify-end mt-2">
-              <button
-                type="button"
+          <button
+              type="button"
                 className="py-[5px] px-6 rounded-lg font-semibold border border-red-500 text-red-600 bg-red-50 hover:bg-red-100 transition-colors duration-200 flex items-center justify-center gap-2"
                 onClick={onClose}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
                 className="py-[5px] px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 transition-colors duration-200 flex items-center justify-center gap-2 shadow"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Adding..." : "Add Cause"}
-              </button>
-            </div>
-          </form>
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Adding..." : "Add Cause"}
+            </button>
+          </div>
+        </form>
         )}
       </div>
     </div>
