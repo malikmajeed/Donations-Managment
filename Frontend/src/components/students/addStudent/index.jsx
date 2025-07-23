@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { FaUpload, FaCamera, FaUserPlus, FaTimes } from 'react-icons/fa';
+import { FaUpload, FaCamera, FaUserPlus, FaTimes, FaCheckCircle } from 'react-icons/fa';
 
-export default function AddStudent() {
+export default function AddStudent({ onClose }) {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -22,6 +22,7 @@ export default function AddStudent() {
     const [image, setImage] = useState(null)
     const [error, setError] = useState({});
     const fileInputRef = useRef(null);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -88,7 +89,13 @@ export default function AddStudent() {
             
             Object.keys(formData).forEach(key => {
                 if (key !== 'profileUrl') {
-                    formDataToSend.append(key, formData[key]);
+                    if (key === 'phone') {
+                        // Sanitize phone: remove non-digits and send as number
+                        const sanitizedPhone = formData.phone.replace(/\D/g, '');
+                        formDataToSend.append('phone', Number(sanitizedPhone));
+                    } else {
+                        formDataToSend.append(key, formData[key]);
+                    }
                 }
             });
 
@@ -114,7 +121,7 @@ export default function AddStudent() {
 
             if (response.data.success) {
                 localStorage.removeItem('studentDraft');
-                alert('Student added successfully!');
+                setShowSuccess(true);
                 setFormData({
                     firstName: '',
                     lastName: '',
@@ -134,6 +141,7 @@ export default function AddStudent() {
                 if (fileInputRef.current) {
                     fileInputRef.current.value = '';
                 }
+                return;
             }
         } catch (error) {
             console.error('Error adding student:', error.response?.data || error.message);
@@ -147,12 +155,11 @@ export default function AddStudent() {
                     }
                 });
                 setError(newErrors);
-                alert('Please fill in all required fields');
                 return;
             }
 
             const errorMessage = error.response?.data?.message || 'Failed to add student. Please try again.';
-            alert(errorMessage);
+            setError(prev => ({ ...prev, general: errorMessage }));
         }
     };
 
@@ -163,7 +170,6 @@ export default function AddStudent() {
         };
         
         localStorage.setItem('studentDraft', JSON.stringify(draftData));
-        alert('Draft saved successfully!');
     };
 
     useEffect(() => {
@@ -190,9 +196,32 @@ export default function AddStudent() {
         }
     }, []);
 
-    return (
-        // <div className="min-h-screen bg-white p-6">
+    return (<>
+
+            {/* Right Panel */}
+            {showSuccess ? (
+                <div className="w-full flex flex-col items-center justify-center p-12">
+                  <FaCheckCircle className="text-green-500 w-20 h-20 mb-4" />
+                  <h3 className="text-2xl font-bold text-gray-800 mb-2">Student Added Successfully!</h3>
+                  <p className="text-gray-600 mb-8 text-center">The new student has been added. You can add another or return to the dashboard.</p>
+                  <div className="flex gap-4">
+                    <button
+                      className="py-[5px] px-6 rounded-lg font-semibold border border-blue-500 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors duration-200 flex items-center justify-center gap-2"
+                      onClick={() => setShowSuccess(false)}
+                    >
+                      Add New
+                    </button>
+                    <button
+                      className="py-[5px] px-6 rounded-lg font-semibold border border-green-500 text-green-600 bg-green-50 hover:bg-green-100 transition-colors duration-200 flex items-center justify-center gap-2"
+                      onClick={onClose}
+                    >
+                      Ok
+                    </button>
+                  </div>
+                </div>
+              ) : ( 
             <div className="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col md:flex-row overflow-hidden">
+              
                 {/* Left Panel */}
                 <div className="w-full md:w-1/4 bg-gray-50 border-r border-gray-200 p-6 flex flex-col items-center gap-6">
                     {/* Avatar Upload */}
@@ -280,8 +309,8 @@ export default function AddStudent() {
                     </div>
                 </div>
 
-                {/* Right Panel */}
-                <form onSubmit={handleSubmit} className="w-full md:w-3/4 p-6 flex flex-col">
+            
+                  <form onSubmit={handleSubmit} className="w-full md:w-3/4 p-6 flex flex-col">
                     {/* Header */}
                     <div className="w-full  px-4 py-6 flex items-center justify-between">
                         <h2 className="text-2xl font-bold text-blue-600 flex items-center gap-2">
@@ -346,14 +375,29 @@ export default function AddStudent() {
                         </div>
                         <div className="flex-1">
                             <label className="block mb-2 font-semibold text-gray-700 text-sm">Class</label>
-                            <input 
-                                type="text" 
-                                name="studentGrade" 
-                                value={formData.studentGrade} 
-                                onChange={handleChange} 
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" 
-                                placeholder="e.g., 10th"
-                            />
+                            <select
+                                name="studentGrade"
+                                value={formData.studentGrade}
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                required
+                            >
+                                <option value="">Select class</option>
+                                <option value="Nursery">Nursery</option>
+                                <option value="KG">KG</option>
+                                <option value="1st">1st</option>
+                                <option value="2nd">2nd</option>
+                                <option value="3rd">3rd</option>
+                                <option value="4th">4th</option>
+                                <option value="5th">5th</option>
+                                <option value="6th">6th</option>
+                                <option value="7th">7th</option>
+                                <option value="8th">8th</option>
+                                <option value="9th">9th</option>
+                                <option value="10th">10th</option>
+                                <option value="11th">11th</option>
+                                <option value="12th">12th</option>
+                            </select>
                         </div>
                     </div>
                     
@@ -376,11 +420,18 @@ export default function AddStudent() {
                                 type="tel"
                                 name="phone"
                                 value={formData.phone}
-                                onChange={handleChange}
+                                onChange={e => {
+                                    // Only allow digits in the input
+                                    const digitsOnly = e.target.value.replace(/\D/g, '');
+                                    handleChange({ target: { name: 'phone', value: digitsOnly } });
+                                }}
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
-                                placeholder="+92 300 1234567"
+                                placeholder="923001234567"
                                 autoComplete="tel"
+                                inputMode="numeric"
+                                pattern="[0-9]*"
                             />
+                            <span className="text-xs text-gray-500 mt-1 block">Enter phone number as digits only, e.g. 923001234567</span>
                         </div>
                     </div>
                     
@@ -397,6 +448,11 @@ export default function AddStudent() {
                         />
                     </div>
                     
+                    {error.general && (
+                      <div className="mb-4 text-red-600 text-sm font-semibold text-center">
+                        {error.general}
+                      </div>
+                    )}
                     {/* Buttons */}
                     <div className="flex justify-end gap-3 mt-auto">
                         <button 
@@ -423,8 +479,12 @@ export default function AddStudent() {
                             Add Student
                         </button>
                     </div>
-                </form>
+                  </form>
+                
             </div>
+        )}
+
+        </>
         // </div>
     );
 }

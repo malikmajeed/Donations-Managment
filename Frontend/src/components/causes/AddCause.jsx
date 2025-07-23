@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './AddCause.module.css';
+
 import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning, MdAttachMoney, MdClose, MdCheckCircle } from 'react-icons/md';
 import {API_CONFIG} from '../../config/api.config.js';
 import axios from 'axios';
