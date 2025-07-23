@@ -12,11 +12,11 @@ router.post("/signup", signUp); //✅ verified
 router.post("/login", login); //✅ verified
 
 // get all users route
-router.get("/users/",isAuth,isAdmin, getAllUsers);//✅ verified
+router.get("/users/",Auth,isAdmin, getAllUsers);//✅ verified
 
 //get all donors route
 // when no donors exists it takes lot of time to complete the request
-router.get("/donors/",isAuth,isAdmin, getAllDonors);//✅ verified
+router.get("/donors/",Auth,isAdmin, getAllDonors);//✅ verified
 
 //get user route (must come after specific routes to avoid conflicts)
 router.get("/:id", Auth, getUser);
