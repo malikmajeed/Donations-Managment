@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { FaUpload, FaCamera, FaUserPlus, FaTimes } from 'react-icons/fa';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
 
 export default function AddStudent() {
     const [formData, setFormData] = useState({
@@ -360,8 +358,8 @@ export default function AddStudent() {
                     </div>
                     
                     {/* Row 3 - Address and Phone */}
-                    <div className="flex flex-col md:flex-row gap-4 mb-4">
-                        <div className="" style={{ flex: 2, minWidth: 0 }}>
+                    <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-4 mb-4">
+                        <div>
                             <label className="block mb-2 font-semibold text-gray-700 text-sm">Address</label>
                             <input 
                                 type="text" 
@@ -369,25 +367,20 @@ export default function AddStudent() {
                                 value={formData.address} 
                                 onChange={handleChange} 
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors" 
-                                style={{ width: 'calc(100% - 50px)' }}
                                 placeholder="Enter address"
                             />
                         </div>
-                        <div className="" style={{ flex: 1, minWidth: 0 }}>
+                        <div>
                             <label className="block mb-2 font-semibold text-gray-700 text-sm">Phone</label>
-                            <PhoneInput
-                                country={'pk'}
+                            <input
+                                type="tel"
+                                name="phone"
                                 value={formData.phone}
-                                onChange={handlePhoneChange}
-                                inputClass="!w-full !h-[45px] !px-3 !py-2 !text-sm !rounded-lg !border !border-gray-300 !focus:ring-2 !focus:ring-emerald-500 !focus:border-emerald-500"
-                                containerClass="!w-full"
-                                buttonClass="!border-gray-300 !rounded-l-lg"
-                                dropdownClass="!rounded-lg !shadow-lg"
-                                searchClass="!rounded-lg"
-                                enableSearch={true}
-                                searchPlaceholder="Search country..."
+                                onChange={handleChange}
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                                placeholder="+92 300 1234567"
+                                autoComplete="tel"
                             />
-
                         </div>
                     </div>
                     
