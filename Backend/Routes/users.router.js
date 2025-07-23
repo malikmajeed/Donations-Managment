@@ -1,5 +1,5 @@
 import express from "express";
-import { signUp, login, getUser, getAllDonors, deleteUser, updateUser, requestPasswordReset } from "../Controllers/users.controller.js";
+import { signUp, login, getUser, getAllUsers,getAllDonors, deleteUser, updateUser, requestPasswordReset } from "../Controllers/users.controller.js";
 import { authenticateToken as Auth, isAdmin } from "../Middlewares/authentication.js";
 import {upload} from "../Middlewares/upload.js";
 
@@ -11,12 +11,15 @@ router.post("/signup", signUp); //✅ verified
 //login route
 router.post("/login", login); //✅ verified
 
-//get user route
-router.get("/:id", Auth, getUser);
+// get all users route
+router.get("/users/",isAuth,isAdmin, getAllUsers);//✅ verified
 
 //get all donors route
 // when no donors exists it takes lot of time to complete the request
-router.get("/donors/", Auth, isAdmin, getAllDonors);//✅ verified
+router.get("/donors/",isAuth,isAdmin, getAllDonors);//✅ verified
+
+//get user route (must come after specific routes to avoid conflicts)
+router.get("/:id", Auth, getUser);
 
 //update user route
 router.patch("/update", Auth, upload.single('profile'), updateUser);//✅ verified
