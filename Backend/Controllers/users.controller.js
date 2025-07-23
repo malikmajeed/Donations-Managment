@@ -222,6 +222,39 @@ const getAllDonors = async (req, res) => {
 };
 
 
+const getAllUsers = async (req, res) => {
+    console.log('getAllUsers controller executed');
+    console.log('User from auth:', req.user); // Log the authenticated user
+    
+    try {
+        const users = await Users.find({});
+        console.log('Number of users found:', users.length);
+        
+        if(users.length === 0){
+            return res.status(404).json({
+                success: false,
+                message: "No users found"
+            });
+        }
+        
+        res.status(200).json({
+            success: true,
+            message: "All users fetched successfully",
+            users
+        });
+
+    } catch (error) {
+        console.error('Error in getAllUsers:', error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch users",
+            error: error.message
+        });
+    }
+};
+
+
+
 //updating a user
 const updateUser = async (req, res) => {
     try {
@@ -401,4 +434,4 @@ const requestPasswordReset = async (req, res) => {
     }
 };
 
-export {signUp, login, getUser, getAllDonors, updateUser, deleteUser, requestPasswordReset};
+export {signUp, login, getUser, getAllDonors, updateUser, deleteUser, requestPasswordReset, getAllUsers};
