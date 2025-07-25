@@ -13,6 +13,7 @@ import {
   LogOut
 } from 'lucide-react';
 import axios from 'axios';
+import { API_CONFIG } from '../../../config/api.config.js';
 
 const adminUser = {
   name: 'Sarah Johnson',
@@ -23,6 +24,7 @@ const adminUser = {
 export default function Sidebar() {
   const [counts, setCounts] = useState({
     students: 0,
+    users: 0,
     education: 0,
     empowerment: 0,
     foodDistribution: 0,
@@ -36,11 +38,15 @@ export default function Sidebar() {
         // Students
         const studentsRes = await axios.get('http://localhost:3000/student/getAllStudents');
         const studentsCount = Array.isArray(studentsRes.data) ? studentsRes.data.length : (studentsRes.data.students?.length || 0);
+        // Users
+        const usersRes = await axios.get(API_CONFIG.ENDPOINTS.USER.GET_ALL_USERS);
+        const usersCount = Array.isArray(usersRes.data) ? usersRes.data.length : (usersRes.data.users?.length || 0);
         // Causes
         const causesRes = await axios.get('http://localhost:3000/causes/getAllCauses');
         const causes = Array.isArray(causesRes.data.causes) ? causesRes.data.causes : (Array.isArray(causesRes.data) ? causesRes.data : []);
         setCounts({
           students: studentsCount,
+          users: usersCount,
           education: causes.filter(c => c.type === 'education').length,
           empowerment: causes.filter(c => c.type === 'empowerment').length,
           foodDistribution: causes.filter(c => c.type === 'foodDistribution').length,
@@ -57,6 +63,7 @@ export default function Sidebar() {
   const navigationItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', badge: null },
     { id: 'students', label: 'Students', icon: Users, href: '/students', badge: counts.students },
+    { id: 'users', label: 'Users', icon: Users, href: '/users', badge: counts.users },
     { id: 'education', label: 'Education', icon: FileText, href: '/education', badge: counts.education },
     { id: 'empowerment', label: 'Empowerment', icon: BarChart3, href: '/empowerment', badge: counts.empowerment },
     { id: 'food-distribution', label: 'Food Distribution', icon: ShoppingCart, href: '/food-distribution', badge: counts.foodDistribution },

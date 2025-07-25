@@ -3,6 +3,7 @@ import {  Routes, Route } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
 import AllStudents from './AllStudents'; // (to be created)
+import Users from './Users';
 import Education from './Education';
 import Empowerment from './Empowerment';
 import FoodDistribution from './FoodDistribution';
@@ -24,6 +25,7 @@ export default function AdminDashboard() {
           <Routes>
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='students' element={<AllStudents CauseType="students"/>} />
+            <Route path='users' element={<Users />} />
             <Route path='education' element={<Education CauseType="education"/>} />
             <Route path='empowerment' element={<Empowerment CauseType="empowerment"/>} />
             <Route path='food-distribution' element={<FoodDistribution CauseType="foodDistribution" />} />
