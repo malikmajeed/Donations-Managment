@@ -1,14 +1,25 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Users as UsersIcon, UserCheck, UserX, TrendingUp, Edit, Search, Filter } from 'lucide-react';
-import React from 'react';
+import {
+  Users as UsersIcon,
+  UserCheck,
+  UserX,
+  TrendingUp,
+  Edit,
+  Search,
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_CONFIG } from '../../../config/api.config.js';
 
-// StatCard component
+// StatCard Component
 const StatCard = ({ title, value, change, changeType, icon, color }) => {
-  const changeColor = changeType === 'positive' ? 'text-green-600' : 
-                     changeType === 'negative' ? 'text-red-600' : 'text-gray-600';
+  const changeColor =
+    changeType === 'positive'
+      ? 'text-green-600'
+      : changeType === 'negative'
+      ? 'text-red-600'
+      : 'text-gray-600';
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
       <div className="flex items-center justify-between mb-4">
@@ -26,12 +37,12 @@ const StatCard = ({ title, value, change, changeType, icon, color }) => {
   );
 };
 
-// UserStats component
+// UserStats Component
 const UserStats = ({ users }) => {
   const totalUsers = users.length;
-  const adminUsers = users.filter(user => user.role === 'admin').length;
-  const donorUsers = users.filter(user => user.role === 'donor').length;
-  const usersWithDonations = users.filter(user => user.donations && user.donations.length > 0).length;
+  const adminUsers = users.filter((user) => user.role === 'admin').length;
+  const donorUsers = users.filter((user) => user.role === 'donor').length;
+  const usersWithDonations = users.filter((user) => user.donations && user.donations.length > 0).length;
 
   const stats = [
     {
@@ -40,7 +51,7 @@ const UserStats = ({ users }) => {
       change: '+5.2%',
       changeType: 'positive',
       icon: <UsersIcon className="w-6 h-6 text-white" />,
-      color: 'bg-blue-500'
+      color: 'bg-blue-500',
     },
     {
       title: 'Admin Users',
@@ -48,7 +59,7 @@ const UserStats = ({ users }) => {
       change: '+2.1%',
       changeType: 'positive',
       icon: <UserCheck className="w-6 h-6 text-white" />,
-      color: 'bg-green-500'
+      color: 'bg-green-500',
     },
     {
       title: 'Donor Users',
@@ -56,7 +67,7 @@ const UserStats = ({ users }) => {
       change: '+8.3%',
       changeType: 'positive',
       icon: <UserX className="w-6 h-6 text-white" />,
-      color: 'bg-purple-500'
+      color: 'bg-purple-500',
     },
     {
       title: 'Active Donors',
@@ -64,8 +75,8 @@ const UserStats = ({ users }) => {
       change: '+12.5%',
       changeType: 'positive',
       icon: <TrendingUp className="w-6 h-6 text-white" />,
-      color: 'bg-orange-500'
-    }
+      color: 'bg-orange-500',
+    },
   ];
 
   return (
@@ -85,7 +96,7 @@ export default function Users() {
   const [roleFilter, setRoleFilter] = useState('all');
   const [genderFilter, setGenderFilter] = useState('all');
 
-  // Fetch users data
+  // Fetch Users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -103,19 +114,19 @@ export default function Users() {
     fetchUsers();
   }, []);
 
-  // Filter users based on search term and filters
-  const filteredUsers = users.filter(user => {
+  // Filter Logic
+  const filteredUsers = users.filter((user) => {
     const fullName = `${user.fName} ${user.lName}`.toLowerCase();
-    const matchesSearch = fullName.includes(searchTerm.toLowerCase()) || 
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      fullName.includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = roleFilter === 'all' || user.role === roleFilter;
     const matchesGender = genderFilter === 'all' || user.gender === genderFilter;
-    
+
     return matchesSearch && matchesRole && matchesGender;
   });
 
   const handleEdit = (userId) => {
-    // TODO: Implement edit functionality
     console.log('Edit user:', userId);
     alert(`Edit functionality for user ${userId} will be implemented`);
   };
@@ -161,7 +172,7 @@ export default function Users() {
               placeholder="Search by name or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-3 py-1.5 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-transparent bg-white"
             />
           </div>
 
@@ -197,36 +208,20 @@ export default function Users() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  #
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Profile
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Full Name
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Gender
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  No. of Donations
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
+                {['#', 'Profile', 'Full Name', 'Role', 'Email', 'Gender', 'No. of Donations', 'Actions'].map((heading) => (
+                  <th
+                    key={heading}
+                    className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    {heading}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="px-3 py-8 text-center text-gray-500">
+                  <td colSpan={8} className="px-3 py-8 text-center text-gray-500">
                     No users found matching your criteria
                   </td>
                 </tr>
@@ -239,10 +234,8 @@ export default function Users() {
                     transition={{ duration: 0.3, delay: index * 0.05 }}
                     className="hover:bg-gray-50 transition-colors duration-200"
                   >
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
-                      {index + 1}
-                    </td>
-                    <td className="px-3 py-2 whitespace-nowrap">
+                    <td className="px-3 py-2 text-sm text-gray-900">{index + 1}</td>
+                    <td className="px-3 py-2">
                       <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                         {user.profileUrl ? (
                           <img
@@ -251,44 +244,44 @@ export default function Users() {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.target.style.display = 'none';
-                              e.target.nextSibling.style.display = 'flex';
                             }}
                           />
-                        ) : null}
-                        <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs">
-                          {user.fName.charAt(0)}{user.lName.charAt(0)}
-                        </div>
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-xs">
+                            {(user.fName?.charAt(0) || '') + (user.lName?.charAt(0) || '')}
+                          </div>
+                        )}
                       </div>
                     </td>
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {user.fName} {user.lName}
-                      </div>
+                    <td className="px-3 py-2 text-sm font-medium text-gray-900">
+                      {user.fName} {user.lName}
                     </td>
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        user.role === 'admin' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-blue-100 text-blue-800'
-                      }`}>
+                    <td className="px-3 py-2">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          user.role === 'admin'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-blue-100 text-blue-800'
+                        }`}
+                      >
                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                       </span>
                     </td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
-                      {user.email}
-                    </td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900 capitalize">
-                      {user.gender}
-                    </td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-3 py-2 text-sm text-gray-900">{user.email}</td>
+                    <td className="px-3 py-2 text-sm capitalize text-gray-900">{user.gender}</td>
+                    <td className="px-3 py-2 text-sm text-gray-900">
                       <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                        {Array.isArray(user.donations) ? user.donations.length : (user.donations ? 1 : 0)}
+                        {Array.isArray(user.donations)
+                          ? user.donations.length
+                          : user.donations
+                          ? 1
+                          : 0}
                       </span>
                     </td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm font-medium">
+                    <td className="px-3 py-2 text-sm font-medium">
                       <button
                         onClick={() => handleEdit(user._id)}
-                        className="inline-flex items-center px-2 py-1 border border-transparent text-xs leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-blue-500 transition-colors duration-200"
+                        className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                       >
                         <Edit className="w-3 h-3 mr-1" />
                         Edit
@@ -302,7 +295,7 @@ export default function Users() {
         </div>
       </div>
 
-      {/* Results Summary */}
+      {/* Summary */}
       <div className="mt-6 text-center text-gray-600">
         Showing {filteredUsers.length} of {users.length} users
       </div>
