@@ -24,6 +24,14 @@
   width: 100%;
   margin-bottom: 0.7rem;
   gap: 0.7rem;
+  position: relative;
+}
+
+.addToCartButton {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 10;
 }
 .status {
   padding: 0.18rem 0.8rem;

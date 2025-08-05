@@ -1,6 +1,6 @@
-import styles from './index.module.css';
-import { MdBoy, MdGirl, MdPerson, MdCalendarToday, MdClass, MdAttachMoney } from 'react-icons/md';
+import { User, CalendarDays, GraduationCap, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
+import AddToCartButton from '../../donations/AddToCartButton';
 
 export default function StudentCard({
   profileImage,
@@ -15,10 +15,6 @@ export default function StudentCard({
   adminView = false,
   studentId
 }) {
-  let GenderIcon = MdPerson;
-  if (gender === 'male') GenderIcon = MdBoy;
-  else if (gender === 'female') GenderIcon = MdGirl;
-
   // Use default avatar if profileImage is missing, null, or empty string
   let imageSrc = '/default-avatar.avif';
   if (profileImage && profileImage.trim() !== '') {
@@ -27,51 +23,96 @@ export default function StudentCard({
       : `http://localhost:3000/${profileImage.replace(/^\/+/, '')}`;
   }
 
-  
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className={styles.studentCard}
+      className="p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
     >
-      <div className={styles.statusRow}>
-        <span className={styles.status + ' ' + (sponsored ? styles.sponsored : styles.notSponsored)}>
-          {sponsored ? 'Sponsored' : 'Not Sponsored'}
-        </span>
-        <span className={styles.genderAvatar}>
-          <GenderIcon size={40} />
-        </span>
-      </div>
-      <img
-        src={imageSrc}
-        alt={firstName + ' ' + lastName}
-        className={styles.profileImage}
-        loading="lazy"
-      />
-      <div className={styles.nameRow}>
-        <span className={styles.fullName}>{firstName} {lastName}</span>
-      </div>
-      <div className={styles.infoColumn}>
-        <span className={styles.infoItem}><MdCalendarToday size={20} style={{marginRight: 6, color: '#4f8cff'}}/>Age: {age} years</span>
-        <span className={styles.infoItem}><MdClass size={20} style={{marginRight: 6, color: '#4f8cff'}}/>Class: {studentClass}</span>
-        <span className={styles.infoItem}>Monthly Fee: <span className={styles.feeValue}>${fee}</span></span>
-      </div>
-      <div className={styles.cardButtons}>
-        {adminView ? (
-          <>
-            <button className={styles.viewProfileBtn} data-studentid={studentId}>View Profile</button>
-            <button className={styles.sponsorBtn} data-studentid={studentId}>Edit</button>
-          </>
-        ) : (
-          <>
-            <button className={styles.sponsorBtn}>Sponsor</button>
-            <button className={styles.viewProfileBtn}>View Profile</button>
-          </>
-        )}
+      <div className="flex flex-col items-center space-y-4">
+        {/* Status Badge and Icons */}
+        <div className="w-full flex justify-between items-start relative">
+          <span 
+            className={`px-3 py-1 rounded-full text-sm font-semibold ${
+              sponsored 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-red-100 text-red-800'
+            }`}
+          >
+            {sponsored ? 'Sponsored' : 'Not Sponsored'}
+          </span>
+          <User className="h-5 w-5 text-gray-400" />
+          
+          {/* Add to Cart Button */}
+          <div className="absolute -top-2 -right-2 z-10">
+            <AddToCartButton 
+              item={{
+                id: studentId,
+                name: `${firstName} ${lastName}`,
+                description: `Student in Class ${studentClass}`,
+                featureImage: imageSrc,
+                budgetRequired: fee,
+                amount: fee
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Profile Image */}
+        <div className="relative">
+          <div className="w-24 h-24 rounded-full bg-gray-100 overflow-hidden">
+            {imageSrc ? (
+              <img 
+                src={imageSrc} 
+                alt={`${firstName} ${lastName}'s profile`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                <User className="h-8 w-8 text-gray-400" />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Student Info */}
+        <div className="text-center space-y-2">
+          <h3 className="text-lg font-semibold text-blue-600">{firstName} {lastName}</h3>
+
+        </div>
+
+        {/* Action Buttons */}
+        <div className="w-full space-y-2">
+          {adminView ? (
+            <>
+              <button 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                data-studentid={studentId}
+              >
+                Edit
+              </button>
+              <button 
+                className="w-full border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+                data-studentid={studentId}
+              >
+                View Profile
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
+                Sponsor ${fee}/month
+              </button>
+              <button className="w-full border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
+                View Profile
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </motion.div>
   );
-}
+} 
