@@ -1,26 +1,21 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
-import { MdLocationOn, MdAccessTime, MdEdit, MdDelete, MdVisibility, MdCalendarToday } from 'react-icons/md';
-import styles from './CauseCard.module.css';
-import { motion } from 'framer-motion';
+import { MapPin, Clock, ShoppingCart } from 'lucide-react';
+import AddToCartButton from '../donations/AddToCartButton';
 
-export default function CauseCard({ cause, onDonate }) {
+export default function CauseCard({ cause, onDonate, onUpdate }) {
   const [loading, setLoading] = useState(false);
-  // console.log(`${API_CONFIG.BASE_URL}${cause.featureImage}`)
-  // console.log('Image src:', cause.featureImage, `${API_CONFIG.BASE_URL}${cause.featureImage}`)
 
   const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this cause?')) {
-      return;
-    }
-
+    if (!window.confirm('Are you sure you want to delete this cause?')) return;
     try {
       setLoading(true);
       await axios.delete(API_CONFIG.ENDPOINTS.CAUSES.DELETE(cause._id));
-      onUpdate();
+      if (onUpdate) onUpdate();
     } catch (err) {
-      console.error('Failed to delete cause:', err);
+      console.error('Delete failed:', err);
       alert('Failed to delete cause');
     } finally {
       setLoading(false);
@@ -29,63 +24,24 @@ export default function CauseCard({ cause, onDonate }) {
 
   const progressPercentage = Math.min((cause.amountCollected / cause.budgetRequired) * 100, 100);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-US', {
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-  const timeUntilDeadline = () => {
-    const now = new Date();
-    const deadline = new Date(cause.endDate);
-    const diffTime = deadline.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays < 0) return 'Past due';
-    if (diffDays === 0) return 'Due today';
-    if (diffDays === 1) return '1 day left';
-    if (diffDays < 7) return `${diffDays} days left`;
-    if (diffDays < 30) return `${Math.ceil(diffDays / 7)} weeks left`;
-    return `${Math.ceil(diffDays / 30)} months left`;
-  };
-
+ 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return '#22c55e';
-      case 'completed': return '#3b82f6';
-      case 'paused': return '#f59e0b';
-      default: return '#6b7280';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'completed': return 'bg-blue-100 text-blue-800';
+      case 'paused': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getTypeColor = (type) => {
-    switch (type) {
-      case 'education': return '#3b82f6';
-      case 'empowerment': return '#8b5cf6';
-      case 'foodDistribution': return '#f59e0b';
-      case 'mobileClinic': return '#ef4444';
-      case 'waterWells': return '#06b6d4';
-      default: return '#6b7280';
-    }
-  };
 
-  const TYPE_LABELS = {
-    education: 'Education',
-    empowerment: 'Empowerment',
-    foodDistribution: 'Food Distribution',
-    mobileClinic: 'Mobile Clinic',
-    waterWells: 'Water Wells'
-  };
 
   return (
     <motion.div
@@ -93,70 +49,100 @@ export default function CauseCard({ cause, onDonate }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.35, ease: 'easeInOut' }}
-      className={styles.card}
+      className="overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
     >
-      {/* Image Container */}
-      <div className={styles.imageContainer}>
+      {/* Image */}
+      <div className="relative aspect-[4/3] overflow-hidden">
         <img
-          src={cause.featureImage ? `${API_CONFIG.BASE_URL}${cause.featureImage}` : '/default-avatar.avif'}
+          src={
+            cause.featureImage
+              ? `${API_CONFIG.BASE_URL}${cause.featureImage}`
+              : '/default-avatar.avif'
+          }
           alt={cause.name}
-          className={styles.image}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        {/* Urgent Badge */}
-        {cause.isUrgent && (
-          <div className={styles.urgentBadge}>
-            Urgent
-          </div>
-        )}
-        {/* Progress Badge */}
-        <div className={styles.progressBadge}>
-          {Math.round(progressPercentage)}% funded
+
+        {/* Top-left badges */}
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {cause.isUrgent && (
+            <span className="bg-red-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              Urgent
+            </span>
+          )}
+          <span className={`text-xs font-medium px-2 py-0.5 rounded ${getStatusColor(cause.status)}`}>
+            {cause.status.charAt(0).toUpperCase() + cause.status.slice(1)}
+          </span>
+        </div>
+
+        {/* Top-right badge */}
+        <div className="absolute top-3 right-3">
+          <span className="bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+            {Math.round(progressPercentage)}% funded
+          </span>
+        </div>
+
+        {/* Add to Cart */}
+        <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <AddToCartButton
+            item={{
+              id: cause._id,
+              name: cause.name,
+              description: cause.description,
+              featureImage: cause.featureImage
+                ? `${API_CONFIG.BASE_URL}${cause.featureImage}`
+                : '/default-avatar.avif',
+              budgetRequired: cause.budgetRequired,
+              amount: cause.budgetRequired,
+            }}
+          />
         </div>
       </div>
+
       {/* Content */}
-      <div className={styles.content}>
-        {/* Title */}
-        <h3 className={styles.title}>{cause.name}</h3>
-        {/* Description */}
-        <p className={styles.description}>{cause.description}</p>
+      <div className="p-4 space-y-3">
+        {/* Title and Type */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-800 truncate">{cause.name}</h3>
+        
+        </div>
+
         {/* Location */}
-        <div className={styles.infoRow}>
-          <MdLocationOn className={styles.icon} />
-          <span className={styles.infoText}>{cause.location}</span>
+        <div className="flex items-center text-sm text-gray-500 gap-1">
+          <MapPin className="h-4 w-4" />
+          <span>{cause.location}</span>
         </div>
-        {/* Date and Time Left */}
-        <div className={styles.infoRow}>
-          <MdCalendarToday className={styles.icon} />
-          <span className={styles.infoText}>Needed By {formatDate(cause.endDate)}</span>
-          
-        </div>
-        {/* Budget Information */}
-        <div className={styles.budgetSection}>
-          <div className={styles.budgetHeader}>
-            <span className={styles.budgetRaised}>{formatCurrency(cause.amountCollected)} raised</span>
-            <span className={styles.budgetTotal}>of {formatCurrency(cause.budgetRequired)}</span>
+
+        {/* Budget and progress */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="font-semibold text-blue-600">{formatCurrency(cause.amountCollected)} raised</span>
+            <span className="text-gray-500">of {formatCurrency(cause.budgetRequired)}</span>
           </div>
-          {/* Progress Bar */}
-          <div className={styles.progressBar}>
+
+          <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className={styles.progressFill}
+              className="bg-blue-600 h-2 rounded-full transition-all duration-500"
               style={{ width: `${progressPercentage}%` }}
-            />
+            ></div>
           </div>
-          <div className={styles.budgetRemaining}>
+
+          <div className="text-xs text-gray-500">
             {cause.budgetRequired - cause.amountCollected > 0
               ? `${formatCurrency(cause.budgetRequired - cause.amountCollected)} still needed`
               : 'Fully funded!'}
           </div>
         </div>
+
         {/* Donate Button */}
         <button
           onClick={() => onDonate && onDonate(cause._id)}
-          className={styles.donateButton}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded transition-all"
+          disabled={loading}
         >
-          Donate Now
+          {loading ? 'Processing...' : 'Donate Now'}
         </button>
       </div>
     </motion.div>
   );
-} 
+}

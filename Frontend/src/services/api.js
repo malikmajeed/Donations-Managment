@@ -52,9 +52,9 @@ export const signup = async (userData) => {
 export const getUserProfile = async () => {
     try {
         const response = await axios.get(API_CONFIG.ENDPOINTS.USER.PROFILE, {
-            // headers: {
-            //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-            // }
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         });
         if (response.data.success) {
             return response.data.user;
