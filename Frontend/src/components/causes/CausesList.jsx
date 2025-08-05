@@ -71,7 +71,7 @@ const UserStats = () => {
   );
 };
 
-export default function CausesList() {
+export default function CausesList({ limit, causeType }) {
   const [causes, setCauses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -86,16 +86,31 @@ export default function CausesList() {
   const fetchCauses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.LIST);
+      let response;
+      
+      if (causeType) {
+        // Fetch causes by specific type
+        response = await axios.get(`${API_CONFIG.ENDPOINTS.CAUSES.LIST}?type=${causeType}`);
+      } else {
+        // Fetch all causes
+        response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.LIST);
+      }
+      
       const allCauses = response.data.causes || response.data || [];
       
-      // Calculate pagination
-      const startIndex = (currentPage - 1) * causesPerPage;
-      const endIndex = startIndex + causesPerPage;
-      const paginatedCauses = allCauses.slice(startIndex, endIndex);
-      
-      setCauses(paginatedCauses);
-      setTotalPages(Math.ceil(allCauses.length / causesPerPage));
+      // If limit is provided, use it instead of pagination
+      if (limit) {
+        setCauses(allCauses.slice(0, limit));
+        setTotalPages(1);
+      } else {
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * causesPerPage;
+        const endIndex = startIndex + causesPerPage;
+        const paginatedCauses = allCauses.slice(startIndex, endIndex);
+        
+        setCauses(paginatedCauses);
+        setTotalPages(Math.ceil(allCauses.length / causesPerPage));
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch causes');
     } finally {
@@ -124,64 +139,71 @@ export default function CausesList() {
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header Section */}
-      <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Donation Causes</h1>
-        <p className="text-gray-600 text-lg leading-relaxed">
-          Support our community initiatives. Explore, donate, and make a difference by supporting a cause that matters to you.
-        </p>
-      </div>
-      <UserStats />
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Donation Causes</h1>
-        <p className={styles.subtitle}>Support our community initiatives</p>
-      </div>
-
-      {causes.length === 0 ? (
-        <div className={styles.emptyState}>
-          <p>No causes found. Be the first to create a donation cause!</p>
-        </div>
-      ) : (
+    <div className={limit ? "" : "space-y-8"}>
+      {!limit && (
         <>
-          <div className={styles.causesGrid}>
-            {causes.map((cause) => (
-              <CauseCard key={cause._id} cause={cause} onUpdate={fetchCauses} />
-            ))}
+          {/* Header Section */}
+          <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Donation Causes</h1>
+            <p className="text-gray-600 text-lg leading-relaxed">
+              Support our community initiatives. Explore, donate, and make a difference by supporting a cause that matters to you.
+            </p>
           </div>
-
-          {totalPages > 1 && (
-            <div className={styles.pagination}>
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className={styles.pageButton}
-              >
-                Previous
-              </button>
-              
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
-                >
-                  {page}
-                </button>
-              ))}
-              
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className={styles.pageButton}
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <UserStats />
         </>
       )}
+      
+      <div className={limit ? "" : styles.container}>
+        {!limit && (
+          <div className={styles.header}>
+            <h1 className={styles.title}>Donation Causes</h1>
+            <p className={styles.subtitle}>Support our community initiatives</p>
+          </div>
+        )}
+
+        {causes.length === 0 ? (
+          <div className={limit ? "text-center py-8 text-gray-500" : styles.emptyState}>
+            <p>No causes found. Be the first to create a donation cause!</p>
+          </div>
+        ) : (
+          <>
+            <div className={limit ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" : styles.causesGrid}>
+              {causes.map((cause) => (
+                <CauseCard key={cause._id} cause={cause} onUpdate={fetchCauses} />
+              ))}
+            </div>
+
+            {!limit && totalPages > 1 && (
+              <div className={styles.pagination}>
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={styles.pageButton}
+                >
+                  Previous
+                </button>
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={styles.pageButton}
+                >
+                  Next
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
