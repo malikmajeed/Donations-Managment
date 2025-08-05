@@ -69,6 +69,13 @@
   font-weight: 500;
 }
 
+.addToCartButton {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  z-index: 10;
+}
+
 .content {
   padding: 24px;
 }
