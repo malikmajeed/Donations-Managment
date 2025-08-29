@@ -1,6 +1,7 @@
 import { User, CalendarDays, GraduationCap, DollarSign } from 'lucide-react';
 import { motion } from 'framer-motion';
-import AddToCartButton from '../../donations/AddToCartButton';
+import WishListButton from '../../buttons/wishList';
+import { SponsorButton } from '../../buttons/sponsor';
 
 export default function StudentCard({
   profileImage,
@@ -47,15 +48,13 @@ export default function StudentCard({
           
           {/* Add to Cart Button */}
           <div className="absolute -top-2 -right-2 z-10">
-            <AddToCartButton 
-              item={{
-                id: studentId,
-                name: `${firstName} ${lastName}`,
-                description: `Student in Class ${studentClass}`,
-                featureImage: imageSrc,
-                budgetRequired: fee,
-                amount: fee
-              }}
+            <WishListButton item={{
+              id: studentId,
+              name: `${firstName} ${lastName}`,
+              featureImage: imageSrc,
+              amount: fee
+            }}
+              
             />
           </div>
         </div>
@@ -83,6 +82,10 @@ export default function StudentCard({
           <h3 className="text-lg font-semibold text-blue-600">{firstName} {lastName}</h3>
 
         </div>
+        <div className='grid grid-cols-2 gap-2'>
+          <h3 className='text-lg text-gray-900'>{age} years Old</h3>
+          <h3 className='text-lg text-gray-900'>${fee}/Month</h3>
+        </div>
 
         {/* Action Buttons */}
         <div className="w-full space-y-2">
@@ -103,9 +106,15 @@ export default function StudentCard({
             </>
           ) : (
             <>
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
-                Sponsor ${fee}/month
-              </button>
+             <SponsorButton 
+             item={{
+              id: studentId,
+              name: `${firstName} ${lastName}`,
+              featureImage: imageSrc,
+              amount: fee
+            }} 
+            text="Sponsor"/>
+            
               <button className="w-full border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
                 View Profile
               </button>
