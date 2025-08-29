@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import StudentCard from './index.jsx';
 import axios from 'axios';
+import API_CONFIG from '../../../config/api.config.js';
 
 const STUDENTS_PER_PAGE = 9;
 
@@ -14,7 +15,7 @@ export default function StudentsList({ limit }) {
     const fetchStudents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:3000/student/getAllStudents');
+        const response = await axios.get(`${API_CONFIG.ENDPOINTS.STUDENTS.LIST}`);
         const data = response.data;
         setStudents(data); // support both {students: [...]} and [...] formats
         setLoading(false);

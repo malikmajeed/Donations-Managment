@@ -112,7 +112,9 @@ export default function StudentCard({
               name: `${firstName} ${lastName}`,
               featureImage: imageSrc,
               amount: fee
-            }} />
+            }} 
+            text="Sponsor"/>
+            
               <button className="w-full border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
                 View Profile
               </button>
