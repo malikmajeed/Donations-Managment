@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { API_CONFIG } from '../../config/api.config';
 import { MapPin, Clock, ShoppingCart } from 'lucide-react';
-import AddToCartButton from '../donations/AddToCartButton';
+import WishListButton from '../buttons/wishList';
+import {SponsorButton }from '../buttons/sponsor';
 
 export default function CauseCard({ cause, onDonate, onUpdate }) {
   const [loading, setLoading] = useState(false);
@@ -84,7 +85,7 @@ export default function CauseCard({ cause, onDonate, onUpdate }) {
 
         {/* Add to Cart */}
         <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <AddToCartButton
+          <WishListButton
             item={{
               id: cause._id,
               name: cause.name,
@@ -135,13 +136,18 @@ export default function CauseCard({ cause, onDonate, onUpdate }) {
         </div>
 
         {/* Donate Button */}
-        <button
-          onClick={() => onDonate && onDonate(cause._id)}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded transition-all"
-          disabled={loading}
-        >
-          {loading ? 'Processing...' : 'Donate Now'}
-        </button>
+        <SponsorButton
+            item={{
+              id: cause._id,
+              name: cause.name,
+              description: cause.description,
+              featureImage: cause.featureImage
+                ? `${API_CONFIG.BASE_URL}${cause.featureImage}`
+                : '/default-avatar.avif',
+              amount: cause.budgetRequired,
+            }} 
+            
+            text="Donate"/>
       </div>
     </motion.div>
   );
