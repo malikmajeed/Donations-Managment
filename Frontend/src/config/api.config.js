@@ -1,52 +1,82 @@
-// API Configuration
+import axios from 'axios';
+
 const API_BASE_URL = 'http://localhost:3000';
 
 export const API_CONFIG = {
-    BASE_URL: API_BASE_URL,
     ENDPOINTS: {
         AUTH: {
-            LOGIN: `${API_BASE_URL}/user/login`,
-            SIGNUP: `${API_BASE_URL}/user/signup`,
+            LOGIN: '/user/login',
+            SIGNUP: '/user/signup',
         },
         USER: {
-            PROFILE: `${API_BASE_URL}/user/dashboard`,
-            UPDATE: `${API_BASE_URL}/user/update`,
-            RESET: `${API_BASE_URL}/user/forget-password`,
-            GET_ALL_USERS: `${API_BASE_URL}/user/users`,
-            GET_ALL_DONORS: `${API_BASE_URL}/user/donors`,
+            PROFILE: '/user/dashboard',
+            UPDATE: '/user/update',
+            RESET: '/user/forget-password',
+            GET_ALL_USERS: '/user/users',
+            GET_ALL_DONORS: '/user/donors',
         },
         DONATIONS: {
-            LIST: `${API_BASE_URL}/donation`,
-            CREATE: `${API_BASE_URL}/donation/add`,
-            STATISTICS: `${API_BASE_URL}/donation/statistics`,
-            BY_ID: id => `${API_BASE_URL}/donation/${id}`,
-            BY_TARGET: (type, id) => `${API_BASE_URL}/donation/target/${type}/${id}`,
-            UPDATE_STATUS: id => `${API_BASE_URL}/donation/${id}/status`,
-            DELETE: id => `${API_BASE_URL}/donation/${id}`
+            LIST: '/donation',
+            CREATE: '/donation/add',
+            STATISTICS: '/donation/statistics',
+            BY_ID: id => `/donation/${id}`,
+            BY_TARGET: (type, id) => `/donation/target/${type}/${id}`,
+            UPDATE_STATUS: id => `/donation/${id}/status`,
+            DELETE: id => `/donation/${id}`
         },
         CAUSES: {
-            LIST: `${API_BASE_URL}/causes/getAllCauses`,
-            CREATE: `${API_BASE_URL}/causes/createCause`,
-            BY_ID: id => `${API_BASE_URL}/causes/getCauseById/${id}`,
-            UPDATE: id => `${API_BASE_URL}/causes/updateCause/${id}`,
-            DELETE: id => `${API_BASE_URL}/causes/deleteCause/${id}`,
-            BY_TYPE: type => `${API_BASE_URL}/causes/getCausesByType/${type}`,
-            URGENT: `${API_BASE_URL}/causes/getUrgentCauses`,
-            STATISTICS: `${API_BASE_URL}/causes/getStatistics`,
-            UPDATE_AMOUNT: id => `${API_BASE_URL}/causes/updateAmountCollected/${id}`
+            LIST: '/causes/getAllCauses',
+            CREATE: '/causes/createCause',
+            BY_ID: id => `/causes/getCauseById/${id}`,
+            UPDATE: id => `/causes/updateCause/${id}`,
+            DELETE: id => `/causes/deleteCause/${id}`,
+            BY_TYPE: type => `/causes/getCausesByType/${type}`,
+            URGENT: '/causes/getUrgentCauses',
+            STATISTICS: '/causes/getStatistics',
+            UPDATE_AMOUNT: id => `/causes/updateAmountCollected/${id}`
         },
         STUDENTS: {
-            LIST: `${API_BASE_URL}/student/getAllStudents`,
-            CREATE: `${API_BASE_URL}/student/addStudent`,
-            BY_ID: id => `${API_BASE_URL}/student/getStudentbyId/${id}`,
-            UPDATE: id => `${API_BASE_URL}/student/updateStudent/${id}`,
-            DELETE: id => `${API_BASE_URL}/student/deleteStudent/${id}`,
-            UPDATE_SPONSORSHIP: id => `${API_BASE_URL}/student/updateSponsorship/${id}`,
-            UPDATE_FEE_STATUS: id => `${API_BASE_URL}/student/updateFeeStatus/${id}`,
-            RECORD_PAYMENT: id => `${API_BASE_URL}/student/recordPayment/${id}`,
-            FEE_SUMMARY: id => `${API_BASE_URL}/student/getFeeSummary/${id}`
+            LIST: '/student/getAllStudents',
+            CREATE: '/student/addStudent',
+            BY_ID: id => `/student/getStudentbyId/${id}`,
+            UPDATE: id => `/student/updateStudent/${id}`,
+            DELETE: id => `/student/deleteStudent/${id}`,
+            UPDATE_SPONSORSHIP: id => `/student/updateSponsorship/${id}`,
+            UPDATE_FEE_STATUS: id => `/student/updateFeeStatus/${id}`,
+            RECORD_PAYMENT: id => `/student/recordPayment/${id}`,
+            FEE_SUMMARY: id => `/student/getFeeSummary/${id}`
         }
     }
 };
+
+// Create an axios instance
+export const apiConfig = axios.create({
+    baseURL: API_BASE_URL,
+});
+
+// Request interceptor to attach Authorization header
+apiConfig.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+// Response interceptor for error handling
+apiConfig.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        // Optionally handle global errors here
+        // For example, redirect to login on 401
+        if (error.response && error.response.status === 401) {
+            // window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default API_CONFIG; 
