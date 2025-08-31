@@ -1,52 +1,50 @@
-// API Configuration
+import axios from 'axios';
+import {handleHttpError} from './error.handler.config'
+import { toast } from 'react-toastify';
+
 const API_BASE_URL = 'http://localhost:3000';
 
-export const API_CONFIG = {
-    BASE_URL: API_BASE_URL,
-    ENDPOINTS: {
-        AUTH: {
-            LOGIN: `${API_BASE_URL}/user/login`,
-            SIGNUP: `${API_BASE_URL}/user/signup`,
-        },
-        USER: {
-            PROFILE: `${API_BASE_URL}/user/dashboard`,
-            UPDATE: `${API_BASE_URL}/user/update`,
-            RESET: `${API_BASE_URL}/user/forget-password`,
-            GET_ALL_USERS: `${API_BASE_URL}/user/users`,
-            GET_ALL_DONORS: `${API_BASE_URL}/user/donors`,
-        },
-        DONATIONS: {
-            LIST: `${API_BASE_URL}/donation`,
-            CREATE: `${API_BASE_URL}/donation/add`,
-            STATISTICS: `${API_BASE_URL}/donation/statistics`,
-            BY_ID: id => `${API_BASE_URL}/donation/${id}`,
-            BY_TARGET: (type, id) => `${API_BASE_URL}/donation/target/${type}/${id}`,
-            UPDATE_STATUS: id => `${API_BASE_URL}/donation/${id}/status`,
-            DELETE: id => `${API_BASE_URL}/donation/${id}`
-        },
-        CAUSES: {
-            LIST: `${API_BASE_URL}/causes/getAllCauses`,
-            CREATE: `${API_BASE_URL}/causes/createCause`,
-            BY_ID: id => `${API_BASE_URL}/causes/getCauseById/${id}`,
-            UPDATE: id => `${API_BASE_URL}/causes/updateCause/${id}`,
-            DELETE: id => `${API_BASE_URL}/causes/deleteCause/${id}`,
-            BY_TYPE: type => `${API_BASE_URL}/causes/getCausesByType/${type}`,
-            URGENT: `${API_BASE_URL}/causes/getUrgentCauses`,
-            STATISTICS: `${API_BASE_URL}/causes/getStatistics`,
-            UPDATE_AMOUNT: id => `${API_BASE_URL}/causes/updateAmountCollected/${id}`
-        },
-        STUDENTS: {
-            LIST: `${API_BASE_URL}/student/getAllStudents`,
-            CREATE: `${API_BASE_URL}/student/addStudent`,
-            BY_ID: id => `${API_BASE_URL}/student/getStudentbyId/${id}`,
-            UPDATE: id => `${API_BASE_URL}/student/updateStudent/${id}`,
-            DELETE: id => `${API_BASE_URL}/student/deleteStudent/${id}`,
-            UPDATE_SPONSORSHIP: id => `${API_BASE_URL}/student/updateSponsorship/${id}`,
-            UPDATE_FEE_STATUS: id => `${API_BASE_URL}/student/updateFeeStatus/${id}`,
-            RECORD_PAYMENT: id => `${API_BASE_URL}/student/recordPayment/${id}`,
-            FEE_SUMMARY: id => `${API_BASE_URL}/student/getFeeSummary/${id}`
-        }
-    }
-};
+// Create an axios instance
+export const apiConfig = axios.create({
+    baseURL: API_BASE_URL,
+   
+});
 
-export default API_CONFIG; 
+// Request interceptor to attach Authorization header
+apiConfig.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+// Response interceptor for error handling
+apiConfig.interceptors.response.use(
+    (response) => {
+        // Handle successful responses
+        if (response.status >= 200 && response.status < 300) {
+            toast.success("Success")
+            return response.data;
+        }
+        // Handle non-2xx status codes that are still considered successful
+        return Promise.reject(new Error(`Unexpected status code: ${response.status}`));
+    },
+    (error) => {
+        // Handle network errors (no response received)
+        if (!error.response) {
+            return Promise.reject({
+                ...error,
+                message: 'Network error: Unable to connect to the server',
+                code: 'NETWORK_ERROR'
+            });
+        }
+
+        const { status, data } = error.response;
+        return handleHttpError(error, status, data);
+    }
+);
+
