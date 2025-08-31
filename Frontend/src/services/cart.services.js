@@ -1,3 +1,5 @@
+import {toast} from 'react-toastify'
+
 export const addToCart = ({ item }) => {
     // get cart from localStorage and parse
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -8,10 +10,11 @@ export const addToCart = ({ item }) => {
   
     if (itemIndex !== -1) {
       // if exists, increase quantity
-      cart[itemIndex].quantity += 1;
+      toast.info("Already in Cart")
     } else {
       // otherwise, add new item with quantity = 1
       cart.push({ ...item, quantity: 1 });
+      toast.success("Added to Cart")
     }
   
     // save updated cart back to localStorage
