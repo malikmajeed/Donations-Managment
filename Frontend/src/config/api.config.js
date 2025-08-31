@@ -1,57 +1,13 @@
 import axios from 'axios';
+import {handleHttpError} from './error.handler.config'
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = 'http://localhost:3000';
-
-export const API_CONFIG = {
-    ENDPOINTS: {
-        AUTH: {
-            LOGIN: '/user/login',
-            SIGNUP: '/user/signup',
-        },
-        USER: {
-            PROFILE: '/user/dashboard',
-            UPDATE: '/user/update',
-            RESET: '/user/forget-password',
-            GET_ALL_USERS: '/user/users',
-            GET_ALL_DONORS: '/user/donors',
-        },
-        DONATIONS: {
-            LIST: '/donation',
-            CREATE: '/donation/add',
-            STATISTICS: '/donation/statistics',
-            BY_ID: id => `/donation/${id}`,
-            BY_TARGET: (type, id) => `/donation/target/${type}/${id}`,
-            UPDATE_STATUS: id => `/donation/${id}/status`,
-            DELETE: id => `/donation/${id}`
-        },
-        CAUSES: {
-            LIST: '/causes/getAllCauses',
-            CREATE: '/causes/createCause',
-            BY_ID: id => `/causes/getCauseById/${id}`,
-            UPDATE: id => `/causes/updateCause/${id}`,
-            DELETE: id => `/causes/deleteCause/${id}`,
-            BY_TYPE: type => `/causes/getCausesByType/${type}`,
-            URGENT: '/causes/getUrgentCauses',
-            STATISTICS: '/causes/getStatistics',
-            UPDATE_AMOUNT: id => `/causes/updateAmountCollected/${id}`
-        },
-        STUDENTS: {
-            LIST: '/student/getAllStudents',
-            CREATE: '/student/addStudent',
-            BY_ID: id => `/student/getStudentbyId/${id}`,
-            UPDATE: id => `/student/updateStudent/${id}`,
-            DELETE: id => `/student/deleteStudent/${id}`,
-            UPDATE_SPONSORSHIP: id => `/student/updateSponsorship/${id}`,
-            UPDATE_FEE_STATUS: id => `/student/updateFeeStatus/${id}`,
-            RECORD_PAYMENT: id => `/student/recordPayment/${id}`,
-            FEE_SUMMARY: id => `/student/getFeeSummary/${id}`
-        }
-    }
-};
 
 // Create an axios instance
 export const apiConfig = axios.create({
     baseURL: API_BASE_URL,
+   
 });
 
 // Request interceptor to attach Authorization header
@@ -68,15 +24,27 @@ apiConfig.interceptors.request.use(
 
 // Response interceptor for error handling
 apiConfig.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // Optionally handle global errors here
-        // For example, redirect to login on 401
-        if (error.response && error.response.status === 401) {
-            // window.location.href = '/login';
+    (response) => {
+        // Handle successful responses
+        if (response.status >= 200 && response.status < 300) {
+            toast.success("Success")
+            return response.data;
         }
-        return Promise.reject(error);
+        // Handle non-2xx status codes that are still considered successful
+        return Promise.reject(new Error(`Unexpected status code: ${response.status}`));
+    },
+    (error) => {
+        // Handle network errors (no response received)
+        if (!error.response) {
+            return Promise.reject({
+                ...error,
+                message: 'Network error: Unable to connect to the server',
+                code: 'NETWORK_ERROR'
+            });
+        }
+
+        const { status, data } = error.response;
+        return handleHttpError(error, status, data);
     }
 );
 
-export default API_CONFIG; 
