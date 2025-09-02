@@ -1,6 +1,6 @@
 # 🎓 Ansar Foundation Donations Management System
 
-A comprehensive web application for managing donations, students, and users for the Ansar Foundation. Built with modern technologies to provide a seamless experience for administrators and donors.
+React, Node.js & MongoDB-based crowdfunding app for students and causes, featuring Web View, Donor Dashboard & Admin Dashboard. Design & Developed for Ansar Relief Foundation. 
 
 ## 🌟 Features
 
