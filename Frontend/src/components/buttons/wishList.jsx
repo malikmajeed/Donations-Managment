@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
-import { addToWishList } from '../../services/wish-list'
+
 
 
 export default function WishListButton({ item }) {
