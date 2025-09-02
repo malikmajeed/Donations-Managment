@@ -223,6 +223,9 @@ const getAllStudents = async (req, res) => {
           return s;
       });
 
+
+      console.log('Sending all students in response: ');
+      console.log(studentsWithExtras)
       return res.status(200).json(studentsWithExtras);
   } catch (error) {
       console.error('An error occurred while fetching all students:', error.message);
