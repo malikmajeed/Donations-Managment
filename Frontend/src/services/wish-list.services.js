@@ -1,7 +1,7 @@
 export const addToWishList = ({ item }) => {
   // get cart from localStorage and parse
   const wishList = JSON.parse(localStorage.getItem('wish-list')) || [];
-  console.log(item.amount);
+
 
   // check if the item already exists in the cart
   const itemIndex = wishList.findIndex(i => i.id === item.id);

@@ -1,307 +1,218 @@
-import { useState } from 'react';
-import axios from 'axios';
-import styles from './index.module.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { registerUser } from "../../services/auth.services";
+import { validateSignupForm } from "../../utils/validateSignup";
 
-export default function SignUp({selectForm}) {
-    const [formData, setFormData] = useState({
-        fName: '',
-        lName: '',
-        email: '',
-        phone: '',
-        password: '',
-        confirmPassword: '',
-        role: 'donor',
-        gender: ''
-    });
+export default function SignUp({ selectForm }) {
+  const [formData, setFormData] = useState({
+    fName: "",
+    lName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    role: "donor",
+    gender: "",
+  });
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [error, setError] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState({});
 
-    const validateForm = () => {
-        let newError = {};
-        
-        // First Name validation
-        if (!formData.fName.trim()) {
-            newError.fName = 'First name is required';
-        }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setError((prev) => ({ ...prev, [name]: "" }));
+  };
 
-        // Last Name validation
-        if (!formData.lName.trim()) {
-            newError.lName = 'Last name is required';
-        }
+  const handlePhoneChange = (value) => {
+    setFormData((prev) => ({ ...prev, phone: value }));
+    setError((prev) => ({ ...prev, phone: "" }));
+  };
 
-        // Email validation
-        if (!formData.email.trim()) {
-            newError.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newError.email = 'Email is invalid';
-        }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        // Gender validation
-        if (!formData.gender) {
-            newError.gender = 'Gender is required';
-        }
+    const validationErrors = validateSignupForm(formData);
+    if (Object.keys(validationErrors).length > 0) {
+      setError(validationErrors);
+      return;
+    }
 
-        // Phone validation (optional but if provided, validate format)
-        if (formData.phone && formData.phone.length < 8) {
-            newError.phone = 'Please enter a valid phone number';
-        }
-
-        // Password validation
-        if (!formData.password) {
-            newError.password = 'Password is required';
-        } else if (formData.password.length < 6) {
-            newError.password = 'Password must be at least 6 characters';
-        }
-
-        // Confirm Password validation
-        if (!formData.confirmPassword) {
-            newError.confirmPassword = 'Please confirm your password';
-        } else if (formData.password !== formData.confirmPassword) {
-            newError.confirmPassword = 'Passwords do not match';
-        }
-
-        setError(newError);
-        return Object.keys(newError).length === 0;
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    try {
+      const data = await registerUser(formData);
+      if (data.success) {
+        alert("Account Created Successfully!");
         setFormData({
-            ...formData,
-            [name]: value
+          fName: "",
+          lName: "",
+          email: "",
+          phone: "",
+          password: "",
+          confirmPassword: "",
+          role: "donor",
+          gender: "",
         });
-        // Clear error when user starts typing
-        if (error[name]) {
-            setError({
-                ...error,
-                [name]: ''
-            });
-        }
-    };
+        setError({});
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Signup failed. Please try again.");
+    }
+  };
 
-    const handlePhoneChange = (value) => {
-        setFormData({
-            ...formData,
-            phone: value
-        });
-        if (error.phone) {
-            setError({
-                ...error,
-                phone: ''
-            });
-        }
-    };
-
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        if (!validateForm()) {
-            return;
-        }
-
-        try {
-            const response = await axios.post('http://localhost:3000/user/signup', formData, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (response.data.success) {
-                alert('Account Created Successfully!');
-                console.log('Signup successful:', response.data);
-                setFormData({
-                    fName: '',
-                    lName: '',
-                    email: '',
-                    phone: '',
-                    password: '',
-                    confirmPassword: '',
-                    role: 'donor',
-                    gender: ''
-                });
-                setError({});
-            }
-        } catch (error) {
-            console.error('Signup failed:', error.response?.data || error.message);
-            alert(error.response?.data?.message || 'Signup failed. Please try again.');
-        }
-    };
-
-    return (
-        <div className={styles.signupContainer}>
-            <h2>Create your account</h2>
-            <form onSubmit={handleSubmit} className={styles.signupForm}>
-                <div className={styles.formGroup}>
-                    <label htmlFor="fName">First Name *</label>
-                    <input
-                        type="text"
-                        id="fName"
-                        name="fName"
-                        value={formData.fName}
-                        onChange={handleChange}
-                        required
-                    />
-                    {error.fName && <span className={styles.error}>{error.fName}</span>}
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="lName">Last Name *</label>
-                    <input
-                        type="text"
-                        id="lName"
-                        name="lName"
-                        value={formData.lName}
-                        onChange={handleChange}
-                        required
-                    />
-                    {error.lName && <span className={styles.error}>{error.lName}</span>}
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label>Gender *</label>
-                    <div className={styles.radioGroup}>
-                        <label className={styles.radioLabel}>
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="male"
-                                checked={formData.gender === 'male'}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span>Male</span>
-                        </label>
-                        <label className={styles.radioLabel}>
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="female"
-                                checked={formData.gender === 'female'}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span>Female</span>
-                        </label>
-                        <label className={styles.radioLabel}>
-                            <input
-                                type="radio"
-                                name="gender"
-                                value="other"
-                                checked={formData.gender === 'other'}
-                                onChange={handleChange}
-                                required
-                            />
-                            <span>Other</span>
-                        </label>
-                    </div>
-                    {error.gender && <span className={styles.error}>{error.gender}</span>}
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="email">Email *</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    {error.email && <span className={styles.error}>{error.email}</span>}
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="phone">Phone Number</label>
-                    <PhoneInput
-                        country={'pk'}
-                        value={formData.phone}
-                        onChange={handlePhoneChange}
-                        inputClass={styles.phoneInput}
-                        containerClass={styles.phoneInputContainer}
-                        buttonClass={styles.phoneButton}
-                        dropdownClass={styles.phoneDropdown}
-                        searchClass={styles.phoneSearch}
-                        enableSearch={true}
-                        searchPlaceholder="Search country..."
-                        inputProps={{
-                            name: 'phone',
-                            id: 'phone',
-                            required: false
-                        }}
-                    />
-                    {error.phone && <span className={styles.error}>{error.phone}</span>}
-                </div>
-
-                
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="password">Password *</label>
-                    <div className={styles.passwordInputContainer}>
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
-                        <button
-                            type="button"
-                            className={styles.eyeIcon}
-                            onClick={togglePasswordVisibility}
-                        >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                    </div>
-                    {error.password && <span className={styles.error}>{error.password}</span>}
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="confirmPassword">Confirm Password *</label>
-                    <div className={styles.passwordInputContainer}>
-                        <input
-                            type={showConfirmPassword ? "text" : "password"}
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            required
-                        />
-                        <button
-                            type="button"
-                            className={styles.eyeIcon}
-                            onClick={toggleConfirmPasswordVisibility}
-                        >
-                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                        </button>
-                    </div>
-                    {error.confirmPassword && <span className={styles.error}>{error.confirmPassword}</span>}
-                </div>
-
-                <button type="submit" className={styles.submitButton}>
-                    Create
-                </button>
-                <p>Already have an account? <a 
-                    href="#" 
-                    onClick={(e) => {
-                        e.preventDefault();
-                        selectForm(false);
-                    }}
-                >LogIn here...</a></p>
-            </form>
+  return (
+    <div className="max-w-lg mx-auto my-8 p-6 border border-indigo-400/50 rounded-lg shadow-md flex flex-col">
+      <h2 className="text-center text-xl font-semibold text-black mb-4">Create your account</h2>
+      
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* First Name */}
+        <div>
+          <label htmlFor="fName" className="block text-sm font-medium">First Name *</label>
+          <input
+            type="text"
+            id="fName"
+            name="fName"
+            value={formData.fName}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          {error.fName && <p className="text-red-500 text-sm mt-1">{error.fName}</p>}
         </div>
-    );
+
+        {/* Last Name */}
+        <div>
+          <label htmlFor="lName" className="block text-sm font-medium">Last Name *</label>
+          <input
+            type="text"
+            id="lName"
+            name="lName"
+            value={formData.lName}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          {error.lName && <p className="text-red-500 text-sm mt-1">{error.lName}</p>}
+        </div>
+
+        {/* Gender */}
+        <div>
+          <span className="block text-sm font-medium">Gender *</span>
+          <div className="flex gap-4 mt-2">
+            {["male", "female", "other"].map((g) => (
+              <label key={g} className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={g}
+                  checked={formData.gender === g}
+                  onChange={handleChange}
+                  className="w-4 h-4 accent-indigo-500"
+                />
+                <span className="capitalize">{g}</span>
+              </label>
+            ))}
+          </div>
+          {error.gender && <p className="text-red-500 text-sm mt-1">{error.gender}</p>}
+        </div>
+
+        {/* Email */}
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium">Email *</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          {error.email && <p className="text-red-500 text-sm mt-1">{error.email}</p>}
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium">Phone Number</label>
+          <PhoneInput
+            country={"pk"}
+            value={formData.phone}
+            onChange={handlePhoneChange}
+            inputClass="!w-full !h-10 !pl-12 !border !rounded focus:!outline-none focus:!ring-2 focus:!ring-indigo-400"
+            buttonClass="!border !rounded-l bg-transparent"
+            dropdownClass="!w-72 !max-h-48 !overflow-y-auto !border !rounded shadow"
+            searchClass="!w-full !p-2 !border !rounded mb-2"
+          />
+          {error.phone && <p className="text-red-500 text-sm mt-1">{error.phone}</p>}
+        </div>
+
+        {/* Password */}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium">Password *</label>
+          <div className="relative flex items-center">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          {error.password && <p className="text-red-500 text-sm mt-1">{error.password}</p>}
+        </div>
+
+        {/* Confirm Password */}
+        <div>
+          <label htmlFor="confirmPassword" className="block text-sm font-medium">Confirm Password *</label>
+          <div className="relative flex items-center">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 text-gray-500 hover:text-gray-700"
+            >
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          {error.confirmPassword && <p className="text-red-500 text-sm mt-1">{error.confirmPassword}</p>}
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="mt-4 py-2 bg-indigo-500 text-white font-medium rounded hover:bg-indigo-600 transition"
+        >
+          Create
+        </button>
+
+        <p className="text-center mt-4 text-sm">
+          Already have an account?{" "}
+          <a
+            href="#"
+            className="text-indigo-500 hover:underline"
+            onClick={(e) => {
+              e.preventDefault();
+              selectForm(false);
+            }}
+          >
+            Log in here...
+          </a>
+        </p>
+      </form>
+    </div>
+  );
 }
