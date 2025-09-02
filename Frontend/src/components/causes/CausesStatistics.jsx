@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_CONFIG } from '../../config/api.config';
+import ENDPOINTS from '../../config/api.endpoints';
 import { MdTrendingUp, MdAttachMoney, MdWarning, MdCheckCircle } from 'react-icons/md';
 import styles from './CausesStatistics.module.css';
 
@@ -16,7 +16,7 @@ export default function CausesStatistics() {
   const fetchStatistics = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.STATISTICS);
+      const response = await axios.get(ENDPOINTS.CAUSES.STATISTICS);
       setStats(response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch statistics');

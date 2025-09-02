@@ -39,6 +39,6 @@ export const handleHttpError = (error, status, data) => {
             errorResponse.code = 'UNKNOWN_ERROR';
     }
 
-    toast.error(message);
+    toast.error(errorResponse.message);
     return Promise.reject(errorResponse);
 };

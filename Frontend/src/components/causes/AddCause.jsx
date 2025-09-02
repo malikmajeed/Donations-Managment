@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { MdImage, MdUpload, MdCalendarToday, MdLocationOn, MdTextFields, MdWarning, MdAttachMoney, MdClose, MdCheckCircle } from 'react-icons/md';
-import {API_CONFIG} from '../../config/api.config.js';
+import ENDPOINTS from '../../config/api.endpoints.js';
 import axios from 'axios';
 
 
@@ -102,7 +102,7 @@ export default function AddCause({ type = '', onClose }) {
     try {
       // Always use the correct type in the form data
       const submitForm = { ...form, type: type || form.type };
-      const res = await axios.post(`${API_CONFIG.ENDPOINTS.CAUSES.CREATE}`, submitForm,
+      const res = await axios.post(`${ENDPOINTS.CAUSES.CREATE}`, submitForm,
      { headers: {
         'Content-Type':'multipart/form-data',
         'Authorization': `Bearer ${token}`

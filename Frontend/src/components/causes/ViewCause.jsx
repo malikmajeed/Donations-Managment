@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { API_CONFIG } from '../../config/api.config';
+import ENDPOINTS from '../../config/api.endpoints';
 import { MdLocationOn, MdAccessTime, MdEdit, MdArrowBack, MdCalendarToday } from 'react-icons/md';
 import styles from './ViewCause.module.css';
 
@@ -19,7 +19,7 @@ export default function ViewCause() {
   const fetchCause = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.BY_ID(id));
+      const response = await axios.get(ENDPOINTS.CAUSES.BY_ID(id));
       setCause(response.data.cause || response.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch cause details');

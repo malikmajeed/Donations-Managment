@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API_CONFIG } from '../../config/api.config';
+import ENDPOINTS from '../../config/api.endpoints';
 import CauseCard from './CauseCard';
 import styles from './CausesByType.module.css';
 import { Users, UserCheck, UserX, TrendingUp } from 'lucide-react';
@@ -104,7 +104,7 @@ export default function CausesByType() {
   const fetchCausesByType = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.BY_TYPE(type));
+      const response = await axios.get(ENDPOINTS.CAUSES.BY_TYPE(type));
       const typeCauses = response.data.causes || response.data || [];
       setCauses(typeCauses);
     } catch (err) {

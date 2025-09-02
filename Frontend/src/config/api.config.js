@@ -27,7 +27,7 @@ apiConfig.interceptors.response.use(
     (response) => {
         // Handle successful responses
         if (response.status >= 200 && response.status < 300) {
-            toast.success("Success")
+    
             return response.data;
         }
         // Handle non-2xx status codes that are still considered successful

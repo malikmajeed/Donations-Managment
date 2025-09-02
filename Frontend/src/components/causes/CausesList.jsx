@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_CONFIG } from '../../config/api.config';
+import ENDPOINTS from '../../config/api.endpoints';
 import CauseCard from './CauseCard';
 import styles from './CausesList.module.css';
 import { Users, UserCheck, UserX, TrendingUp } from 'lucide-react';
@@ -90,10 +90,10 @@ export default function CausesList({ limit, causeType }) {
       
       if (causeType) {
         // Fetch causes by specific type
-        response = await axios.get(`${API_CONFIG.ENDPOINTS.CAUSES.LIST}?type=${causeType}`);
+        response = await axios.get(`${ENDPOINTS.CAUSES.LIST}?type=${causeType}`);
       } else {
         // Fetch all causes
-        response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.LIST);
+        response = await axios.get(ENDPOINTS.CAUSES.LIST);
       }
       
       const allCauses = response.data.causes || response.data || [];
