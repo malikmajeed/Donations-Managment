@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { API_CONFIG } from '../../config/api.config';
+import   ENDPOINTS  from '../../config/api.endpoints';
 import { MapPin, Clock, ShoppingCart } from 'lucide-react';
 import WishListButton from '../buttons/wishList';
 import {SponsorButton }from '../buttons/sponsor';
@@ -13,7 +13,7 @@ export default function CauseCard({ cause, onDonate, onUpdate }) {
     if (!window.confirm('Are you sure you want to delete this cause?')) return;
     try {
       setLoading(true);
-      await axios.delete(API_CONFIG.ENDPOINTS.CAUSES.DELETE(cause._id));
+      await axios.delete(ENDPOINTS.CAUSES.DELETE(cause._id));
       if (onUpdate) onUpdate();
     } catch (err) {
       console.error('Delete failed:', err);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { API_CONFIG } from '../../config/api.config';
+import ENDPOINTS from '../../config/api.endpoints';
 import CauseCard from './CauseCard';
 import styles from './UrgentCauses.module.css';
 
@@ -16,7 +16,7 @@ export default function UrgentCauses() {
   const fetchUrgentCauses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(API_CONFIG.ENDPOINTS.CAUSES.URGENT);
+      const response = await axios.get(ENDPOINTS.CAUSES.URGENT);
       const urgentCauses = response.data.causes || response.data || [];
       setCauses(urgentCauses);
     } catch (err) {
