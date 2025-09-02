@@ -10,6 +10,7 @@ import {
   recordPayment,
   getFeeSummary
 } from '../services/students.service';
+import { toast } from 'react-toastify';
 
 // Get all students
 export const useAllStudents = () => {
@@ -35,6 +36,7 @@ export const useCreateStudent = () => {
     mutationFn: createStudent,
     onSuccess: () => {
       queryClient.invalidateQueries(['students']);
+      toast.success("New Student Added")
     }
   });
 };
@@ -46,6 +48,7 @@ export const useUpdateStudent = () => {
     mutationFn: ({ id, data }) => updateStudent(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries(['students']);
+      toast.success("Student Updated")
     }
   });
 };
@@ -57,6 +60,7 @@ export const useDeleteStudent = () => {
     mutationFn: deleteStudent,
     onSuccess: () => {
       queryClient.invalidateQueries(['students']);
+      toast.warn("Student Deleted")
     }
   });
 };
