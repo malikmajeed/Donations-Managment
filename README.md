@@ -179,12 +179,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Ansar Foundation for their support and requirements
-- All contributors who have helped in the development
+- All youtube community who helped me understand Coding core concepts. 
 - Open source community for the amazing tools and libraries
 
 ## 📞 Support
 
-For support, email support@ansarfoundation.com or create an issue in the repository.
+Reach out to me, malikmajeed@gmail.com
 
 ---
 
