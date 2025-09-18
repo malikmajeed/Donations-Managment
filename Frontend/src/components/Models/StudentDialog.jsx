@@ -2,13 +2,19 @@ import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Phone, MapPin, GraduationCap, X, Heart, Crown } from "lucide-react";
 import { Sponsorship } from "../ui/Sponsorship";
-import { SponsorButton } from "../buttons/";
+import { SponsorButton } from "../buttons";
 
 
 
 
 export default function StudentDialog({ student }) {
   if (!student) return null;
+
+  const getImageUrl = (url) => {
+    if (!url) return null;
+    if (url.startsWith('http')) return url;
+    return `http://localhost:3000${url}`;
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -35,12 +41,12 @@ export default function StudentDialog({ student }) {
 
 
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/20 backdrop-blur-sm" />
-        <Dialog.Content className="fixed left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl overflow-hidden">
+        <Dialog.Overlay className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[60]" />
+        <Dialog.Content className="fixed left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl overflow-hidden z-[60]">
           {/* Header */}
           <div className="relative px-4 pt-8 pb-6 bg-gradient-to-br from-slate-50 to-white">
             <Dialog.Close asChild>
-              <button className="absolute top-8 right-6 p-2 rounded-full hover:bg-white/80  transition-colors">
+              <button className="absolute top-8 right-6 p-2 rounded-full hover:bg-white/80 transition-colors focus:outline-none">
                 <X className="w-5 h-5 text-slate-400 hover:text-black" />
               </button>
             </Dialog.Close>
@@ -48,11 +54,19 @@ export default function StudentDialog({ student }) {
             <div className="flex flex-row items-start text-center">
               {student.profileUrl ? (
                 <img
-                  src={`http://localhost:3000${student.profileUrl}`}
+                  src={getImageUrl(student.profileUrl)}
                   alt={`${student.firstName}'s profile`}
                   className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = 'none';
+                    // Show initials fallback
+                    const fallback = e.target.nextElementSibling;
+                    if (fallback) fallback.style.display = 'flex';
+                  }}
                 />
-              ) : (
+              ) : null}
+              {(!student.profileUrl || !getImageUrl(student.profileUrl)) && (
                 <div className="w-24 h-24 flex items-center justify-center rounded-full bg-slate-100 text-2xl font-semibold text-slate-600 border-4 border-white shadow-lg">
                   {student.firstName[0]}{student.lastName[0]}
                 </div>

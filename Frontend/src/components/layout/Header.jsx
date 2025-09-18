@@ -44,9 +44,9 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-2">
             <Link 
               to="/" 
-              className={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none ${
+              className={`px-3 py-1 rounded-md font-medium transition-all duration-200 focus:outline-none ${
                 isActiveLink('/') 
-                  ? 'bg-sky-50 text-sky-600 border border-sky-400' 
+                  ? 'bg-sky-50 text-sky-600' 
                   : 'text-gray-700 hover:bg-sky-50 hover:text-sky-600'
               }`}
             >
@@ -54,9 +54,9 @@ const Header = () => {
             </Link>
             <Link 
               to="/causes" 
-              className={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none ${
+              className={`px-3 py-1 rounded-md font-medium transition-all duration-200 focus:outline-none ${
                 isActiveLink('/causes') 
-                  ? 'bg-sky-50 text-sky-600 border border-sky-400' 
+                  ? 'bg-sky-50 text-sky-600' 
                   : 'text-gray-700 hover:bg-sky-50 hover:text-sky-600'
               }`}
             >
@@ -64,9 +64,9 @@ const Header = () => {
             </Link>
             <Link 
               to="/students" 
-              className={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none ${
+              className={`px-3 py-1 rounded-md font-medium transition-all duration-200 focus:outline-none ${
                 isActiveLink('/students') 
-                  ? 'bg-sky-50 text-sky-600 border border-sky-400' 
+                  ? 'bg-sky-50 text-sky-600' 
                   : 'text-gray-700 hover:bg-sky-50 hover:text-sky-600'
               }`}
             >
@@ -81,9 +81,9 @@ const Header = () => {
               <>
                 <Link
                   to="/dashboard"
-                  className={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none ${
+                  className={`px-3 py-1 rounded-md font-medium transition-all duration-200 focus:outline-none ${
                     isActiveLink('/dashboard') 
-                      ? 'bg-sky-50 text-sky-600 border border-sky-400' 
+                      ? 'bg-sky-50 text-sky-600' 
                       : 'text-gray-700 hover:bg-sky-50 hover:text-sky-600'
                   }`}
                 >

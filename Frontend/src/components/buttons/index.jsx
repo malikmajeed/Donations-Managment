@@ -5,7 +5,7 @@ export const PrimaryButton = ({ children, type = "button", ...props }) => {
     return (
     <button
     type={type}
-    className="bg-gradient-to-r from-sky-400 to-sky-600 text-white font-semibold px-4 py-2 rounded-md shadow-md hover:opacity-90 transition"
+    className="bg-gradient-to-r from-sky-400 to-sky-600 text-white font-semibold px-4 py-2 rounded-md shadow-md hover:from-sky-500 hover:to-sky-700 hover:shadow-lg transition-all duration-200 focus:outline-none"
     {...props}
     >
         {children}
@@ -18,7 +18,7 @@ export const PrimaryButton = ({ children, type = "button", ...props }) => {
     return (
         <button
             type={type}
-            className="border-2 border-sky-400 text-sky-500 font-semibolds px-4 py-2 rounded-md hover:bg-sky-50 transition cursor-pointer"
+            className="bg-sky-50 border-1 border-sky-400 text-sky-600 font-semibold px-4 py-2 rounded-md hover:bg-sky-100 hover:border-sky-600 hover:text-sky-700 transition-all duration-200 cursor-pointer focus:outline-none"
             {...props}
         >
             {children}
@@ -55,20 +55,37 @@ export const SponsorButton = ({ children, type = "button", item, ...props }) => 
 
 
 import { Heart } from 'lucide-react';
-import { addToWishList } from '../../services/wish-list.services'
+import { addToWishList, removeFromWishList } from '../../services/wish-list.services'
+import { toast } from 'react-toastify';
 
 export const  WishListButton =({ item })=> {
+    const [isInWishlist, setIsInWishlist] = React.useState(() => {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        return wishlist.some(wishlistItem => wishlistItem.id === item.id);
+    });
 
     const handleClick = () => {
-        addToWishList({ item });
-      
+        if (isInWishlist) {
+            removeFromWishList({ item });
+            setIsInWishlist(false);
+            toast.success(`${item.name || item.firstName} removed from wishlist!`);
+        } else {
+            addToWishList({ item });
+            setIsInWishlist(true);
+            toast.success(`${item.name || item.firstName} added to wishlist!`);
+        }
     };
 
     return (
-      <button className="p-2 rounded-full shadow-lg transition-all duration-200 bg-blue-500 hover:bg-blue-600 text-white z-0 "
-      onClick={handleClick}
+      <button 
+        className={`p-2 rounded-full shadow-lg transition-all duration-200 z-0 focus:outline-none ${
+          isInWishlist 
+            ? 'bg-sky-500 hover:bg-sky-600 text-white' 
+            : 'bg-white border border-sky-400 hover:bg-sky-50 text-sky-500 hover:text-sky-600'
+        }`}
+        onClick={handleClick}
       >
-        <Heart className="h-5 w-5" />
+        <Heart className={`h-5 w-5 ${isInWishlist ? 'fill-current' : ''}`} />
       </button>
     );
   }

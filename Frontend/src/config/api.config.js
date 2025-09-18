@@ -31,6 +31,7 @@ apiConfig.interceptors.response.use(
             return response.data;
         }
         // Handle non-2xx status codes that are still considered successful
+        
         return Promise.reject(new Error(`Unexpected status code: ${response.status}`));
     },
     (error) => {
