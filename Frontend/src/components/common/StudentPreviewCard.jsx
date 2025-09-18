@@ -85,9 +85,15 @@ export default function StudentPreviewCard({ student}) {
           <h3 className="text-lg font-semibold text-blue-600">{firstName} {lastName}</h3>
 
         </div>
-        <div className='grid grid-cols-2 gap-2'>
-          <h3 className='text-lg text-gray-900'>{age} years Old</h3>
-          <h3 className='text-lg text-gray-900'>${fee}/Month</h3>
+        <div className='grid grid-cols-2 gap-4 w-full'>
+          <div className='flex items-center justify-center space-x-2 bg-gray-50 rounded-lg px-3 py-2'>
+            <CalendarDays className='w-4 h-4 text-blue-600' />
+            <span className='text-sm font-medium text-gray-700'>{age} years</span>
+          </div>
+          <div className='flex items-center justify-center space-x-2 bg-gray-50 rounded-lg px-3 py-2'>
+            <DollarSign className='w-4 h-4 text-green-600' />
+            <span className='text-sm font-medium text-gray-700'>${fee}/mo</span>
+          </div>
         </div>
 
         {/* Action Buttons */}

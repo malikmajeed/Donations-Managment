@@ -1,47 +1,63 @@
-import Header from './components/common/Header'
-import { Bounce, Flip, Slide, ToastContainer, Zoom } from 'react-toastify';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
-import HomePage from './components/pages/home-page'
-import { AuthenticationForm } from './components/common/AuthenticationForm';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-// import AdminDashboard from './components/pages/adminDashbaord/AdminDashboard'
-// import DonationCart from './components/donations/donationCart'
-// import Dashboard from './components/pages/adminDashbaord/Dashboard'
+// Context Providers
+import { AuthProvider } from './auth/AuthProvider';
+import { AppProvider } from './context/AppContext';
+import { ThemeProvider } from './context/ThemeContext';
 
-const queryClient = new   QueryClient();
+// Components
+import Header from './components/layout/Header';
+import AppRoutes from './routes/AppRoutes';
 
+// Styles
+import './styles/global.css';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 function App() {
-
   return (
-    <> 
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        transition={Bounce}
-      />
-  <QueryClientProvider client={queryClient} >
-
-         <Header />
-    {/* <GetStudentByID studentId={"6842cacb05709a76c110f023"}/> */}
-   
-        {/* <HomePage /> */}
-        <AuthenticationForm />
-        {/* <DonationCart causeId="687f3e9d6da95ff8b4a5f1a7"/> */}
-       
-
-        </QueryClientProvider>
-        </>
-        
-  )
+    <Router>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <AuthProvider>
+            <AppProvider>
+              <div className="min-h-screen bg-gray-50">
+                <Header />
+                <main>
+                  <AppRoutes />
+                </main>
+                
+                <ToastContainer
+                  position="top-right"
+                  autoClose={3000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                />
+              </div>
+            </AppProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </Router>
+  );
 }
 
 export default App

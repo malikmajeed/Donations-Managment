@@ -1,31 +1,26 @@
 export const addToWishList = ({ item }) => {
-  // get cart from localStorage and parse
-  const wishList = JSON.parse(localStorage.getItem('wish-list')) || [];
+  // get wishlist from localStorage and parse
+  const wishList = JSON.parse(localStorage.getItem('wishlist')) || [];
 
-
-  // check if the item already exists in the cart
+  // check if the item already exists in the wishlist
   const itemIndex = wishList.findIndex(i => i.id === item.id);
 
   if (itemIndex !== -1) {
-    // if exists, increase quantity
-    toast.info("Already in Wish List")
+    // if exists, don't add again
+    return false;
   } else {
     // otherwise, add new item with quantity = 1
     wishList.push({ ...item, quantity: 1 });
-    toast.success("Added to Wish List")
   }
 
-  // save updated cart back to localStorage
-  localStorage.setItem('wish-list', JSON.stringify(wishList));
-
+  // save updated wishlist back to localStorage
+  localStorage.setItem('wishlist', JSON.stringify(wishList));
+  return true;
 };
 
-
-
-export const removeFromCart = ({ item }) => {
-  const cart = JSON.parse(localStorage.getItem('wish-list')) || [];
-  const updatedCart = cart.filter(i => i.id !== item.id);
-  localStorage.setItem('wish-list', JSON.stringify(updatedCart));
-
+export const removeFromWishList = ({ item }) => {
+  const wishList = JSON.parse(localStorage.getItem('wishlist')) || [];
+  const updatedWishList = wishList.filter(i => i.id !== item.id);
+  localStorage.setItem('wishlist', JSON.stringify(updatedWishList));
 }
 
