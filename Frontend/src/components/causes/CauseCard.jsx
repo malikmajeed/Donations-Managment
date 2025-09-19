@@ -1,26 +1,28 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
-import   ENDPOINTS  from '../../config/api.endpoints';
 import { MapPin, Clock, ShoppingCart } from 'lucide-react';
-import WishListButton from '../buttons/wishList';
-import {SponsorButton }from '../buttons/sponsor';
+import { WishListButton, SponsorButton, PrimaryButton, SecondaryButton } from '../buttons';
+import { useDeleteCause } from '../../hooks/useCauses';
+import Modal from '../common/Modal';
+import CauseDetails from './CauseDetails';
+
+const API_BASE_URL = 'http://localhost:3000';
 
 export default function CauseCard({ cause, onDonate, onUpdate }) {
-  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const deleteCauseMutation = useDeleteCause();
 
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this cause?')) return;
-    try {
-      setLoading(true);
-      await axios.delete(ENDPOINTS.CAUSES.DELETE(cause._id));
-      if (onUpdate) onUpdate();
-    } catch (err) {
-      console.error('Delete failed:', err);
-      alert('Failed to delete cause');
-    } finally {
-      setLoading(false);
-    }
+    deleteCauseMutation.mutate(cause._id);
+  };
+
+  const handleViewDetails = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   const progressPercentage = Math.min((cause.amountCollected / cause.budgetRequired) * 100, 100);
@@ -57,7 +59,7 @@ export default function CauseCard({ cause, onDonate, onUpdate }) {
         <img
           src={
             cause.featureImage
-              ? `${API_CONFIG.BASE_URL}${cause.featureImage}`
+              ? `${API_BASE_URL}${cause.featureImage}`
               : '/default-avatar.avif'
           }
           alt={cause.name}
@@ -91,7 +93,7 @@ export default function CauseCard({ cause, onDonate, onUpdate }) {
               name: cause.name,
               description: cause.description,
               featureImage: cause.featureImage
-                ? `${API_CONFIG.BASE_URL}${cause.featureImage}`
+                ? `${API_BASE_URL}${cause.featureImage}`
                 : '/default-avatar.avif',
               budgetRequired: cause.budgetRequired,
               amount: cause.budgetRequired,
@@ -135,20 +137,46 @@ export default function CauseCard({ cause, onDonate, onUpdate }) {
           </div>
         </div>
 
-        {/* Donate Button */}
-        <SponsorButton
-            item={{
-              id: cause._id,
-              name: cause.name,
-              description: cause.description,
-              featureImage: cause.featureImage
-                ? `${API_CONFIG.BASE_URL}${cause.featureImage}`
-                : '/default-avatar.avif',
-              amount: cause.budgetRequired,
-            }} 
-            
-            text="Donate"/>
+        {/* Action Buttons */}
+        <div className="flex space-x-2">
+          <SponsorButton
+              item={{
+                id: cause._id,
+                name: cause.name,
+                description: cause.description,
+                featureImage: cause.featureImage
+                  ? `${API_BASE_URL}${cause.featureImage}`
+                  : '/default-avatar.avif',
+                amount: cause.budgetRequired,
+              }}
+          >
+            Donate
+          </SponsorButton>
+          <SecondaryButton onClick={handleViewDetails}>
+            View Details
+          </SecondaryButton>
+        </div>
       </div>
+
+      {/* View Cause Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        showHeader={false}
+        maxWidth="max-w-5xl"
+        footer={
+          <div className="flex gap-3">
+            <PrimaryButton className="flex-1 py-2 text-sm font-semibold rounded-lg">
+              Donate Now
+            </PrimaryButton>
+            <SecondaryButton className="flex-1 py-2 text-sm font-semibold rounded-lg">
+              Share Campaign
+            </SecondaryButton>
+          </div>
+        }
+      >
+        <CauseDetails cause={cause} />
+      </Modal>
     </motion.div>
   );
 }

@@ -11,6 +11,7 @@ import { ThemeProvider } from './context/ThemeContext';
 
 // Components
 import Header from './components/layout/Header';
+import Footer from './components/common/Footer';
 import AppRoutes from './routes/AppRoutes';
 
 // Styles
@@ -33,11 +34,12 @@ function App() {
         <ThemeProvider>
           <AuthProvider>
             <AppProvider>
-              <div className="min-h-screen bg-gray-50">
+              <div className="min-h-screen bg-gray-50 flex flex-col">
                 <Header />
-                <main>
+                <main className="flex-1">
                   <AppRoutes />
                 </main>
+                <Footer />
                 
                 <ToastContainer
                   position="top-right"
