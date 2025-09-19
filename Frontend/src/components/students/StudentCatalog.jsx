@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import StudentCard from './index.jsx'
-import StudentPreviewCard from '../common/StudentPreviewCard.jsx';
-import { useAllStudents } from '../../hooks/useStudents.jsx';
+import StudentPreviewCard from '../common/StudentPreviewCard';
+import { useAllStudents } from '../../hooks/useStudents';
 
 const STUDENTS_PER_PAGE = 9;
 

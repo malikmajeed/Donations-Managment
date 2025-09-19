@@ -22,48 +22,18 @@ const AppRoutes = () => {
       <Route path="/auth/log-in" element={<LoginPage />} />
       <Route path="/auth/sign-up" element={<RegisterPage />} />
       
-      {/* Protected Routes */}
+      {/* Unprotected Routes */}
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/students" element={<StudentsPage />} />
+      <Route path="/causes" element={<CausesPage />} />
+      <Route path="/donations" element={<DonationsPage />} />
+      
+      {/* Protected Dashboard Routes */}
       <Route
         path="/dashboard"
         element={
           <PrivateRoute>
             <DashboardPage />
-          </PrivateRoute>
-        }
-      />
-      
-      <Route
-        path="/profile"
-        element={
-          <PrivateRoute>
-            <ProfilePage />
-          </PrivateRoute>
-        }
-      />
-      
-      <Route
-        path="/students"
-        element={
-          <PrivateRoute>
-            <StudentsPage />
-          </PrivateRoute>
-        }
-      />
-      
-      <Route
-        path="/causes"
-        element={
-          <PrivateRoute>
-            <CausesPage />
-          </PrivateRoute>
-        }
-      />
-      
-      <Route
-        path="/donations"
-        element={
-          <PrivateRoute>
-            <DonationsPage />
           </PrivateRoute>
         }
       />

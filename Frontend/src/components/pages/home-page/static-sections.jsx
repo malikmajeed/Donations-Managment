@@ -1,5 +1,8 @@
 import React from 'react'
 import { PrimaryButton, SecondaryButton } from '../../buttons'
+import { Heart, Shield, Users, Target } from 'lucide-react'
+import { useAllCauses } from '../../../hooks/useCauses'
+import CauseCard from '../../causes/CauseCard'
 const AboutImage = "images/ansar relief foundation.png";
 
 
@@ -101,3 +104,116 @@ export const OurVision = ()=>{
 
   );
 }
+
+export const CoreValues = () => {
+  const values = [
+    {
+      icon: <Heart className="w-8 h-8 text-blue-600" />,
+      title: "Compassionate Service",
+      description: "Built on principles of care, integrity, and accountability."
+    },
+    {
+      icon: <Shield className="w-8 h-8 text-green-600" />,
+      title: "Service with Integrity",
+      description: "Guided by honesty, compassion, and responsibility."
+    },
+    {
+      icon: <Users className="w-8 h-8 text-purple-600" />,
+      title: "Human-Centered Service",
+      description: "Focused on compassion, truthfulness, and accountability."
+    },
+    {
+      icon: <Target className="w-8 h-8 text-orange-600" />,
+      title: "Values-Driven Service",
+      description: "Rooted in compassion, responsibility, and integrity."
+    }
+  ];
+
+  return (
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+          Our Core Values
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {values.map((value, index) => (
+            <div key={index} className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300 text-center">
+              <div className="flex justify-center mb-4">
+                {value.icon}
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                {value.title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {value.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export const FeaturedCauses = () => {
+  const { data: response, isLoading, isError, error } = useAllCauses();
+
+  // Sort causes by most recent (createdAt) and display all available causes
+  const causes = response?.success ? 
+    response.causes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : 
+    [];
+
+  if (isLoading) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+            Featured Causes
+          </h2>
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+            Featured Causes
+          </h2>
+          <div className="text-center text-gray-600">
+            <p>Unable to load causes at this time.</p>
+            <p className="text-sm text-red-500 mt-2">{error?.message}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+          Featured Causes
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {causes.map((cause) => (
+            <CauseCard key={cause._id} cause={cause} />
+          ))}
+        </div>
+        
+        <div className="text-center mt-12">
+          <PrimaryButton className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition duration-300">
+            View All Causes
+          </PrimaryButton>
+        </div>
+      </div>
+    </section>
+  );
+};
